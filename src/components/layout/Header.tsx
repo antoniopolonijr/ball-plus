@@ -1,11 +1,11 @@
+import { Button } from "@components/ui/button";
+import { Separator } from "@components/ui/separator";
 import { soccerPitch } from "@lucide/lab";
 import { Icon, Zap } from "lucide-react";
 import Link from "next/link";
 import { PageContainer } from "@/components/layout/PageContainer";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { AuthButtons } from "@/features/auth/components/AuthButtons";
-import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
-import { ThemeToggle } from "./ThemeToggle";
 
 export function Header() {
   return (
