@@ -34,7 +34,7 @@ export function Footer() {
   return (
     <footer className="border-t">
       <PageContainer>
-        <div className="flex flex-col gap-3 py-6 text-sm text-muted-foreground items-center sm:flex-row sm:justify-between">
+        <div className="flex flex-col gap-3 py-4 text-sm text-muted-foreground items-center sm:flex-row sm:justify-between">
           <p>Created by Antonio Poloni © {currentYear}</p>
 
           <nav aria-label="Social links">

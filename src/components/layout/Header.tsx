@@ -13,12 +13,12 @@ export function Header() {
       <PageContainer>
         <nav
           aria-label="Primary navigation"
-          className="flex h-16 items-center justify-between gap-4"
+          className="flex py-4 items-center justify-between gap-4"
         >
           <Link
             href="/"
             aria-label="Go to homepage"
-            className="rounded-sm text-xl font-bold tracking-tight outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="rounded-sm text-2xl font-bold tracking-tight outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             Ball+
           </Link>
