@@ -13,7 +13,7 @@ export function Header() {
       <PageContainer>
         <nav
           aria-label="Primary navigation"
-          className="flex py-4 items-center justify-between gap-4"
+          className="flex py-4 items-center justify-between gap-2 sm:gap-4"
         >
           <Link
             href="/"
@@ -23,7 +23,7 @@ export function Header() {
             Ball+
           </Link>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <Button asChild variant="default">
               <Link href="/games" aria-label="Games">
                 <Icon

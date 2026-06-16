@@ -9,11 +9,13 @@ import { createDefaultPlayer } from "../utils/create-default-player";
 import { createDefaultPlayers } from "../utils/create-default-players";
 import { createDefaultTeam } from "../utils/create-default-team";
 import { createDefaultTeams } from "../utils/create-default-teams";
+import { createInitialPlayers } from "../utils/create-initial-players";
+import { createInitialTeams } from "../utils/create-initial-teams";
 
 export const useTeamGeneratorStore = create<TeamGeneratorStore>((set) => ({
-  players: createDefaultPlayers(DEFAULT_PLAYER_COUNT),
+  players: createInitialPlayers(DEFAULT_PLAYER_COUNT),
 
-  teams: createDefaultTeams(DEFAULT_TEAM_COUNT),
+  teams: createInitialTeams(DEFAULT_TEAM_COUNT),
 
   generationResults: [],
 
@@ -63,7 +65,7 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>((set) => ({
 
   resetPlayers: () =>
     set({
-      players: createDefaultPlayers(DEFAULT_PLAYER_COUNT),
+      players: createInitialPlayers(DEFAULT_PLAYER_COUNT),
     }),
 
   addTeam: () =>
@@ -109,7 +111,7 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>((set) => ({
 
   resetTeams: () =>
     set({
-      teams: createDefaultTeams(DEFAULT_TEAM_COUNT),
+      teams: createInitialTeams(DEFAULT_TEAM_COUNT),
     }),
 
   addGenerationResult: (result) =>
