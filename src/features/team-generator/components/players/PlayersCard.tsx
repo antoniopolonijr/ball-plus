@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { PlayersTable } from "@/features/team-generator/components/players/PlayersTable";
 import { useTeamGeneratorStore } from "@/features/team-generator/store/team-generator-store";
+import { PlayerCountSelect } from "./PlayerCountSelect";
 
 export function PlayersCard() {
   const players = useTeamGeneratorStore((state) => state.players);
@@ -26,8 +27,7 @@ export function PlayersCard() {
         <CardHeader>
           <CardTitle id="players-heading" className="flex items-center gap-2">
             Players
-            {/* TODO PlayersCountSelect */}
-            <span className="text-muted-foreground">({players.length})</span>
+            <PlayerCountSelect />
           </CardTitle>
 
           <CardDescription>

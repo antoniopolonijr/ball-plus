@@ -50,7 +50,7 @@ export function PlayerRow({ player, index }: PlayerRowProps) {
               name: event.target.value,
             })
           }
-          aria-label="Enter player name"
+          aria-label="Player name"
         />
       </TableCell>
 
@@ -66,7 +66,7 @@ export function PlayerRow({ player, index }: PlayerRowProps) {
           <SelectTrigger
             id={`player-position-${player.id}`}
             className="w-full"
-            aria-label="Select player position"
+            aria-label="Player position"
           >
             <SelectValue>
               <abbr title={player.position} className="sm:hidden no-underline">
@@ -99,7 +99,7 @@ export function PlayerRow({ player, index }: PlayerRowProps) {
           <SelectTrigger
             id={`player-skill-${player.id}`}
             className="w-full"
-            aria-label="Select player skill"
+            aria-label="Player skill"
           >
             <SelectValue>
               <abbr title={player.skill} className="sm:hidden no-underline">

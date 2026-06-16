@@ -6,9 +6,7 @@ import {
 } from "../constants/defaults";
 import type { TeamGeneratorStore } from "../types/team-generator-store";
 import { createDefaultPlayer } from "../utils/create-default-player";
-import { createDefaultPlayers } from "../utils/create-default-players";
 import { createDefaultTeam } from "../utils/create-default-team";
-import { createDefaultTeams } from "../utils/create-default-teams";
 import { createInitialPlayers } from "../utils/create-initial-players";
 import { createInitialTeams } from "../utils/create-initial-teams";
 
@@ -50,10 +48,14 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>((set) => ({
       }
 
       if (count > currentCount) {
+        const playersToAdd = count - currentCount;
+
         return {
           players: [
             ...state.players,
-            ...createDefaultPlayers(count - currentCount),
+            ...Array.from({ length: playersToAdd }, () =>
+              createDefaultPlayer(),
+            ),
           ],
         };
       }
@@ -99,8 +101,13 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>((set) => ({
       }
 
       if (count > currentCount) {
+        const teamsToAdd = count - currentCount;
+
         return {
-          teams: [...state.teams, ...createDefaultTeams(count - currentCount)],
+          teams: [
+            ...state.teams,
+            ...Array.from({ length: teamsToAdd }, () => createDefaultTeam()),
+          ],
         };
       }
 
