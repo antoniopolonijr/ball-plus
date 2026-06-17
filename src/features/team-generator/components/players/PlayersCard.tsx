@@ -31,7 +31,7 @@ export function PlayersCard() {
           </CardTitle>
 
           <CardDescription>
-            Manage players before generating teams.
+            Build your player list and generate balanced teams in seconds.
           </CardDescription>
 
           <CardAction>

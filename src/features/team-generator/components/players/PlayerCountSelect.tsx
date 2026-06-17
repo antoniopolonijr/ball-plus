@@ -1,10 +1,6 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
-import { MAX_PLAYER_COUNT, MIN_PLAYER_COUNT } from "../../constants/defaults";
-
-import { useTeamGeneratorStore } from "../../store/team-generator-store";
-
 import {
   Select,
   SelectContent,
@@ -12,6 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { MAX_PLAYER_COUNT, MIN_PLAYER_COUNT } from "../../constants/defaults";
+import { useTeamGeneratorStore } from "../../store/team-generator-store";
 
 export function PlayerCountSelect() {
   const players = useTeamGeneratorStore((state) => state.players);

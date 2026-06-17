@@ -6,12 +6,17 @@ export interface TeamGeneratorStore {
   players: Player[];
   teams: Team[];
   generationResults: GenerationResult[];
+  playerSortField: "name" | "position" | "skill" | null;
+  playerSortDirection: "asc" | "desc";
 
   addPlayer(): void;
   removePlayer(id: string): void;
   updatePlayer(id: string, player: Partial<Player>): void;
   setPlayerCount(count: number): void;
   resetPlayers(): void;
+  sortPlayersByName: () => void;
+  sortPlayersByPosition: () => void;
+  sortPlayersBySkill: () => void;
 
   addTeam(): void;
   removeTeam(id: string): void;

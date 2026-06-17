@@ -11,3 +11,9 @@ export const PLAYER_SKILL_ABBREVIATIONS = {
   medium: "M",
   high: "H",
 } satisfies Record<PlayerSkill, string>;
+
+export const PLAYER_SKILL_ORDER = {
+  low: 1,
+  medium: 2,
+  high: 3,
+} satisfies Record<PlayerSkill, number>;
