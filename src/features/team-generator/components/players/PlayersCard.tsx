@@ -14,6 +14,7 @@ import {
 import { PlayersTable } from "@/features/team-generator/components/players/PlayersTable";
 import { useTeamGeneratorStore } from "@/features/team-generator/store/team-generator-store";
 import { PlayerCountSelect } from "./PlayerCountSelect";
+import { PlayersEmptyState } from "./PlayersEmptyState";
 
 export function PlayersCard() {
   const players = useTeamGeneratorStore((state) => state.players);
@@ -44,7 +45,11 @@ export function PlayersCard() {
         </CardHeader>
 
         <CardContent>
-          <PlayersTable players={players} />
+          {players.length === 0 ? (
+            <PlayersEmptyState />
+          ) : (
+            <PlayersTable players={players} />
+          )}
         </CardContent>
         <CardFooter className="justify-between gap-2">
           <Button
