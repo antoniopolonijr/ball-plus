@@ -1,3 +1,4 @@
+import { DEFAULT_TEAM_COLORS } from "../constants/defaults";
 import type { Team } from "../types/team";
 
 export function createInitialTeams(count: number): Team[] {
@@ -6,7 +7,7 @@ export function createInitialTeams(count: number): Team[] {
     (_, index): Team => ({
       id: `team-${index + 1}`,
       name: `Team ${index + 1}`,
-      color: "",
+      color: DEFAULT_TEAM_COLORS[index % DEFAULT_TEAM_COLORS.length],
     }),
   );
 }

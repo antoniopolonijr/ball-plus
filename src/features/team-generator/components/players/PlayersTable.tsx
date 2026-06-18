@@ -32,7 +32,7 @@ export function PlayersTable({ players }: PlayersTableProps) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="px-1 sm:px-2">
+          <TableHead className="px-1 sm:px-2 text-center">
             <Button
               className="px-1 sm:px-2"
               variant="ghost"
@@ -45,7 +45,7 @@ export function PlayersTable({ players }: PlayersTableProps) {
             </Button>
           </TableHead>
 
-          <TableHead className="px-1 sm:px-2">
+          <TableHead className="px-1 sm:px-2 text-center">
             <Button
               className="px-1 sm:px-2"
               variant="ghost"
@@ -62,7 +62,7 @@ export function PlayersTable({ players }: PlayersTableProps) {
             </Button>
           </TableHead>
 
-          <TableHead className="px-1 sm:px-2">
+          <TableHead className="px-1 sm:px-2 text-center">
             <Button
               className="px-1 sm:px-2"
               variant="ghost"
