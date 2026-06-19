@@ -69,11 +69,11 @@ export function PlayerRow({ player, index }: PlayerRowProps) {
             aria-label="Player position"
           >
             <SelectValue>
-              <abbr title={player.position} className="lg:hidden no-underline">
+              <abbr title={player.position} className="md:hidden no-underline">
                 {PLAYER_POSITION_ABBREVIATIONS[player.position]}
               </abbr>
 
-              <span className="hidden lg:inline">{player.position}</span>
+              <span className="hidden md:inline">{player.position}</span>
             </SelectValue>
           </SelectTrigger>
 
@@ -102,11 +102,11 @@ export function PlayerRow({ player, index }: PlayerRowProps) {
             aria-label="Player skill"
           >
             <SelectValue>
-              <abbr title={player.skill} className="lg:hidden no-underline">
+              <abbr title={player.skill} className="md:hidden no-underline">
                 {PLAYER_SKILL_ABBREVIATIONS[player.skill]}
               </abbr>
 
-              <span className="hidden lg:inline">{player.skill}</span>
+              <span className="hidden md:inline">{player.skill}</span>
             </SelectValue>
           </SelectTrigger>
 

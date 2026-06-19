@@ -50,12 +50,8 @@ export function PlayersCard() {
             <PlayersTable players={players} />
           )}
         </CardContent>
-        <CardFooter>
-          <Button
-            onClick={addPlayer}
-            className="w-full"
-            aria-label="Add a new player"
-          >
+        <CardFooter className="justify-center">
+          <Button onClick={addPlayer} aria-label="Add a new player">
             <UserPlus className="size-4" aria-hidden="true" />
             Add Player
           </Button>

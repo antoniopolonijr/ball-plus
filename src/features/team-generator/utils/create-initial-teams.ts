@@ -6,7 +6,7 @@ export function createInitialTeams(count: number): Team[] {
     { length: count },
     (_, index): Team => ({
       id: `team-${index + 1}`,
-      name: `Team ${index + 1}`,
+      name: "",
       color: DEFAULT_TEAM_COLORS[index % DEFAULT_TEAM_COLORS.length],
     }),
   );

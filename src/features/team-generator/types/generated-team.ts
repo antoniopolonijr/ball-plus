@@ -1,7 +1,7 @@
 import type { Player } from "./player";
+import type { Team } from "./team";
 
 export interface GeneratedTeam {
-  id: string;
-  name: string;
+  team: Team;
   players: Player[];
 }

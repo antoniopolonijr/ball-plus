@@ -22,12 +22,7 @@ export function ResetAllButton() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          aria-label="Reset all data"
-          className="w-full"
-        >
+        <Button variant="outline" size="sm" aria-label="Reset all data">
           <RotateCcw className="size-4" aria-hidden="true" />
           Reset All
         </Button>

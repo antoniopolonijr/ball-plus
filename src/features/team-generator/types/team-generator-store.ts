@@ -5,7 +5,7 @@ import type { Team } from "../types/team";
 export interface TeamGeneratorStore {
   players: Player[];
   teams: Team[];
-  generationResults: GenerationResult[];
+  generationResult: GenerationResult | null;
   playerSortField: "name" | "position" | "skill" | null;
   playerSortDirection: "asc" | "desc";
 
@@ -26,6 +26,6 @@ export interface TeamGeneratorStore {
 
   resetAll(): void;
 
-  addGenerationResult(result: GenerationResult): void;
+  setGenerationResult: (result: GenerationResult) => void;
   clearGenerationResults(): void;
 }

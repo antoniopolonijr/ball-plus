@@ -17,7 +17,7 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>((set) => ({
   teams: createInitialTeams(DEFAULT_TEAM_COUNT),
   playerSortField: null,
   playerSortDirection: "asc",
-  generationResults: [],
+  generationResult: null,
 
   addPlayer: () =>
     set((state) => ({
@@ -192,16 +192,16 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>((set) => ({
 
       teams: createInitialTeams(DEFAULT_TEAM_COUNT),
 
-      generationResults: [],
+      generationResult: null,
     }),
 
-  addGenerationResult: (result) =>
-    set((state) => ({
-      generationResults: [result, ...state.generationResults],
-    })),
+  setGenerationResult: (result) =>
+    set({
+      generationResult: result,
+    }),
 
   clearGenerationResults: () =>
     set({
-      generationResults: [],
+      generationResult: null,
     }),
 }));
