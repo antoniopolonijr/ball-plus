@@ -1,6 +1,6 @@
 "use client";
 
-import { ClipboardList, ListRestart, UserPlus } from "lucide-react";
+import { ClipboardList, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,13 +20,12 @@ export function PlayersCard() {
   const players = useTeamGeneratorStore((state) => state.players);
 
   const addPlayer = useTeamGeneratorStore((state) => state.addPlayer);
-  const resetPlayers = useTeamGeneratorStore((state) => state.resetPlayers);
 
   return (
-    <section aria-labelledby="players-heading">
+    <section aria-label="Players List">
       <Card>
         <CardHeader>
-          <CardTitle id="players-heading" className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2">
             Players
             <PlayerCountSelect />
           </CardTitle>
@@ -51,21 +50,14 @@ export function PlayersCard() {
             <PlayersTable players={players} />
           )}
         </CardContent>
-        <CardFooter className="justify-between gap-2">
+        <CardFooter>
           <Button
-            onClick={resetPlayers}
-            variant="destructive"
-            aria-label="Reset players"
+            onClick={addPlayer}
+            className="w-full"
+            aria-label="Add a new player"
           >
-            <ListRestart className="size-4" aria-hidden="true" />
-            Reset
-            <span className="hidden sm:inline"> Players</span>
-          </Button>
-
-          <Button onClick={addPlayer} aria-label="Add player">
             <UserPlus className="size-4" aria-hidden="true" />
-            Add
-            <span className="hidden sm:inline">Player</span>
+            Add Player
           </Button>
         </CardFooter>
       </Card>

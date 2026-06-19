@@ -3,7 +3,7 @@ import { Users } from "lucide-react";
 export function PlayersEmptyState() {
   return (
     <div
-      className="flex flex-col items-center justify-center gap-4 rounded-md border border-dashed py-12 text-center"
+      className="flex flex-col items-center justify-center gap-4 rounded-md border border-dashed p-6 text-center"
       role="status"
       aria-live="polite"
     >

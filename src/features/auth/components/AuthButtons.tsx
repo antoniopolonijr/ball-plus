@@ -10,7 +10,7 @@ export function AuthButtons() {
         <Link href="/sign-in" aria-label="Sign in">
           <LogIn className="size-4" />
 
-          <span className="hidden sm:inline">Sign in</span>
+          <span className="hidden md:inline">Sign in</span>
         </Link>
       </Button>
 
@@ -18,7 +18,7 @@ export function AuthButtons() {
         <Link href="/sign-up" aria-label="Sign up">
           <UserPlus className="size-4" />
 
-          <span className="hidden sm:inline">Sign up</span>
+          <span className="hidden md:inline">Sign up</span>
         </Link>
       </Button>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { ListRestart, ShieldPlus } from "lucide-react";
+import { ShieldPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,13 +19,12 @@ export function TeamsCard() {
   const teams = useTeamGeneratorStore((state) => state.teams);
 
   const addTeam = useTeamGeneratorStore((state) => state.addTeam);
-  const resetTeams = useTeamGeneratorStore((state) => state.resetTeams);
 
   return (
-    <section aria-labelledby="teams-heading">
+    <section aria-label="Teams List">
       <Card>
         <CardHeader>
-          <CardTitle id="teams-heading" className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2">
             Teams
             <TeamCountSelect />
           </CardTitle>
@@ -40,21 +39,14 @@ export function TeamsCard() {
             <TeamsTable teams={teams} />
           )}
         </CardContent>
-        <CardFooter className="justify-between gap-2">
+        <CardFooter>
           <Button
-            onClick={resetTeams}
-            variant="destructive"
-            aria-label="Reset teams"
+            onClick={addTeam}
+            className="w-full"
+            aria-label="Add a new team"
           >
-            <ListRestart className="size-4" aria-hidden="true" />
-            Reset
-            <span className="hidden sm:inline"> Teams</span>
-          </Button>
-
-          <Button onClick={addTeam} aria-label="Add team">
             <ShieldPlus className="size-4" aria-hidden="true" />
-            Add
-            <span className="hidden sm:inline">Team</span>
+            Add Team
           </Button>
         </CardFooter>
       </Card>

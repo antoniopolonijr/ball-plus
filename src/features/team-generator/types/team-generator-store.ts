@@ -24,6 +24,8 @@ export interface TeamGeneratorStore {
   setTeamCount(count: number): void;
   resetTeams(): void;
 
+  resetAll(): void;
+
   addGenerationResult(result: GenerationResult): void;
   clearGenerationResults(): void;
 }

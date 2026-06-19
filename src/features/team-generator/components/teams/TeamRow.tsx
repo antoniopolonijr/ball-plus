@@ -29,7 +29,7 @@ export function TeamRow({ team, index }: TeamRowProps) {
             })
           }
           aria-label="Team color"
-          className="cursor-pointer h-9 w-9"
+          className="cursor-pointer w-9 h-9"
         />
       </TableCell>
 

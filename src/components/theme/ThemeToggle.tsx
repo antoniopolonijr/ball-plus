@@ -20,7 +20,7 @@ export function ThemeToggle() {
     >
       <BsCircleHalf className="size-4" aria-hidden="true" />
 
-      <span className="hidden sm:inline">Theme</span>
+      <span className="hidden md:inline">Theme</span>
     </Button>
   );
 }

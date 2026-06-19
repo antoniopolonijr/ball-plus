@@ -186,6 +186,15 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>((set) => ({
       teams: createInitialTeams(DEFAULT_TEAM_COUNT),
     }),
 
+  resetAll: () =>
+    set({
+      players: createInitialPlayers(DEFAULT_PLAYER_COUNT),
+
+      teams: createInitialTeams(DEFAULT_TEAM_COUNT),
+
+      generationResults: [],
+    }),
+
   addGenerationResult: (result) =>
     set((state) => ({
       generationResults: [result, ...state.generationResults],

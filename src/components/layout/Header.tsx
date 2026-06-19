@@ -32,7 +32,7 @@ export function Header() {
                   className="size-4"
                 />
 
-                <span className="hidden sm:inline">Games</span>
+                <span className="hidden md:inline">Games</span>
               </Link>
             </Button>
 
@@ -40,7 +40,7 @@ export function Header() {
               <Link href="/quick-game" aria-label="Quick Game">
                 <Zap className="size-4" />
 
-                <span className="hidden sm:inline">Quick Game</span>
+                <span className="hidden md:inline">Quick Game</span>
               </Link>
             </Button>
 
