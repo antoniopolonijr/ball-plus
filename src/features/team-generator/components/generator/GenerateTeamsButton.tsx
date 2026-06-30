@@ -1,61 +1,41 @@
 "use client";
 
-import { Dices } from "lucide-react";
-
+import { Dices, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-import type { GeneratedTeam } from "@/features/team-generator/types/generated-team";
-
 import { useTeamGeneratorStore } from "../../store/team-generator-store";
+import type { TeamGenerationValidationCode } from "../../utils/can-generate-teams";
+import { canGenerateTeams } from "../../utils/can-generate-teams";
 
 export function GenerateTeamsButton() {
   const players = useTeamGeneratorStore((state) => state.players);
-
   const teams = useTeamGeneratorStore((state) => state.teams);
 
-  const playersCount = useTeamGeneratorStore((state) => state.players.length);
+  const validation = canGenerateTeams(players, teams);
+  const validationMessages: Record<TeamGenerationValidationCode, string> = {
+    "not-enough-teams": "Add at least 2 teams.",
+    "not-enough-players": "Add more players.",
+  };
 
-  const teamsCount = useTeamGeneratorStore((state) => state.teams.length);
-
-  const canGenerate =
-    playersCount >= 2 && teamsCount >= 2 && playersCount >= teamsCount;
-
-  const setGenerationResult = useTeamGeneratorStore(
-    (state) => state.setGenerationResult,
-  );
-
-  function handleGenerateTeams() {
-    // TODO: Implement real team generation algorithm
-    const generatedTeams: GeneratedTeam[] = teams.map((team) => ({
-      team,
-      players: [],
-    }));
-
-    players.forEach((player, index) => {
-      const teamIndex = index % teams.length;
-
-      generatedTeams[teamIndex].players.push(player);
-    });
-
-    setGenerationResult({
-      id: `generated-teams-${Math.random().toString(36).slice(2, 11)}`,
-
-      generatedAt: new Date(),
-
-      teams: generatedTeams,
-    });
-  }
+  const generateTeams = useTeamGeneratorStore((state) => state.generateTeams);
 
   return (
-    <Button
-      size="lg"
-      className="text-lg font-semibold py-6 w-full"
-      onClick={handleGenerateTeams}
-      disabled={!canGenerate}
-      aria-label="Generate balanced teams"
-    >
-      <Dices className="size-6" aria-hidden="true" />
-      Generate Teams
-    </Button>
+    <div className="flex flex-col gap-1">
+      <Button
+        size="lg"
+        className="text-lg font-semibold p-8 max-w-50 w-full"
+        onClick={generateTeams}
+        disabled={!validation.canGenerate}
+        aria-label="Generate balanced teams"
+      >
+        <Dices className="size-6" aria-hidden="true" />
+        Generate Teams
+      </Button>
+      {validation.code && (
+        <span className="flex gap-1 items-center justify-center text-sm text-muted-foreground">
+          <Info className="size-4" aria-hidden="true" />
+          {validationMessages[validation.code]}
+        </span>
+      )}
+    </div>
   );
 }

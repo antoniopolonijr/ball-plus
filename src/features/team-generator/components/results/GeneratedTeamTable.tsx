@@ -12,14 +12,14 @@ import type { GeneratedTeam } from "../../types/generated-team";
 interface GeneratedTeamTableProps {
   generatedTeam: GeneratedTeam;
   index: number;
+  playerNumberMap: Map<string, number>;
 }
 
 export function GeneratedTeamTable({
   generatedTeam,
   index,
+  playerNumberMap,
 }: GeneratedTeamTableProps) {
-  let substitutionOrder = 1;
-
   return (
     <div className="rounded-lg border p-4">
       <div className="flex items-center gap-2 pb-3 justify-center">
@@ -53,8 +53,7 @@ export function GeneratedTeamTable({
 
         <TableBody>
           {generatedTeam.players.map((player) => {
-            const currentOrder =
-              player.position === "goalkeeper" ? null : substitutionOrder++;
+            const playerNumber = playerNumberMap.get(player.id);
 
             return (
               <TableRow key={player.id}>
@@ -70,11 +69,11 @@ export function GeneratedTeamTable({
                 </TableCell>
 
                 <TableCell className="max-w-[100px] w-full text-center truncate">
-                  {player.name}
+                  {player.name || `Player ${playerNumber}`}
                 </TableCell>
 
                 <TableCell className="text-center">
-                  {currentOrder ?? "-"}
+                  {player.substitutionOrder}
                 </TableCell>
               </TableRow>
             );

@@ -1,6 +1,6 @@
 "use client";
 
-import { Share2, Copy } from "lucide-react";
+import { Copy, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,6 +15,7 @@ import { useTeamGeneratorStore } from "../../store/team-generator-store";
 import { GeneratedTeamTable } from "./GeneratedTeamTable";
 
 export function GeneratedTeamsCard() {
+  const players = useTeamGeneratorStore((state) => state.players);
   const generationResult = useTeamGeneratorStore(
     (state) => state.generationResult,
   );
@@ -22,6 +23,10 @@ export function GeneratedTeamsCard() {
   if (!generationResult) {
     return null;
   }
+
+  const playerNumberMap = new Map(
+    players.map((player, index) => [player.id, index + 1]),
+  );
 
   return (
     <section aria-labelledby="generated-team-heading">
@@ -46,6 +51,7 @@ export function GeneratedTeamsCard() {
               key={generatedTeam.team.id}
               generatedTeam={generatedTeam}
               index={index}
+              playerNumberMap={playerNumberMap}
             />
           ))}
         </CardContent>

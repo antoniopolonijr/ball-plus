@@ -4,9 +4,9 @@ export function createDefaultPlayer(): Player {
   return {
     id: `player-${Math.random().toString(36).slice(2, 11)}`,
     name: "",
-    position: "any",
-    skill: "medium",
-    substituteOrder: null,
+    position: "Any",
+    skill: "Medium",
+    substitutionOrder: null,
     isActive: true,
   };
 }

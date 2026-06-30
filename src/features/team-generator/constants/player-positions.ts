@@ -1,25 +1,25 @@
 import type { PlayerPosition } from "../types/player";
 
 export const PLAYER_POSITIONS: readonly PlayerPosition[] = [
-  "any",
-  "goalkeeper",
-  "defender",
-  "midfielder",
-  "attacker",
+  "Any",
+  "Goalkeeper",
+  "Defender",
+  "Midfielder",
+  "Attacker",
 ] as const;
 
 export const PLAYER_POSITION_ABBREVIATIONS = {
-  any: "Any",
-  goalkeeper: "GK",
-  defender: "DF",
-  midfielder: "MF",
-  attacker: "AT",
+  Any: "Any",
+  Goalkeeper: "GK",
+  Defender: "DF",
+  Midfielder: "MF",
+  Attacker: "AT",
 } satisfies Record<PlayerPosition, string>;
 
 export const PLAYER_POSITION_ORDER = {
-  goalkeeper: 1,
-  defender: 2,
-  midfielder: 3,
-  attacker: 4,
-  any: 5,
+  Goalkeeper: 1,
+  Defender: 2,
+  Midfielder: 3,
+  Attacker: 4,
+  Any: 5,
 } satisfies Record<PlayerPosition, number>;

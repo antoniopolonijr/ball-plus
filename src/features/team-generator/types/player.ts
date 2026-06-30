@@ -1,17 +1,17 @@
 export type PlayerPosition =
-  | "any"
-  | "goalkeeper"
-  | "defender"
-  | "midfielder"
-  | "attacker";
+  | "Any"
+  | "Goalkeeper"
+  | "Defender"
+  | "Midfielder"
+  | "Attacker";
 
-export type PlayerSkill = "low" | "medium" | "high";
+export type PlayerSkill = "Low" | "Medium" | "High";
 
 export interface Player {
   id: string;
   name: string;
   position: PlayerPosition;
   skill: PlayerSkill;
-  substituteOrder: number | null;
+  substitutionOrder: number | null;
   isActive: boolean;
 }

@@ -13,7 +13,7 @@ export interface TeamGeneratorStore {
   removePlayer(id: string): void;
   updatePlayer(id: string, player: Partial<Player>): void;
   setPlayerCount(count: number): void;
-  resetPlayers(): void;
+
   sortPlayersByName: () => void;
   sortPlayersByPosition: () => void;
   sortPlayersBySkill: () => void;
@@ -22,10 +22,7 @@ export interface TeamGeneratorStore {
   removeTeam(id: string): void;
   updateTeam(id: string, team: Partial<Team>): void;
   setTeamCount(count: number): void;
-  resetTeams(): void;
 
   resetAll(): void;
-
-  setGenerationResult: (result: GenerationResult) => void;
-  clearGenerationResults(): void;
+  generateTeams: () => void;
 }

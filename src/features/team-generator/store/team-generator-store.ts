@@ -11,6 +11,7 @@ import { createDefaultPlayer } from "../utils/create-default-player";
 import { createDefaultTeam } from "../utils/create-default-team";
 import { createInitialPlayers } from "../utils/create-initial-players";
 import { createInitialTeams } from "../utils/create-initial-teams";
+import { generateBalancedTeams } from "../utils/generate-balanced-teams";
 
 export const useTeamGeneratorStore = create<TeamGeneratorStore>((set) => ({
   players: createInitialPlayers(DEFAULT_PLAYER_COUNT),
@@ -65,11 +66,6 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>((set) => ({
       return {
         players: state.players.slice(0, count),
       };
-    }),
-
-  resetPlayers: () =>
-    set({
-      players: createInitialPlayers(DEFAULT_PLAYER_COUNT),
     }),
 
   sortPlayersByName: () =>
@@ -181,11 +177,6 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>((set) => ({
       };
     }),
 
-  resetTeams: () =>
-    set({
-      teams: createInitialTeams(DEFAULT_TEAM_COUNT),
-    }),
-
   resetAll: () =>
     set({
       players: createInitialPlayers(DEFAULT_PLAYER_COUNT),
@@ -195,13 +186,16 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>((set) => ({
       generationResult: null,
     }),
 
-  setGenerationResult: (result) =>
-    set({
-      generationResult: result,
-    }),
+  generateTeams: () =>
+    set((state) => {
+      const generatedTeams = generateBalancedTeams(state.players, state.teams);
 
-  clearGenerationResults: () =>
-    set({
-      generationResult: null,
+      return {
+        generationResult: {
+          id: `generated-teams-${Math.random().toString(36).slice(2, 11)}`,
+          generatedAt: new Date(),
+          teams: generatedTeams,
+        },
+      };
     }),
 }));
