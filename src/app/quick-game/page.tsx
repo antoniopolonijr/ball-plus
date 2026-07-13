@@ -1,6 +1,6 @@
+import { GeneratedTeams } from "@/features/team-generator/components/generated-teams/GeneratedTeams";
 import { GeneratorActions } from "@/features/team-generator/components/generator/GeneratorActionsCard";
 import { PlayersCard } from "@/features/team-generator/components/players/PlayersCard";
-import { GeneratedTeamsCard } from "@/features/team-generator/components/results/GeneratedTeamsCard";
 import { TeamsCard } from "@/features/team-generator/components/teams/TeamsCard";
 
 export default function QuickGamePage() {
@@ -24,7 +24,7 @@ export default function QuickGamePage() {
         </div>
       </div>
 
-      <GeneratedTeamsCard />
+      <GeneratedTeams />
     </div>
   );
 }

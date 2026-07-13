@@ -12,6 +12,6 @@ export interface Player {
   name: string;
   position: PlayerPosition;
   skill: PlayerSkill;
-  substitutionOrder: number | null;
+  substitutionOrder?: number;
   isActive: boolean;
 }

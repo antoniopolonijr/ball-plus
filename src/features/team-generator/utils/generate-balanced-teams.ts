@@ -1,4 +1,3 @@
-import { PLAYER_POSITION_ORDER } from "../constants/player-positions";
 import type { GeneratedTeam } from "../types/generated-team";
 import type { Player, PlayerPosition, PlayerSkill } from "../types/player";
 import type { Team } from "../types/team";
@@ -44,13 +43,21 @@ function getSkillBalance(team: Player[]): number {
 }
 
 /**
- * Sorts players by the predefined position order.
+ * Sorts players by the predefined substitution order.
  */
-function sortPlayersByPosition(players: Player[]): Player[] {
-  return [...players].sort(
-    (a, b) =>
-      PLAYER_POSITION_ORDER[a.position] - PLAYER_POSITION_ORDER[b.position],
-  );
+function sortPlayersBySubstitutionOrder(players: Player[]): Player[] {
+  return [...players].sort((a, b) => {
+    if (
+      a.substitutionOrder === undefined ||
+      b.substitutionOrder === undefined
+    ) {
+      throw new Error(
+        "Expected all players to have a substitution order before sorting.",
+      );
+    }
+
+    return a.substitutionOrder - b.substitutionOrder;
+  });
 }
 
 /**
@@ -267,7 +274,7 @@ export function generateBalancedTeams(
 
     return {
       team,
-      players: sortPlayersByPosition(clonedPlayers),
+      players: sortPlayersBySubstitutionOrder(clonedPlayers),
     };
   });
 }

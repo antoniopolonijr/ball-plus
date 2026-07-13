@@ -1,6 +1,7 @@
 "use client";
 
 import { Copy, Share2 } from "lucide-react";
+import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,21 +13,23 @@ import {
 } from "@/components/ui/card";
 
 import { useTeamGeneratorStore } from "../../store/team-generator-store";
-import { GeneratedTeamTable } from "./GeneratedTeamTable";
+import { GeneratedTeam } from "./GeneratedTeam";
 
-export function GeneratedTeamsCard() {
+export function GeneratedTeams() {
   const players = useTeamGeneratorStore((state) => state.players);
   const generationResult = useTeamGeneratorStore(
     (state) => state.generationResult,
   );
 
+  // Create a map of player IDs to their placeholder numbers for display purposes.
+  const placeholderPlayerNumberMap = useMemo(
+    () => new Map(players.map((player, index) => [player.id, index + 1])),
+    [players],
+  );
+
   if (!generationResult) {
     return null;
   }
-
-  const playerNumberMap = new Map(
-    players.map((player, index) => [player.id, index + 1]),
-  );
 
   // Dates persisted by Zustand are serialized as strings and must be converted to Date objects before formatting.
   const generatedAt = new Date(generationResult.generatedAt);
@@ -49,11 +52,11 @@ export function GeneratedTeamsCard() {
 
         <CardContent className="grid gap-4 md:grid-cols-2">
           {generationResult.teams.map((generatedTeam, index) => (
-            <GeneratedTeamTable
+            <GeneratedTeam
               key={generatedTeam.team.id}
               generatedTeam={generatedTeam}
-              index={index}
-              playerNumberMap={playerNumberMap}
+              teamIndex={index}
+              placeholderPlayerNumberMap={placeholderPlayerNumberMap}
             />
           ))}
         </CardContent>

@@ -18,19 +18,24 @@ export function TeamRow({ team, index }: TeamRowProps) {
   return (
     <TableRow>
       <TableCell>
-        <input
-          type="color"
-          id={`team-color-${team.id}`}
-          name={`team-color-${team.id}`}
-          value={team.color}
-          onChange={(event) =>
-            updateTeam(team.id, {
-              color: event.target.value,
-            })
-          }
-          aria-label="Team color"
-          className="cursor-pointer w-9 h-9"
-        />
+        <div className="relative group">
+          <input
+            type="color"
+            value={team.color}
+            onChange={(event) =>
+              updateTeam(team.id, {
+                color: event.target.value,
+              })
+            }
+            className="size-8.5 rounded-full border-2 border-background shadow-sm cursor-pointer overflow-hidden p-0 bg-transparent"
+            style={{ appearance: "none" }}
+            aria-label="Team color"
+          />
+          <div
+            className="absolute inset-0 rounded-full pointer-events-none"
+            style={{ backgroundColor: team.color }}
+          />
+        </div>
       </TableCell>
 
       <TableCell className="w-full">
