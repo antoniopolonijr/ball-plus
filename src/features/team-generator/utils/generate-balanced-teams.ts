@@ -1,4 +1,4 @@
-import type { GeneratedTeam } from "../types/generated-team";
+import type { GeneratedTeamType } from "../types/generated-team";
 import type { Player, PlayerPosition, PlayerSkill } from "../types/player";
 import type { Team } from "../types/team";
 
@@ -43,16 +43,24 @@ function getSkillBalance(team: Player[]): number {
 }
 
 /**
- * Sorts players by the predefined substitution order.
+ * Sorts players for display, prioritizing goalkeepers first, followed by outfield players sorted by substitution order.
  */
-function sortPlayersBySubstitutionOrder(players: Player[]): Player[] {
+function sortPlayersForDisplay(players: Player[]): Player[] {
   return [...players].sort((a, b) => {
+    if (a.position === "Goalkeeper") {
+      return -1;
+    }
+
+    if (b.position === "Goalkeeper") {
+      return 1;
+    }
+
     if (
       a.substitutionOrder === undefined ||
       b.substitutionOrder === undefined
     ) {
       throw new Error(
-        "Expected all players to have a substitution order before sorting.",
+        "Expected all outfield players to have a substitution order.",
       );
     }
 
@@ -132,7 +140,7 @@ function assignSubstitutionOrder(players: Player[]): void {
 export function generateBalancedTeams(
   players: Player[],
   teams: Team[],
-): GeneratedTeam[] {
+): GeneratedTeamType[] {
   // --------------------------------------------------
   // Categorize players
   // --------------------------------------------------
@@ -274,7 +282,7 @@ export function generateBalancedTeams(
 
     return {
       team,
-      players: sortPlayersBySubstitutionOrder(clonedPlayers),
+      players: sortPlayersForDisplay(clonedPlayers),
     };
   });
 }

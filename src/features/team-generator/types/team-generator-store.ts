@@ -13,6 +13,7 @@ export interface TeamGeneratorStore {
   removePlayer(id: string): void;
   updatePlayer(id: string, player: Partial<Player>): void;
   setPlayerCount(count: number): void;
+  pastePlayers: (names: string[]) => void;
 
   sortPlayersByName: () => void;
   sortPlayersByPosition: () => void;

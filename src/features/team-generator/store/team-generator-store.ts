@@ -145,6 +145,15 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>()(
           };
         }),
 
+      pastePlayers: (names) =>
+        set(() => ({
+          players: names.map((name) => ({
+            ...createDefaultPlayer(),
+            name,
+          })),
+          generationResult: null,
+        })),
+
       // --------------------------------------------------
       // Teams Actions
       // --------------------------------------------------

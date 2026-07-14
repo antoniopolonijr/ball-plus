@@ -1,6 +1,6 @@
 "use client";
 
-import { ClipboardList, UserPlus } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { PlayersTable } from "@/features/team-generator/components/players/PlayersTable";
 import { useTeamGeneratorStore } from "@/features/team-generator/store/team-generator-store";
+import { PastePlayersButton } from "./PastPlayersButton";
 import { PlayerCountSelect } from "./PlayerCountSelect";
 import { PlayersEmptyState } from "./PlayersEmptyState";
 
@@ -31,15 +32,12 @@ export function PlayersCard() {
           </CardTitle>
 
           <CardDescription>
-            Build your player list and generate balanced teams in seconds.
+            Customize your player list by adding, removing, or editing players.
+            You can also paste a list of players.
           </CardDescription>
 
           <CardAction>
-            <Button variant="secondary" aria-label="Paste a list of players">
-              <ClipboardList className="size-4" aria-hidden="true" />
-              Paste
-              <span className="hidden sm:inline">Players</span>
-            </Button>
+            <PastePlayersButton />
           </CardAction>
         </CardHeader>
 

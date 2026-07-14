@@ -13,7 +13,6 @@ export function createInitialPlayers(count: number): Player[] {
             ? "Midfielder"
             : "Attacker",
     skill: "Medium",
-    substitutionOrder: null,
     isActive: true,
   }));
 }

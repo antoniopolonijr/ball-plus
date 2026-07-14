@@ -6,7 +6,6 @@ export function createDefaultPlayer(): Player {
     name: "",
     position: "Any",
     skill: "Medium",
-    substitutionOrder: null,
     isActive: true,
   };
 }
