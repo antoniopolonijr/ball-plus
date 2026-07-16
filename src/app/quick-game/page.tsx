@@ -1,5 +1,5 @@
 import { GeneratedTeams } from "@/features/team-generator/components/generated-teams/GeneratedTeams";
-import { GeneratorActions } from "@/features/team-generator/components/generator/GeneratorActionsCard";
+import { GeneratorCard } from "@/features/team-generator/components/generator/GeneratorCard";
 import { PlayersCard } from "@/features/team-generator/components/players/PlayersCard";
 import { TeamsCard } from "@/features/team-generator/components/teams/TeamsCard";
 
@@ -20,7 +20,7 @@ export default function QuickGamePage() {
           <div className="hidden md:inline flex-1 bg-sidebar-primary-foreground">
             TODO
           </div>
-          <GeneratorActions />
+          <GeneratorCard />
         </div>
       </div>
 
