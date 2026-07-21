@@ -3,6 +3,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 import {
   DEFAULT_PLAYER_COUNT,
+  DEFAULT_PLAYERS_PER_TEAM,
   DEFAULT_TEAM_COUNT,
 } from "../constants/defaults";
 import { PLAYER_POSITION_ORDER } from "../constants/player-positions";
@@ -22,9 +23,12 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>()(
       // --------------------------------------------------
 
       players: createInitialPlayers(DEFAULT_PLAYER_COUNT),
-      teams: createInitialTeams(DEFAULT_TEAM_COUNT),
       playerSortField: null,
       playerSortDirection: "asc",
+
+      teams: createInitialTeams(DEFAULT_TEAM_COUNT),
+
+      playersPerTeam: DEFAULT_PLAYERS_PER_TEAM,
       generationResult: null,
 
       // --------------------------------------------------
@@ -210,11 +214,15 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>()(
       // Generator Actions
       // --------------------------------------------------
 
+      setPlayersPerTeam: (playersPerTeam) => set({ playersPerTeam }),
+
       resetAll: () =>
         set({
           players: createInitialPlayers(DEFAULT_PLAYER_COUNT),
 
           teams: createInitialTeams(DEFAULT_TEAM_COUNT),
+
+          playersPerTeam: DEFAULT_PLAYERS_PER_TEAM,
 
           generationResult: null,
         }),

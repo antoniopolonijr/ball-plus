@@ -4,17 +4,19 @@ import type { Team } from "../types/team";
 
 export interface TeamGeneratorStore {
   players: Player[];
-  teams: Team[];
-  generationResult: GenerationResult | null;
   playerSortField: "name" | "position" | "skill" | null;
   playerSortDirection: "asc" | "desc";
+
+  teams: Team[];
+
+  playersPerTeam: number;
+  generationResult: GenerationResult | null;
 
   addPlayer(): void;
   removePlayer(id: string): void;
   updatePlayer(id: string, player: Partial<Player>): void;
   setPlayerCount(count: number): void;
   pastePlayers: (names: string[]) => void;
-
   sortPlayersByName: () => void;
   sortPlayersByPosition: () => void;
   sortPlayersBySkill: () => void;
@@ -24,6 +26,7 @@ export interface TeamGeneratorStore {
   updateTeam(id: string, team: Partial<Team>): void;
   setTeamCount(count: number): void;
 
+  setPlayersPerTeam: (playersPerTeam: number) => void;
   resetAll(): void;
   generateTeams: () => void;
 }

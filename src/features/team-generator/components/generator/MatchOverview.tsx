@@ -1,16 +1,21 @@
 "use client";
 
+import { useShallow } from "zustand/shallow";
 import { Separator } from "@/components/ui/separator";
 
 import { useTeamGeneratorStore } from "../../store/team-generator-store";
 import { getMatchOverview } from "../../utils/get-match-overview";
 
 export function MatchOverview() {
-  const players = useTeamGeneratorStore((state) => state.players);
+  const { players, teams, playersPerTeam } = useTeamGeneratorStore(
+    useShallow((state) => ({
+      players: state.players,
+      teams: state.teams,
+      playersPerTeam: state.playersPerTeam,
+    })),
+  );
 
-  const teams = useTeamGeneratorStore((state) => state.teams);
-
-  const overview = getMatchOverview(players, teams);
+  const overview = getMatchOverview(players, teams, playersPerTeam);
 
   return (
     <section aria-labelledby="match-overview-title" className="space-y-2">
@@ -19,9 +24,15 @@ export function MatchOverview() {
       </h3>
 
       <dl className="space-y-1 text-sm">
+        <OverviewItem label="Teams" value={overview.teams} />
+
+        <Separator className="my-2" />
+
         <OverviewItem label="Players" value={overview.players} />
 
-        <OverviewItem label="Teams" value={overview.teams} />
+        <OverviewItem label="Starters" value={overview.starters} />
+
+        <OverviewItem label="Bench" value={overview.bench} />
 
         <Separator className="my-2" />
 
@@ -33,7 +44,7 @@ export function MatchOverview() {
 
         <OverviewItem label="Attackers" value={overview.attackers} />
 
-        <OverviewItem label="Any" value={overview.any} />
+        <OverviewItem label="Any Position" value={overview.any} />
       </dl>
     </section>
   );

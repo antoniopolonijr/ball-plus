@@ -4,6 +4,10 @@ import type { Team } from "../types/team";
 export interface MatchOverviewData {
   teams: number;
   players: number;
+
+  starters: number;
+  bench: number;
+
   goalkeepers: number;
   defenders: number;
   midfielders: number;
@@ -14,10 +18,19 @@ export interface MatchOverviewData {
 export function getMatchOverview(
   players: Player[],
   teams: Team[],
+  playersPerTeam: number,
 ): MatchOverviewData {
+  const starters = Math.min(players.length, teams.length * playersPerTeam);
+
+  const bench = Math.max(0, players.length - starters);
+
   const overview: MatchOverviewData = {
     teams: teams.length,
     players: players.length,
+
+    starters,
+    bench,
+
     goalkeepers: 0,
     defenders: 0,
     midfielders: 0,
