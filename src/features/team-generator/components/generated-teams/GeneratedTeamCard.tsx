@@ -1,14 +1,14 @@
-import type { GeneratedTeamType } from "../../types/generated-team";
+import type { GeneratedTeam } from "../../types/generated-team";
 import { Pitch } from "./Pitch";
 import { RotationGuide } from "./RotationGuide";
 
 interface GeneratedTeamProps {
-  generatedTeam: GeneratedTeamType;
+  generatedTeam: GeneratedTeam;
   teamIndex: number;
   placeholderPlayerNumberMap: Map<string, number>;
 }
 
-export function GeneratedTeam({
+export function GeneratedTeamCard({
   generatedTeam,
   teamIndex,
   placeholderPlayerNumberMap,

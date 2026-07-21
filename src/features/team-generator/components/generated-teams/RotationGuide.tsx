@@ -6,8 +6,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PLAYER_POSITION_ABBREVIATIONS } from "../../constants/player-positions";
 import type { GeneratedTeam } from "../../types/generated-team";
+import { PLAYER_POSITION_ABBREVIATIONS } from "../../types/player";
 
 interface RotationGuideProps {
   generatedTeam: GeneratedTeam;
@@ -55,7 +55,7 @@ export function RotationGuide({
                   >
                     {player.position === "Goalkeeper"
                       ? "GK"
-                      : player.substitutionOrder}
+                      : player.rotationOrder}
                   </div>
                 </TableCell>
 

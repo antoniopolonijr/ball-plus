@@ -1,7 +1,7 @@
-import type { Player } from "../../types/player";
+import type { GeneratedPlayer } from "../../types/generated-team";
 
 interface PitchPlayerProps {
-  player: Player;
+  player: GeneratedPlayer;
   placeholderPlayerNumber: number;
   teamColor: string;
 }
@@ -19,7 +19,7 @@ export function PitchPlayer({
           backgroundColor: teamColor,
         }}
       >
-        {player.position === "Goalkeeper" ? "GK" : player.substitutionOrder}
+        {player.position === "Goalkeeper" ? "GK" : player.rotationOrder}
       </div>
 
       <span

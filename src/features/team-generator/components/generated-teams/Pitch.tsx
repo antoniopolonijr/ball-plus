@@ -1,9 +1,9 @@
-import type { Player } from "../../types/player";
+import type { GeneratedPlayer } from "../../types/generated-team";
 import { getPitchPlayers } from "../../utils/get-pitch-players";
-import { PitchPlayers } from "./PitchPlayers";
+import { PitchFormation } from "./PitchFormation";
 
 interface PitchProps {
-  players: Player[];
+  players: GeneratedPlayer[];
   placeholderPlayerNumberMap: Map<string, number>;
   teamColor: string;
 }
@@ -27,7 +27,7 @@ export function Pitch({
       <div className="relative aspect-[3/4]">
         <PitchSvg />
 
-        <PitchPlayers
+        <PitchFormation
           players={pitchPlayers}
           placeholderPlayerNumberMap={placeholderPlayerNumberMap}
           teamColor={teamColor}

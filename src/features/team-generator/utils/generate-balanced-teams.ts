@@ -1,10 +1,10 @@
-import type { GeneratedTeamType } from "../types/generated-team";
+import type { GeneratedPlayer, GeneratedTeam } from "../types/generated-team";
 import type { Player, PlayerPosition, PlayerSkill } from "../types/player";
 import type { Team } from "../types/team";
 
 type TeamId = Team["id"];
 
-type TeamMap = Record<string, Player[]>;
+type TeamMap = Record<string, GeneratedPlayer[]>;
 
 type DistributionMode = "default" | "skill-balanced";
 
@@ -45,7 +45,7 @@ function getSkillBalance(team: Player[]): number {
 /**
  * Sorts players for display, prioritizing goalkeepers first, followed by outfield players sorted by substitution order.
  */
-function sortPlayersForDisplay(players: Player[]): Player[] {
+function sortPlayersForDisplay(players: GeneratedPlayer[]): GeneratedPlayer[] {
   return [...players].sort((a, b) => {
     if (a.position === "Goalkeeper") {
       return -1;
@@ -55,16 +55,13 @@ function sortPlayersForDisplay(players: Player[]): Player[] {
       return 1;
     }
 
-    if (
-      a.substitutionOrder === undefined ||
-      b.substitutionOrder === undefined
-    ) {
+    if (a.rotationOrder === undefined || b.rotationOrder === undefined) {
       throw new Error(
         "Expected all outfield players to have a substitution order.",
       );
     }
 
-    return a.substitutionOrder - b.substitutionOrder;
+    return a.rotationOrder - b.rotationOrder;
   });
 }
 
@@ -112,7 +109,7 @@ function getSortedTeams(
  * Randomly assigns substitution order to all
  * non-goalkeeper players.
  */
-function assignSubstitutionOrder(players: Player[]): void {
+function assignSubstitutionOrder(players: GeneratedPlayer[]): void {
   const eligiblePlayers = players.filter(
     (player) => player.position !== "Goalkeeper",
   );
@@ -120,7 +117,7 @@ function assignSubstitutionOrder(players: Player[]): void {
   const shuffledPlayers = [...eligiblePlayers].sort(() => Math.random() - 0.5);
 
   shuffledPlayers.forEach((player, index) => {
-    player.substitutionOrder = index + 1;
+    player.rotationOrder = index + 1;
   });
 }
 
@@ -140,7 +137,7 @@ function assignSubstitutionOrder(players: Player[]): void {
 export function generateBalancedTeams(
   players: Player[],
   teams: Team[],
-): GeneratedTeamType[] {
+): GeneratedTeam[] {
   // --------------------------------------------------
   // Categorize players
   // --------------------------------------------------

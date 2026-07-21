@@ -13,9 +13,9 @@ import {
 } from "@/components/ui/card";
 
 import { useTeamGeneratorStore } from "../../store/team-generator-store";
-import { GeneratedTeam } from "./GeneratedTeam";
+import { GeneratedTeamCard } from "./GeneratedTeamCard";
 
-export function GeneratedTeams() {
+export function GeneratedTeamsCard() {
   const players = useTeamGeneratorStore((state) => state.players);
   const generationResult = useTeamGeneratorStore(
     (state) => state.generationResult,
@@ -52,7 +52,7 @@ export function GeneratedTeams() {
 
         <CardContent className="grid gap-4 md:grid-cols-2">
           {generationResult.teams.map((generatedTeam, index) => (
-            <GeneratedTeam
+            <GeneratedTeamCard
               key={generatedTeam.team.id}
               generatedTeam={generatedTeam}
               teamIndex={index}

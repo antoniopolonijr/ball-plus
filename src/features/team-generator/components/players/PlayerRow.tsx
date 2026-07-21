@@ -20,11 +20,9 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import {
   PLAYER_POSITION_ABBREVIATIONS,
   PLAYER_POSITIONS,
-} from "../../constants/player-positions";
-import {
   PLAYER_SKILL_ABBREVIATIONS,
   PLAYER_SKILLS,
-} from "../../constants/player-skills";
+} from "../../types/player";
 
 interface PlayerRowProps {
   player: Player;

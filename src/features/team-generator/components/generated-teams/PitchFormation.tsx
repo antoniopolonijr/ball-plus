@@ -1,14 +1,14 @@
-import type { PitchPlayersType } from "../../types/pitch";
-import type { Player } from "../../types/player";
+import type { GeneratedPlayer } from "../../types/generated-team";
+import type { PitchPlayers } from "../../types/pitch-formation";
 import { PitchPlayer } from "./PitchPlayer";
 
 interface PitchPlayersProps {
-  readonly players: PitchPlayersType;
+  readonly players: PitchPlayers;
   readonly placeholderPlayerNumberMap: Map<string, number>;
   readonly teamColor: string;
 }
 
-export function PitchPlayers({
+export function PitchFormation({
   players,
   placeholderPlayerNumberMap,
   teamColor,
@@ -17,25 +17,25 @@ export function PitchPlayers({
     <div className="absolute inset-0 grid grid-rows-[22%_20%_20%_20%] px-[6%]">
       <div aria-hidden="true" className="pointer-events-none" />
 
-      <PitchLine
+      <PitchRow
         players={players.attackers}
         placeholderPlayerNumberMap={placeholderPlayerNumberMap}
         teamColor={teamColor}
       />
 
-      <PitchLine
+      <PitchRow
         players={players.midfielders}
         placeholderPlayerNumberMap={placeholderPlayerNumberMap}
         teamColor={teamColor}
       />
 
-      <PitchLine
+      <PitchRow
         players={players.defenders}
         placeholderPlayerNumberMap={placeholderPlayerNumberMap}
         teamColor={teamColor}
       />
 
-      <PitchLine
+      <PitchRow
         players={players.goalkeepers}
         placeholderPlayerNumberMap={placeholderPlayerNumberMap}
         teamColor={teamColor}
@@ -46,17 +46,17 @@ export function PitchPlayers({
   );
 }
 
-interface PitchLineProps {
-  players: Player[];
+interface PitchRowProps {
+  players: GeneratedPlayer[];
   placeholderPlayerNumberMap: Map<string, number>;
   teamColor: string;
 }
 
-function PitchLine({
+function PitchRow({
   players,
   placeholderPlayerNumberMap,
   teamColor,
-}: PitchLineProps) {
+}: PitchRowProps) {
   if (players.length === 0) {
     return <div aria-hidden="true" />;
   }

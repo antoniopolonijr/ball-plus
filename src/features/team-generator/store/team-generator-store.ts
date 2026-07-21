@@ -1,19 +1,61 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-
 import {
   DEFAULT_PLAYER_COUNT,
   DEFAULT_PLAYERS_PER_TEAM,
   DEFAULT_TEAM_COUNT,
 } from "../constants/defaults";
-import { PLAYER_POSITION_ORDER } from "../constants/player-positions";
-import { PLAYER_SKILL_ORDER } from "../constants/player-skills";
-import type { TeamGeneratorStore } from "../types/team-generator-store";
+import type { GenerationResult } from "../types/generation-result";
+import type { Player } from "../types/player";
+import {
+  PLAYER_POSITION_SORT_ORDER,
+  PLAYER_SKILL_SORT_ORDER,
+} from "../types/player";
+import type { Team } from "../types/team";
 import { createDefaultPlayer } from "../utils/create-default-player";
 import { createDefaultTeam } from "../utils/create-default-team";
 import { createInitialPlayers } from "../utils/create-initial-players";
 import { createInitialTeams } from "../utils/create-initial-teams";
 import { generateBalancedTeams } from "../utils/generate-balanced-teams";
+
+export interface TeamGeneratorStore {
+  // --------------------------------------------------
+  // State
+  // --------------------------------------------------
+  players: Player[];
+  playerSortField: "name" | "position" | "skill" | null;
+  playerSortDirection: "asc" | "desc";
+
+  teams: Team[];
+
+  playersPerTeam: number;
+  generationResult: GenerationResult | null;
+
+  // --------------------------------------------------
+  // Actions
+  // --------------------------------------------------
+
+  // Players
+  addPlayer(): void;
+  removePlayer(id: string): void;
+  updatePlayer(id: string, player: Partial<Player>): void;
+  setPlayerCount(count: number): void;
+  pastePlayers: (names: string[]) => void;
+  sortPlayersByName: () => void;
+  sortPlayersByPosition: () => void;
+  sortPlayersBySkill: () => void;
+
+  // Teams
+  addTeam(): void;
+  removeTeam(id: string): void;
+  updateTeam(id: string, team: Partial<Team>): void;
+  setTeamCount(count: number): void;
+
+  // Generator
+  setPlayersPerTeam: (playersPerTeam: number) => void;
+  resetAll(): void;
+  generateTeams: () => void;
+}
 
 export const useTeamGeneratorStore = create<TeamGeneratorStore>()(
   persist(
@@ -114,8 +156,8 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>()(
 
           const sortedPlayers = [...state.players].sort((a, b) => {
             const comparison =
-              PLAYER_POSITION_ORDER[a.position] -
-              PLAYER_POSITION_ORDER[b.position];
+              PLAYER_POSITION_SORT_ORDER[a.position] -
+              PLAYER_POSITION_SORT_ORDER[b.position];
 
             return direction === "asc" ? comparison : -comparison;
           });
@@ -137,7 +179,8 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>()(
 
           const sortedPlayers = [...state.players].sort((a, b) => {
             const comparison =
-              PLAYER_SKILL_ORDER[a.skill] - PLAYER_SKILL_ORDER[b.skill];
+              PLAYER_SKILL_SORT_ORDER[a.skill] -
+              PLAYER_SKILL_SORT_ORDER[b.skill];
 
             return direction === "asc" ? comparison : -comparison;
           });
