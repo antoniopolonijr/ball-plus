@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { PlayersTable } from "@/features/team-generator/components/players/PlayersTable";
 import { useTeamGeneratorStore } from "@/features/team-generator/store/team-generator-store";
-import { PastePlayersButton } from "./PastPlayersButton";
+import { PastePlayersButton } from "./PastePlayersButton";
 import { PlayerCountSelect } from "./PlayerCountSelect";
 import { PlayersEmptyState } from "./PlayersEmptyState";
 

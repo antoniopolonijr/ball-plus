@@ -43,29 +43,6 @@ function getSkillBalance(team: Player[]): number {
 }
 
 /**
- * Sorts players for display, prioritizing goalkeepers first, followed by outfield players sorted by substitution order.
- */
-function sortPlayersForDisplay(players: GeneratedPlayer[]): GeneratedPlayer[] {
-  return [...players].sort((a, b) => {
-    if (a.position === "Goalkeeper") {
-      return -1;
-    }
-
-    if (b.position === "Goalkeeper") {
-      return 1;
-    }
-
-    if (a.rotationOrder === undefined || b.rotationOrder === undefined) {
-      throw new Error(
-        "Expected all outfield players to have a substitution order.",
-      );
-    }
-
-    return a.rotationOrder - b.rotationOrder;
-  });
-}
-
-/**
  * Returns the best team order for assigning the next player.
  *
  * Priority:
@@ -106,19 +83,85 @@ function getSortedTeams(
 }
 
 /**
- * Randomly assigns substitution order to all
- * non-goalkeeper players.
+ * Randomly assigns a rotation order to all players.
+ *
+ * Goalkeepers and outfield players are shuffled independently so each group
+ * has its own rotation order starting at 1.
  */
-function assignSubstitutionOrder(players: GeneratedPlayer[]): void {
-  const eligiblePlayers = players.filter(
+function assignRotationOrder(players: GeneratedPlayer[]): void {
+  const goalkeepers = players.filter(
+    (player) => player.position === "Goalkeeper",
+  );
+
+  const outfieldPlayers = players.filter(
     (player) => player.position !== "Goalkeeper",
   );
 
-  const shuffledPlayers = [...eligiblePlayers].sort(() => Math.random() - 0.5);
+  const shuffledGoalkeepers = [...goalkeepers].sort(() => Math.random() - 0.5);
 
-  shuffledPlayers.forEach((player, index) => {
+  const shuffledOutfieldPlayers = [...outfieldPlayers].sort(
+    () => Math.random() - 0.5,
+  );
+
+  shuffledGoalkeepers.forEach((player, index) => {
     player.rotationOrder = index + 1;
   });
+
+  shuffledOutfieldPlayers.forEach((player, index) => {
+    player.rotationOrder = index + 1;
+  });
+}
+
+/**
+ * Determines the starting lineup for a generated team.
+ *
+ * The goalkeeper with rotation order 1 starts on the field.
+ * Outfield players whose rotation order exceeds the available outfield spots
+ * start on the bench.
+ */
+function assignStartingLineup(
+  players: GeneratedPlayer[],
+  playersPerTeam: number,
+): void {
+  const startingOutfieldPlayers = playersPerTeam - 1;
+
+  for (const player of players) {
+    if (player.position === "Goalkeeper") {
+      player.startsOnBench = player.rotationOrder > 1;
+      continue;
+    }
+
+    player.startsOnBench = player.rotationOrder > startingOutfieldPlayers;
+  }
+}
+
+/**
+ * Sorts players for display, prioritizing goalkeepers first.
+ * Players within the same position group are sorted by rotation order.
+ */
+function sortPlayersForDisplay(players: GeneratedPlayer[]): GeneratedPlayer[] {
+  return [...players].sort((a, b) => {
+    const aIsGoalkeeper = a.position === "Goalkeeper";
+    const bIsGoalkeeper = b.position === "Goalkeeper";
+
+    if (aIsGoalkeeper && !bIsGoalkeeper) {
+      return -1;
+    }
+
+    if (!aIsGoalkeeper && bIsGoalkeeper) {
+      return 1;
+    }
+
+    return a.rotationOrder - b.rotationOrder;
+  });
+}
+
+function createGeneratedPlayer(player: Player): GeneratedPlayer {
+  return {
+    ...player,
+    rotationOrder: 0,
+    startsOnBench: false,
+  };
 }
 
 /**
@@ -137,18 +180,21 @@ function assignSubstitutionOrder(players: GeneratedPlayer[]): void {
 export function generateBalancedTeams(
   players: Player[],
   teams: Team[],
+  playersPerTeam: number,
 ): GeneratedTeam[] {
+  const generatedPlayers = players.map(createGeneratedPlayer);
+
   // --------------------------------------------------
   // Categorize players
   // --------------------------------------------------
 
-  const goalkeepers: Player[] = [];
-  const highSkillPlayers: Player[] = [];
-  const mediumSkillPlayers: Player[] = [];
-  const lowSkillPlayers: Player[] = [];
+  const goalkeepers: GeneratedPlayer[] = [];
+  const highSkillPlayers: GeneratedPlayer[] = [];
+  const mediumSkillPlayers: GeneratedPlayer[] = [];
+  const lowSkillPlayers: GeneratedPlayer[] = [];
 
   // Shuffle players to avoid deterministic distributions.
-  const shuffledPlayers = [...players].sort(() => Math.random() - 0.5);
+  const shuffledPlayers = [...generatedPlayers].sort(() => Math.random() - 0.5);
 
   shuffledPlayers.forEach((player) => {
     if (player.position === "Goalkeeper") {
@@ -183,7 +229,7 @@ export function generateBalancedTeams(
   // --------------------------------------------------
 
   function distributePlayersInRounds(
-    playersToDistribute: Player[],
+    playersToDistribute: GeneratedPlayer[],
     distributionMode: DistributionMode = "default",
   ) {
     const positions = new Set<PlayerPosition>(
@@ -271,15 +317,16 @@ export function generateBalancedTeams(
   // --------------------------------------------------
 
   return teams.map((team) => {
-    const clonedPlayers = teamMap[team.id].map((player) => ({
-      ...player,
-    }));
+    const generatedPlayers = teamMap[team.id].map(createGeneratedPlayer);
 
-    assignSubstitutionOrder(clonedPlayers);
+    assignRotationOrder(generatedPlayers);
+    assignStartingLineup(generatedPlayers, playersPerTeam);
+
+    const sortedGeneratedPlayers = sortPlayersForDisplay(generatedPlayers);
 
     return {
       team,
-      players: sortPlayersForDisplay(clonedPlayers),
+      players: sortedGeneratedPlayers,
     };
   });
 }

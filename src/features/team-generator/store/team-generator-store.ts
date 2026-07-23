@@ -271,9 +271,13 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>()(
         }),
 
       generateTeams: () => {
-        const { players, teams } = get();
+        const { players, teams, playersPerTeam } = get();
 
-        const generatedTeams = generateBalancedTeams(players, teams);
+        const generatedTeams = generateBalancedTeams(
+          players,
+          teams,
+          playersPerTeam,
+        );
 
         set({
           generationResult: {

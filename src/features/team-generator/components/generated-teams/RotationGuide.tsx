@@ -6,17 +6,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { GeneratedTeam } from "../../types/generated-team";
+import type { GeneratedPlayer } from "../../types/generated-team";
 import { PLAYER_POSITION_ABBREVIATIONS } from "../../types/player";
 
 interface RotationGuideProps {
-  generatedTeam: GeneratedTeam;
+  players: GeneratedPlayer[];
   placeholderPlayerNumberMap: Map<string, number>;
   teamColor: string;
 }
 
 export function RotationGuide({
-  generatedTeam,
+  players,
   placeholderPlayerNumberMap,
   teamColor,
 }: RotationGuideProps) {
@@ -39,7 +39,7 @@ export function RotationGuide({
         </TableHeader>
 
         <TableBody>
-          {generatedTeam.players.map((player) => {
+          {players.map((player) => {
             const placeholderPlayerNumber = placeholderPlayerNumberMap.get(
               player.id,
             );

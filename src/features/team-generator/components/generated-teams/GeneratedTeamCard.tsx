@@ -46,7 +46,7 @@ export function GeneratedTeamCard({
       />
 
       <RotationGuide
-        generatedTeam={generatedTeam}
+        players={generatedTeam.players}
         placeholderPlayerNumberMap={placeholderPlayerNumberMap}
         teamColor={generatedTeam.team.color}
       />
