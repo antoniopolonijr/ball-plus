@@ -1,6 +1,7 @@
 import type { GeneratedPlayer } from "../../types/generated-team";
-import { getPitchPlayers } from "../../utils/get-pitch-players";
-import { PitchFormation } from "./PitchFormation";
+import { getPitchData } from "../../utils/get-pitch-data";
+import { PitchBench } from "./PitchBench";
+import { PitchStarters } from "./PitchStarters";
 
 interface PitchProps {
   players: GeneratedPlayer[];
@@ -13,7 +14,7 @@ export function Pitch({
   placeholderPlayerNumberMap,
   teamColor,
 }: PitchProps) {
-  const pitchPlayers = getPitchPlayers(players);
+  const { formation, bench } = getPitchData(players);
 
   return (
     <section
@@ -27,8 +28,16 @@ export function Pitch({
       <div className="relative aspect-[3/4]">
         <PitchSvg />
 
-        <PitchFormation
-          players={pitchPlayers}
+        <PitchStarters
+          players={formation}
+          placeholderPlayerNumberMap={placeholderPlayerNumberMap}
+          teamColor={teamColor}
+        />
+      </div>
+
+      <div className="bg-gradient-to-b from-[#3d8f5a] to-[#2f7449]">
+        <PitchBench
+          players={bench}
           placeholderPlayerNumberMap={placeholderPlayerNumberMap}
           teamColor={teamColor}
         />

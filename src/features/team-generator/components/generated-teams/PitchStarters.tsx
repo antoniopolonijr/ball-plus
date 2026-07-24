@@ -8,7 +8,7 @@ interface PitchPlayersProps {
   readonly teamColor: string;
 }
 
-export function PitchFormation({
+export function PitchStarters({
   players,
   placeholderPlayerNumberMap,
   teamColor,

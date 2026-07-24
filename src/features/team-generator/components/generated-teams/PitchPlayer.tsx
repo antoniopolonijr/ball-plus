@@ -23,7 +23,7 @@ export function PitchPlayer({
       </div>
 
       <span
-        className="mt-1 block truncate w-full max-w-16 lg:max-w-24 text-center text-xs lg:text-sm font-semibold text-white bg-black/70 rounded py-1 px-0.5"
+        className="mt-1 block truncate w-full max-w-16 lg:max-w-24 text-center text-xs lg:text-sm font-semibold text-white bg-black/70 rounded py-1 px-1"
         title={player.name}
       >
         {player.name || `Player ${placeholderPlayerNumber}`}

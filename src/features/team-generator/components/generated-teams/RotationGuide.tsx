@@ -59,11 +59,11 @@ export function RotationGuide({
                   </div>
                 </TableCell>
 
-                <TableCell className="max-w-28 text-center truncate">
+                <TableCell className="max-w-28 text-center truncate font-semibold">
                   {player.name || `Player ${placeholderPlayerNumber}`}
                 </TableCell>
 
-                <TableCell className="text-center">
+                <TableCell className="text-center font-semibold">
                   <abbr
                     title={player.position}
                     className="sm:hidden no-underline"
