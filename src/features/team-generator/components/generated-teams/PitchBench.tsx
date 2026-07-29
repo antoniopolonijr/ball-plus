@@ -23,7 +23,7 @@ export function PitchBench({
           id="pitch-bench-heading"
           className="rounded bg-black/90 px-2 py-1 text-sm font-semibold tracking-wide text-white max-w-15 text-center mr-1"
         >
-          Stars on Bench
+          Starts on Bench
         </h5>
         {players.map((player) => (
           <PitchPlayer

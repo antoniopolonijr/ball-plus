@@ -16,25 +16,24 @@ export function GeneratedTeamCard({
   return (
     <article
       aria-labelledby={`team-${generatedTeam.team.id}`}
-      className="rounded-lg border p-4"
+      className="min-w-0 rounded-lg border p-4"
     >
-      <header className="flex justify-center items-center gap-2 pb-3">
+      <header className="flex items-center gap-2 pb-3">
         <div
-          className="size-4 rounded-full border-2 border-foreground"
-          style={{
-            backgroundColor: generatedTeam.team.color,
-          }}
+          className="size-4 shrink-0 rounded-full border-2 border-foreground"
+          style={{ backgroundColor: generatedTeam.team.color }}
           aria-hidden="true"
         />
 
         <h3
           id={`team-${generatedTeam.team.id}`}
-          className="font-semibold text-lg"
+          className="min-w-0 flex-1 truncate text-lg font-semibold"
+          title={generatedTeam.team.name}
         >
           {generatedTeam.team.name || `Team ${teamIndex + 1}`}
         </h3>
 
-        <span className="text-sm text-muted-foreground">
+        <span className="shrink-0 text-sm text-muted-foreground">
           ({generatedTeam.players.length} players)
         </span>
       </header>

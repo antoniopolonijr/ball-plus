@@ -1,3 +1,5 @@
+import { Clock, Play } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -32,9 +34,18 @@ export function RotationGuide({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="text-center font-bold">Order</TableHead>
-            <TableHead className="text-center font-bold">Name</TableHead>
-            <TableHead className="text-center font-bold">Position</TableHead>
+            <TableHead className="text-center font-bold px-1">Order</TableHead>
+            <TableHead className="text-center font-bold px-1">Name</TableHead>
+            <TableHead
+              className="text-center font-bold px-1"
+              aria-label="Position"
+            >
+              <span className="hidden lg:inline">Position</span>
+              <span className="lg:hidden" title="Position">
+                Pos
+              </span>
+            </TableHead>
+            <TableHead className="text-center font-bold px-1">Status</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -45,8 +56,11 @@ export function RotationGuide({
             );
 
             return (
-              <TableRow key={player.id}>
-                <TableCell className="text-center">
+              <TableRow
+                key={player.id}
+                className={`${player.startsOnBench && "bg-muted/20"}`}
+              >
+                <TableCell className="text-center px-1">
                   <div
                     className="mx-auto flex size-7 items-center justify-center rounded-full border-2 border-foreground text-white font-bold"
                     style={{
@@ -59,19 +73,60 @@ export function RotationGuide({
                   </div>
                 </TableCell>
 
-                <TableCell className="max-w-28 text-center truncate font-semibold">
-                  {player.name || `Player ${placeholderPlayerNumber}`}
+                <TableCell className="text-center font-semibold px-1">
+                  <div
+                    className="mx-auto w-26 lg:w-full truncate"
+                    title={player.name}
+                  >
+                    {player.name || `Player ${placeholderPlayerNumber}`}
+                  </div>
                 </TableCell>
 
-                <TableCell className="text-center font-semibold">
+                <TableCell className="text-center font-semibold px-1">
                   <abbr
                     title={player.position}
-                    className="sm:hidden no-underline"
+                    aria-label={player.position}
+                    className="lg:hidden no-underline"
                   >
-                    {PLAYER_POSITION_ABBREVIATIONS[player.position]}
+                    <Badge variant="secondary">
+                      {PLAYER_POSITION_ABBREVIATIONS[player.position]}
+                    </Badge>
                   </abbr>
 
-                  <span className="hidden sm:inline">{player.position}</span>
+                  <Badge variant="secondary" className="hidden lg:inline">
+                    {player.position}
+                  </Badge>
+                </TableCell>
+
+                <TableCell className="px-1">
+                  {player.startsOnBench ? (
+                    <>
+                      <Badge
+                        title="Starts on bench"
+                        aria-label="Starts on bench"
+                        className="lg:hidden no-underline px-1"
+                        variant="secondary"
+                      >
+                        <Clock />
+                      </Badge>
+
+                      <Badge variant="secondary" className="hidden lg:inline">
+                        Bench
+                      </Badge>
+                    </>
+                  ) : (
+                    <>
+                      <Badge
+                        title="Starts playing"
+                        aria-label="Starts playing"
+                        className="lg:hidden no-underline px-1"
+                      >
+                        <Play />
+                      </Badge>
+
+                      <Badge className="hidden lg:inline">Starter</Badge>
+                    </>
+                  )}
                 </TableCell>
               </TableRow>
             );
