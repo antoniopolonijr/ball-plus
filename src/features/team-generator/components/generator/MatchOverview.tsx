@@ -1,21 +1,21 @@
-"use client";
-
-import { useShallow } from "zustand/shallow";
 import { Separator } from "@/components/ui/separator";
+import type { MatchOverviewData } from "../../utils/get-match-overview";
 
-import { useTeamGeneratorStore } from "../../store/team-generator-store";
-import { getMatchOverview } from "../../utils/get-match-overview";
+interface MatchOverviewProps {
+  overview: MatchOverviewData;
+}
 
-export function MatchOverview() {
-  const { players, teams, playersPerTeam } = useTeamGeneratorStore(
-    useShallow((state) => ({
-      players: state.players,
-      teams: state.teams,
-      playersPerTeam: state.playersPerTeam,
-    })),
-  );
-
-  const overview = getMatchOverview(players, teams, playersPerTeam);
+export function MatchOverview({ overview }: MatchOverviewProps) {
+  const {
+    teams,
+    players,
+    playersNeeded,
+    goalkeepers,
+    defenders,
+    midfielders,
+    attackers,
+    any,
+  } = overview;
 
   return (
     <section aria-labelledby="match-overview-title" className="space-y-2">
@@ -24,27 +24,23 @@ export function MatchOverview() {
       </h3>
 
       <dl className="space-y-1 text-sm">
-        <OverviewItem label="Teams" value={overview.teams} />
+        <OverviewItem label="Teams" value={teams} />
+
+        <OverviewItem label="Players" value={players} />
+
+        <OverviewItem label="Players Needed" value={playersNeeded} />
 
         <Separator className="my-2" />
 
-        <OverviewItem label="Players" value={overview.players} />
+        <OverviewItem label="Goalkeepers" value={goalkeepers} />
 
-        <OverviewItem label="Starters" value={overview.starters} />
+        <OverviewItem label="Defenders" value={defenders} />
 
-        <OverviewItem label="Bench" value={overview.bench} />
+        <OverviewItem label="Midfielders" value={midfielders} />
 
-        <Separator className="my-2" />
+        <OverviewItem label="Attackers" value={attackers} />
 
-        <OverviewItem label="Goalkeepers" value={overview.goalkeepers} />
-
-        <OverviewItem label="Defenders" value={overview.defenders} />
-
-        <OverviewItem label="Midfielders" value={overview.midfielders} />
-
-        <OverviewItem label="Attackers" value={overview.attackers} />
-
-        <OverviewItem label="Any Position" value={overview.any} />
+        <OverviewItem label="Any Position" value={any} />
       </dl>
     </section>
   );

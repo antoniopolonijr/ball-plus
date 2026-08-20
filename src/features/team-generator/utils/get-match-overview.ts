@@ -4,9 +4,9 @@ import type { Team } from "../types/team";
 export interface MatchOverviewData {
   teams: number;
   players: number;
-
-  starters: number;
-  bench: number;
+  playersPerTeam: number;
+  playersNeeded: number;
+  extraPlayers: number;
 
   goalkeepers: number;
   defenders: number;
@@ -20,16 +20,16 @@ export function getMatchOverview(
   teams: Team[],
   playersPerTeam: number,
 ): MatchOverviewData {
-  const starters = Math.min(players.length, teams.length * playersPerTeam);
-
-  const bench = Math.max(0, players.length - starters);
+  // --------------------------------------------------
+  // Basic overview
+  // --------------------------------------------------
 
   const overview: MatchOverviewData = {
     teams: teams.length,
     players: players.length,
-
-    starters,
-    bench,
+    playersPerTeam,
+    playersNeeded: playersPerTeam * teams.length,
+    extraPlayers: 0,
 
     goalkeepers: 0,
     defenders: 0,
@@ -37,6 +37,10 @@ export function getMatchOverview(
     attackers: 0,
     any: 0,
   };
+
+  // --------------------------------------------------
+  // Count players by position
+  // --------------------------------------------------
 
   for (const player of players) {
     switch (player.position) {
@@ -61,6 +65,21 @@ export function getMatchOverview(
         break;
     }
   }
+
+  // --------------------------------------------------
+  // Calculate extraPlayers
+  // --------------------------------------------------
+
+  const goalkeeperSlots = overview.teams;
+  const goalkeepersOnField = Math.min(overview.goalkeepers, goalkeeperSlots);
+
+  const outfieldPlayers = overview.players - overview.goalkeepers;
+  const outfieldPlayerSlots = overview.teams * (playersPerTeam - 1);
+  const outfieldPlayersOnField = Math.min(outfieldPlayers, outfieldPlayerSlots);
+
+  const playersOnField = goalkeepersOnField + outfieldPlayersOnField;
+
+  overview.extraPlayers = overview.players - playersOnField;
 
   return overview;
 }

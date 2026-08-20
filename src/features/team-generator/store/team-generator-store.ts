@@ -303,6 +303,7 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>()(
       partialize: (state) => ({
         players: state.players,
         teams: state.teams,
+        playersPerTeam: state.playersPerTeam,
         generationResult: state.generationResult,
       }),
     },
