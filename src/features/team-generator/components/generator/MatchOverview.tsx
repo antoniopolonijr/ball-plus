@@ -14,7 +14,7 @@ export function MatchOverview({ overview }: MatchOverviewProps) {
     defenders,
     midfielders,
     attackers,
-    any,
+    unassigned,
   } = overview;
 
   return (
@@ -40,7 +40,7 @@ export function MatchOverview({ overview }: MatchOverviewProps) {
 
         <OverviewItem label="Attackers" value={attackers} />
 
-        <OverviewItem label="Any Position" value={any} />
+        <OverviewItem label="Unassigned Position" value={unassigned} />
       </dl>
     </section>
   );

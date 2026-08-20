@@ -14,7 +14,7 @@ export const PITCH_POSITIONS: Record<PlayerPosition, PitchRow> = {
 
   Midfielder: "midfielders",
 
-  Any: "midfielders",
+  Unassigned: "midfielders",
 
   Defender: "defenders",
 

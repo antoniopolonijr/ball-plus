@@ -1,14 +1,14 @@
 // Position
 
 export type PlayerPosition =
-  | "Any"
+  | "Unassigned"
   | "Goalkeeper"
   | "Defender"
   | "Midfielder"
   | "Attacker";
 
 export const PLAYER_POSITIONS: PlayerPosition[] = [
-  "Any",
+  "Unassigned",
   "Goalkeeper",
   "Defender",
   "Midfielder",
@@ -16,7 +16,7 @@ export const PLAYER_POSITIONS: PlayerPosition[] = [
 ] as const;
 
 export const PLAYER_POSITION_ABBREVIATIONS = {
-  Any: "Any",
+  Unassigned: "UA",
   Goalkeeper: "GK",
   Defender: "DF",
   Midfielder: "MF",
@@ -31,7 +31,7 @@ export const PLAYER_POSITION_SORT_ORDER = {
   Defender: 2,
   Midfielder: 3,
   Attacker: 4,
-  Any: 5,
+  Unassigned: 5,
 } satisfies Record<PlayerPosition, number>;
 
 // Skill

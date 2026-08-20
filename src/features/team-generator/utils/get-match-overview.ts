@@ -12,7 +12,7 @@ export interface MatchOverviewData {
   defenders: number;
   midfielders: number;
   attackers: number;
-  any: number;
+  unassigned: number;
 }
 
 export function getMatchOverview(
@@ -35,7 +35,7 @@ export function getMatchOverview(
     defenders: 0,
     midfielders: 0,
     attackers: 0,
-    any: 0,
+    unassigned: 0,
   };
 
   // --------------------------------------------------
@@ -60,8 +60,8 @@ export function getMatchOverview(
         overview.attackers++;
         break;
 
-      case "Any":
-        overview.any++;
+      case "Unassigned":
+        overview.unassigned++;
         break;
     }
   }

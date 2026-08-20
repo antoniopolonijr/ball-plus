@@ -7,7 +7,7 @@ import type { MatchOverviewData } from "../utils/get-match-overview";
 const MINIMUM_TEAMS = 2;
 const MINIMUM_GOALKEEPERS = 2;
 const MIN_PLAYERS_PER_TEAM_FOR_POSITION_RULES = 4;
-const MANY_ANY_POSITION_PLAYERS = 3;
+const MANY_UNASSIGNED_POSITION_PLAYERS = 3;
 
 type RecommendationRule = (
   overview: MatchOverviewData,
@@ -50,7 +50,7 @@ const rules: RecommendationRule[] = [
   checkDefenders,
   checkMidfielders,
   checkAttackers,
-  checkAnyPositionPlayers,
+  checkUnassignedPositionPlayers,
   checkExtraPlayers,
 ];
 
@@ -244,18 +244,21 @@ function checkAttackers(
   };
 }
 
-function checkAnyPositionPlayers(
+function checkUnassignedPositionPlayers(
   overview: MatchOverviewData,
 ): MatchRecommendation | null {
-  const { any, playersPerTeam } = overview;
+  const { unassigned, playersPerTeam } = overview;
 
-  if (any === 0 || playersPerTeam < MIN_PLAYERS_PER_TEAM_FOR_POSITION_RULES) {
+  if (
+    unassigned === 0 ||
+    playersPerTeam < MIN_PLAYERS_PER_TEAM_FOR_POSITION_RULES
+  ) {
     return null;
   }
 
-  if (any >= MANY_ANY_POSITION_PLAYERS) {
+  if (unassigned >= MANY_UNASSIGNED_POSITION_PLAYERS) {
     return {
-      id: "many-any-position",
+      id: "many-unassigned-position",
       severity: "warning",
       message:
         "Many players don't have a defined position. Team balance may be less accurate.",
