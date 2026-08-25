@@ -1,6 +1,6 @@
 "use client";
 
-import { Copy, Share2 } from "lucide-react";
+import { Share2 } from "lucide-react";
 import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,8 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import { useTeamGeneratorStore } from "../../store/team-generator-store";
+import { getGeneratedTeamsText } from "../../utils/get-generated-teams-text";
+import { CopyButton } from "./CopyButton";
 import { GeneratedTeamCard } from "./GeneratedTeamCard";
 
 export function GeneratedTeamsCard() {
@@ -33,6 +34,12 @@ export function GeneratedTeamsCard() {
 
   // Dates persisted by Zustand are serialized as strings and must be converted to Date objects before formatting.
   const generatedAt = new Date(generationResult.generatedAt);
+
+  const generatedTeamsText = getGeneratedTeamsText(
+    generationResult.teams,
+    generatedAt,
+    placeholderPlayerNumberMap,
+  );
 
   return (
     <section aria-labelledby="generated-team-heading">
@@ -61,10 +68,8 @@ export function GeneratedTeamsCard() {
           ))}
         </CardContent>
         <CardFooter className="justify-center gap-4">
-          <Button aria-label="Copy Generated Teams">
-            <Copy className="size-4" aria-hidden="true" />
-            Copy
-          </Button>
+          <CopyButton text={generatedTeamsText} />
+
           <Button aria-label="Share Generated Teams">
             <Share2 className="size-4" aria-hidden="true" />
             Share
