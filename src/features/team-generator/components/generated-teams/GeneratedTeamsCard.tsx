@@ -1,8 +1,6 @@
 "use client";
 
-import { Share2 } from "lucide-react";
-import { useMemo } from "react";
-import { Button } from "@/components/ui/button";
+import { useMemo, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -15,12 +13,15 @@ import { useTeamGeneratorStore } from "../../store/team-generator-store";
 import { getGeneratedTeamsText } from "../../utils/get-generated-teams-text";
 import { CopyButton } from "./CopyButton";
 import { GeneratedTeamCard } from "./GeneratedTeamCard";
+import { ShareButton } from "./ShareButton";
 
 export function GeneratedTeamsCard() {
   const players = useTeamGeneratorStore((state) => state.players);
   const generationResult = useTeamGeneratorStore(
     (state) => state.generationResult,
   );
+
+  const shareContentRef = useRef<HTMLDivElement>(null);
 
   // Create a map of player IDs to their placeholder numbers for display purposes.
   const placeholderPlayerNumberMap = useMemo(
@@ -42,11 +43,11 @@ export function GeneratedTeamsCard() {
   );
 
   return (
-    <section aria-labelledby="generated-team-heading">
+    <section aria-labelledby="generated-teams-heading" ref={shareContentRef}>
       <Card>
         <CardHeader>
           <CardTitle
-            id="generated-team-heading"
+            id="generated-teams-heading"
             className="text-center text-2xl tracking-tight font-semibold"
           >
             Generated Teams
@@ -67,13 +68,11 @@ export function GeneratedTeamsCard() {
             />
           ))}
         </CardContent>
-        <CardFooter className="justify-center gap-4">
+
+        <CardFooter data-share-exclude className="justify-center gap-4">
           <CopyButton text={generatedTeamsText} />
 
-          <Button aria-label="Share Generated Teams">
-            <Share2 className="size-4" aria-hidden="true" />
-            Share
-          </Button>
+          <ShareButton targetRef={shareContentRef} />
         </CardFooter>
       </Card>
     </section>

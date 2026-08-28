@@ -75,8 +75,8 @@ export function RotationGuide({
 
                 <TableCell className="text-center font-semibold px-1">
                   <div
-                    className="mx-auto w-26 lg:w-full truncate"
-                    title={player.name}
+                    className="mx-auto w-26 truncate lg:w-48"
+                    title={player.name || `Player ${placeholderPlayerNumber}`}
                   >
                     {player.name || `Player ${placeholderPlayerNumber}`}
                   </div>
