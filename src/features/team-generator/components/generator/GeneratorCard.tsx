@@ -49,8 +49,6 @@ export function GeneratorCard() {
 
           <MatchOverview overview={overview} />
 
-          <Separator />
-
           <MatchRecommendations recommendations={recommendations} />
         </CardContent>
 

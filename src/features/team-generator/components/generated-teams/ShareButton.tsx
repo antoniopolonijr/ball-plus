@@ -1,16 +1,18 @@
 "use client";
 
-import domtoimage from "dom-to-image-more";
 import { Share2 } from "lucide-react";
 import type { RefObject } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { getTeamsFileName } from "../../utils/get-generated-teams-file-name";
+import { generateTeamsImage } from "../../utils/get-generated-teams-image";
 
 interface ShareButtonProps {
   targetRef: RefObject<HTMLElement | null>;
+  generatedAt: Date;
 }
 
-export function ShareButton({ targetRef }: ShareButtonProps) {
+export function ShareButton({ targetRef, generatedAt }: ShareButtonProps) {
   async function handleShare() {
     const target = targetRef.current;
 
@@ -20,43 +22,9 @@ export function ShareButton({ targetRef }: ShareButtonProps) {
     }
 
     try {
-      const blob = await domtoimage.toBlob(target, {
-        pixelRatio: 2,
+      const blob = await generateTeamsImage(target);
 
-        onclone: (clone) => {
-          if (!(clone instanceof HTMLElement)) {
-            return;
-          }
-
-          // hide buttons
-          clone.querySelectorAll("[data-share-exclude]").forEach((element) => {
-            element.remove();
-          });
-
-          // hide scrollbars
-          clone
-            .querySelectorAll<HTMLElement>('[data-slot="table-container"]')
-            .forEach((tableContainer) => {
-              tableContainer.style.setProperty(
-                "overflow",
-                "visible",
-                "important",
-              );
-              tableContainer.style.setProperty("height", "auto", "important");
-              tableContainer.style.setProperty(
-                "max-height",
-                "none",
-                "important",
-              );
-            });
-        },
-      });
-
-      if (!blob) {
-        throw new Error("Failed to generate image.");
-      }
-
-      const file = new File([blob], "ball-plus-teams.png", {
+      const file = new File([blob], getTeamsFileName(generatedAt), {
         type: "image/png",
       });
 
@@ -87,11 +55,7 @@ export function ShareButton({ targetRef }: ShareButtonProps) {
   }
 
   return (
-    <Button
-      type="button"
-      onClick={handleShare}
-      aria-label="Share generated teams"
-    >
+    <Button type="button" onClick={handleShare}>
       <Share2 className="size-4" aria-hidden="true" />
       Share
     </Button>

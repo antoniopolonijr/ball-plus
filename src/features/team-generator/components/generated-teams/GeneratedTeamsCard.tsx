@@ -12,6 +12,7 @@ import {
 import { useTeamGeneratorStore } from "../../store/team-generator-store";
 import { getGeneratedTeamsText } from "../../utils/get-generated-teams-text";
 import { CopyButton } from "./CopyButton";
+import { DownloadButton } from "./DownloadButton";
 import { GeneratedTeamCard } from "./GeneratedTeamCard";
 import { ShareButton } from "./ShareButton";
 
@@ -71,8 +72,11 @@ export function GeneratedTeamsCard() {
 
         <CardFooter data-share-exclude className="justify-center gap-4">
           <CopyButton text={generatedTeamsText} />
-
-          <ShareButton targetRef={shareContentRef} />
+          <ShareButton targetRef={shareContentRef} generatedAt={generatedAt} />
+          <DownloadButton
+            targetRef={shareContentRef}
+            generatedAt={generatedAt}
+          />
         </CardFooter>
       </Card>
     </section>

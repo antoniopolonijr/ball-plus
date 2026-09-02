@@ -4,6 +4,7 @@ import {
   type LucideIcon,
   TriangleAlert,
 } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 import type { MatchRecommendation } from "../../types/match-recommendation";
 
 interface MatchRecommendationsProps {
@@ -19,6 +20,8 @@ export function MatchRecommendations({
 
   return (
     <section aria-labelledby="recommendations-heading" className="space-y-3">
+      <Separator />
+
       <h4 id="recommendations-heading" className="font-semibold">
         Recommendations
       </h4>

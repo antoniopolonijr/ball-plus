@@ -17,9 +17,9 @@ export default function QuickGamePage() {
 
         <div className="md:w-1/3 flex flex-col gap-4 md:gap-6 md:justify-between">
           <TeamsCard />
-          <div className="hidden md:inline flex-1 bg-sidebar-primary-foreground">
+          {/*  <div className="hidden md:inline flex-1 bg-sidebar-primary-foreground">
             TODO
-          </div>
+          </div> */}
           <GeneratorCard />
         </div>
       </div>
