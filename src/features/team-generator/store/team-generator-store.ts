@@ -239,15 +239,15 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>()(
           }
 
           if (count > currentCount) {
+            const teams = [...state.teams];
             const teamsToAdd = count - currentCount;
 
+            for (let i = 0; i < teamsToAdd; i++) {
+              teams.push(createDefaultTeam(teams));
+            }
+
             return {
-              teams: [
-                ...state.teams,
-                ...Array.from({ length: teamsToAdd }, () =>
-                  createDefaultTeam(get().teams),
-                ),
-              ],
+              teams,
             };
           }
 

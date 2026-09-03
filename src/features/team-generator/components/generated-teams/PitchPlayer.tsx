@@ -1,4 +1,5 @@
 import type { GeneratedPlayer } from "../../types/generated-team";
+import { getContrastTextColor } from "../../utils/get-contrast-text-color";
 
 interface PitchPlayerProps {
   player: GeneratedPlayer;
@@ -11,12 +12,14 @@ export function PitchPlayer({
   placeholderPlayerNumber,
   teamColor,
 }: PitchPlayerProps) {
+  const textColor = getContrastTextColor(teamColor);
   return (
     <div className="flex min-w-0 flex-col items-center">
       <div
-        className="flex size-8 items-center justify-center rounded-full border-2 border-foreground text-sm font-bold text-white shadow-md hover:scale-105 transition-transform duration-150 sm:size-10 md:text-base lg:size-12 lg:text-lg"
+        className="flex size-8 items-center justify-center rounded-full border-2 border-black text-sm font-bold shadow-md hover:scale-105 transition-transform duration-150 sm:size-10 md:text-base lg:size-12 lg:text-lg"
         style={{
           backgroundColor: teamColor,
+          color: textColor,
         }}
       >
         {player.position === "Goalkeeper" ? "GK" : player.rotationOrder}

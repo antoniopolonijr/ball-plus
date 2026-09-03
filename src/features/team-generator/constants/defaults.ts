@@ -18,13 +18,13 @@ export const DEFAULT_TEAM_COLORS = [
   "#2563EB", // Blue
   "#DC2626", // Red
   "#16A34A", // Green
-  "#CA8A04", // Yellow
-  "#9333EA", // Purple
   "#EA580C", // Orange
+  "#9333EA", // Purple
   "#0891B2", // Cyan
+  "#CA8A04", // Yellow
   "#DB2777", // Pink
-  "#4F46E5", // Indigo
   "#475569", // Slate
+  "#92400E", // Brown
 ] as const;
 
 // --------------------------------------------------

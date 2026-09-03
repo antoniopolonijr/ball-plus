@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table";
 import type { GeneratedPlayer } from "../../types/generated-team";
 import { PLAYER_POSITION_ABBREVIATIONS } from "../../types/player";
+import { getContrastTextColor } from "../../utils/get-contrast-text-color";
 
 interface RotationGuideProps {
   players: GeneratedPlayer[];
@@ -54,6 +55,7 @@ export function RotationGuide({
             const placeholderPlayerNumber = placeholderPlayerNumberMap.get(
               player.id,
             );
+            const textColor = getContrastTextColor(teamColor);
 
             return (
               <TableRow
@@ -62,9 +64,10 @@ export function RotationGuide({
               >
                 <TableCell className="text-center px-1">
                   <div
-                    className="mx-auto flex size-7 items-center justify-center rounded-full border-2 border-foreground text-white font-bold"
+                    className="mx-auto flex size-7 items-center justify-center rounded-full border-2 border-foreground font-bold"
                     style={{
                       backgroundColor: teamColor,
+                      color: textColor,
                     }}
                   >
                     {player.position === "Goalkeeper"
