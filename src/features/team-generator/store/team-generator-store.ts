@@ -205,10 +205,13 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>()(
       // Teams Actions
       // --------------------------------------------------
 
-      addTeam: () =>
+      addTeam: () => {
+        const newTeam = createDefaultTeam(get().teams);
+
         set((state) => ({
-          teams: [...state.teams, createDefaultTeam()],
-        })),
+          teams: [...state.teams, newTeam],
+        }));
+      },
 
       removeTeam: (id) =>
         set((state) => ({
@@ -242,7 +245,7 @@ export const useTeamGeneratorStore = create<TeamGeneratorStore>()(
               teams: [
                 ...state.teams,
                 ...Array.from({ length: teamsToAdd }, () =>
-                  createDefaultTeam(),
+                  createDefaultTeam(get().teams),
                 ),
               ],
             };
