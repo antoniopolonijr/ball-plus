@@ -64,7 +64,7 @@ export function RotationGuide({
               >
                 <TableCell className="text-center px-1">
                   <div
-                    className="mx-auto flex size-7 items-center justify-center rounded-full border-2 border-foreground font-bold"
+                    className="mx-auto flex size-7 items-center justify-center rounded-full border-1 border-black font-bold"
                     style={{
                       backgroundColor: teamColor,
                       color: textColor,

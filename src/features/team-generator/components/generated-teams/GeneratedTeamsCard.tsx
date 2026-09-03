@@ -45,7 +45,10 @@ export function GeneratedTeamsCard() {
 
   return (
     <section aria-labelledby="generated-teams-heading" ref={shareContentRef}>
-      <Card>
+      <Card
+        key={generationResult.id}
+        className="animate-in fade-in duration-400 motion-reduce:animate-none"
+      >
         <CardHeader>
           <CardTitle
             id="generated-teams-heading"

@@ -20,7 +20,7 @@ export function GeneratedTeamCard({
     >
       <header className="flex items-center gap-2 pb-3">
         <div
-          className="size-4 shrink-0 rounded-full border-2 border-foreground"
+          className="size-4 shrink-0 rounded-full border-1 border-black"
           style={{ backgroundColor: generatedTeam.team.color }}
           aria-hidden="true"
         />
