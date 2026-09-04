@@ -4,7 +4,7 @@ import {
   type LucideIcon,
   TriangleAlert,
 } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { CardFooter } from "@/components/ui/card";
 import type { MatchRecommendation } from "../../types/match-recommendation";
 
 interface MatchRecommendationsProps {
@@ -19,22 +19,25 @@ export function MatchRecommendations({
   }
 
   return (
-    <section aria-labelledby="recommendations-heading" className="space-y-3">
-      <Separator />
+    <CardFooter>
+      <section
+        aria-labelledby="recommendations-heading"
+        className="space-y-3 w-full"
+      >
+        <h3 id="recommendations-heading" className="font-semibold">
+          Recommendations
+        </h3>
 
-      <h4 id="recommendations-heading" className="font-semibold">
-        Recommendations
-      </h4>
-
-      <ul className="space-y-2">
-        {recommendations.map((recommendation) => (
-          <RecommendationItem
-            key={recommendation.id}
-            recommendation={recommendation}
-          />
-        ))}
-      </ul>
-    </section>
+        <ul className="space-y-2">
+          {recommendations.map((recommendation) => (
+            <RecommendationItem
+              key={recommendation.id}
+              recommendation={recommendation}
+            />
+          ))}
+        </ul>
+      </section>
+    </CardFooter>
   );
 }
 

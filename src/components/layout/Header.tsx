@@ -9,7 +9,7 @@ import { AuthButtons } from "@/features/auth/components/AuthButtons";
 
 export function Header() {
   return (
-    <header className="border-b">
+    <header className="border-b bg-card">
       <PageContainer>
         <nav
           aria-label="Primary navigation"
@@ -36,7 +36,7 @@ export function Header() {
               </Link>
             </Button>
 
-            <Button asChild variant="secondary">
+            <Button asChild variant="outline">
               <Link href="/quick-game" aria-label="Quick Game">
                 <Zap className="size-4" />
 

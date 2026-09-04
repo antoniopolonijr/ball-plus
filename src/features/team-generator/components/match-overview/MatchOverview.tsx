@@ -9,7 +9,7 @@ export function MatchOverview({ overview }: MatchOverviewProps) {
   const {
     teams,
     players,
-    playersNeeded,
+    playersPerTeam,
     goalkeepers,
     defenders,
     midfielders,
@@ -18,19 +18,15 @@ export function MatchOverview({ overview }: MatchOverviewProps) {
   } = overview;
 
   return (
-    <section aria-labelledby="match-overview-title" className="space-y-2">
-      <h3 id="match-overview-title" className="font-semibold">
-        Match Overview
-      </h3>
-
+    <div className="space-y-2">
       <dl className="space-y-1 text-sm">
+        <OverviewItem label="Players per Team" value={playersPerTeam} />
+
         <OverviewItem label="Teams" value={teams} />
 
         <OverviewItem label="Players" value={players} />
 
-        <OverviewItem label="Players Needed" value={playersNeeded} />
-
-        <Separator className="my-2" />
+        <Separator className="my-2" decorative />
 
         <OverviewItem label="Goalkeepers" value={goalkeepers} />
 
@@ -42,7 +38,7 @@ export function MatchOverview({ overview }: MatchOverviewProps) {
 
         <OverviewItem label="Unassigned Position" value={unassigned} />
       </dl>
-    </section>
+    </div>
   );
 }
 

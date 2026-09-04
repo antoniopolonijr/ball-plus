@@ -65,8 +65,8 @@ function checkTeams(overview: MatchOverviewData): MatchRecommendation | null {
     };
   }
 
-  const playersNeeded = teams * playersPerTeam;
-  const extraPlayers = players - playersNeeded;
+  const requiredPlayers = teams * playersPerTeam;
+  const extraPlayers = players - requiredPlayers;
 
   if (extraPlayers >= playersPerTeam) {
     return {
@@ -130,6 +130,10 @@ function checkGoalkeepers(
 
   const extraGoalkeepers = goalkeepers - teams;
   const missingGoalkeepers = teams - goalkeepers;
+
+  if (teams < MINIMUM_TEAMS) {
+    return null;
+  }
 
   if (extraGoalkeepers > 0) {
     return {

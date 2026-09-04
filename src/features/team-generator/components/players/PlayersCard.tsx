@@ -32,8 +32,8 @@ export function PlayersCard() {
           </CardTitle>
 
           <CardDescription>
-            Customize your player list by adding, removing, or editing players.
-            You can also paste a list of players.
+            Add, remove, and edit player names, positions, and skills. You can
+            also paste a list of players.
           </CardDescription>
 
           <CardAction>

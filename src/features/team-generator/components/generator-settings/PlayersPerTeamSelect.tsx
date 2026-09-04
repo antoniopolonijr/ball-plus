@@ -20,7 +20,7 @@ export function PlayersPerTeamSelect() {
     })),
   );
   return (
-    <>
+    <div className="flex justify-between">
       <Label htmlFor="players-per-team">Players per Team</Label>
 
       <Select
@@ -39,6 +39,6 @@ export function PlayersPerTeamSelect() {
           ))}
         </SelectContent>
       </Select>
-    </>
+    </div>
   );
 }

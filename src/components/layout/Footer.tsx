@@ -32,9 +32,9 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="border-t">
+    <footer className="border-t bg-card">
       <PageContainer>
-        <div className="flex flex-col gap-3 py-4 text-sm text-muted-foreground items-center sm:flex-row sm:justify-between">
+        <div className="flex flex-col gap-3 py-4 text-sm text-foreground items-center sm:flex-row sm:justify-between">
           <p>Created by Antonio Poloni © {currentYear}</p>
 
           <nav aria-label="Social links">
@@ -45,7 +45,7 @@ export function Footer() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+                    className="inline-flex items-center gap-1.5 transition-colors hover:text-muted-foreground"
                   >
                     <Icon className="size-4" />
 

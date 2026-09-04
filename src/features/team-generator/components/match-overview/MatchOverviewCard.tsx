@@ -5,20 +5,16 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { useTeamGeneratorStore } from "../../store/team-generator-store";
 import { getMatchOverview } from "../../utils/get-match-overview";
 import { getMatchRecommendations } from "../../utils/get-match-recommendations";
-import { GeneratorActions } from "./GeneratorActions";
-import { GeneratorSettings } from "./GeneratorSettings";
 import { MatchOverview } from "./MatchOverview";
 import { MatchRecommendations } from "./MatchRecommendations";
 
-export function GeneratorCard() {
+export function MatchOverviewCard() {
   const { players, teams, playersPerTeam } = useTeamGeneratorStore(
     useShallow((state) => ({
       players: state.players,
@@ -32,29 +28,19 @@ export function GeneratorCard() {
   const recommendations = getMatchRecommendations(overview);
 
   return (
-    <section aria-labelledby="generator-card-title">
+    <section aria-labelledby="match-overview-card-title">
       <Card>
         <CardHeader>
-          <CardTitle id="generator-card-title">Match Generator</CardTitle>
+          <CardTitle id="match-overview-card-title">Match Overview</CardTitle>
 
-          <CardDescription>
-            Review the match setup before generating balanced teams.
-          </CardDescription>
+          <CardDescription>Review your match setup.</CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-4">
-          <GeneratorSettings />
-
-          <Separator />
-
           <MatchOverview overview={overview} />
-
-          <MatchRecommendations recommendations={recommendations} />
         </CardContent>
 
-        <CardFooter className="justify-center items-center">
-          <GeneratorActions />
-        </CardFooter>
+        <MatchRecommendations recommendations={recommendations} />
       </Card>
     </section>
   );

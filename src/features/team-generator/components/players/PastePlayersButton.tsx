@@ -45,7 +45,7 @@ export function PastePlayersButton() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary" aria-label="Paste a list of players">
+        <Button variant="outline" aria-label="Paste a list of players">
           <ClipboardPaste className="size-4" aria-hidden="true" />
           Paste
           <span className="hidden sm:inline">Players</span>

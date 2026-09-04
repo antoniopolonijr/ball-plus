@@ -29,7 +29,9 @@ export function TeamsCard() {
             <TeamCountSelect />
           </CardTitle>
 
-          <CardDescription>Customize team names and colors.</CardDescription>
+          <CardDescription>
+            Add, remove, and edit team names and colors.
+          </CardDescription>
         </CardHeader>
 
         <CardContent>

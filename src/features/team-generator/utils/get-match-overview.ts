@@ -5,7 +5,7 @@ export interface MatchOverviewData {
   teams: number;
   players: number;
   playersPerTeam: number;
-  playersNeeded: number;
+  requiredPlayers: number;
   extraPlayers: number;
 
   goalkeepers: number;
@@ -28,7 +28,7 @@ export function getMatchOverview(
     teams: teams.length,
     players: players.length,
     playersPerTeam,
-    playersNeeded: playersPerTeam * teams.length,
+    requiredPlayers: playersPerTeam * teams.length,
     extraPlayers: 0,
 
     goalkeepers: 0,

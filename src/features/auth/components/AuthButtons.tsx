@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export function AuthButtons() {
   return (
     <div className="flex items-center gap-1.5 sm:gap-2">
-      <Button asChild variant="secondary">
+      <Button asChild variant="outline">
         <Link href="/sign-in" aria-label="Sign in">
           <LogIn className="size-4" />
 
