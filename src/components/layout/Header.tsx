@@ -3,9 +3,10 @@ import { Separator } from "@components/ui/separator";
 import { soccerPitch } from "@lucide/lab";
 import { Icon, Zap } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import { AuthButtons } from "@/features/auth/components/AuthButtons";
+import { AuthControls } from "@/features/auth/components/AuthControls";
 
 export function Header() {
   return (
@@ -50,10 +51,9 @@ export function Header() {
 
             <Separator orientation="vertical" />
 
-            <AuthButtons />
-
-            {/* Future */}
-            {/* {isAuthenticated ? <UserButton /> : <AuthButtons />} */}
+            <Suspense fallback={null}>
+              <AuthControls />
+            </Suspense>
           </div>
         </nav>
       </PageContainer>

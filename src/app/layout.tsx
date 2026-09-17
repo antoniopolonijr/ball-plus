@@ -1,6 +1,8 @@
+import { HexclaveProvider, HexclaveTheme } from "@hexclave/next";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { hexclaveServerApp } from "@/hexclave/server";
 import "@/styles/globals.css";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -28,21 +30,25 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", "font-sans", inter.variable)}
     >
       <body className="min-h-screen flex flex-col bg-background text-foreground">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Header />
+        <HexclaveProvider app={hexclaveServerApp}>
+          <HexclaveTheme>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Header />
 
-          <main className="flex-1">
-            <PageContainer>{children}</PageContainer>
-          </main>
+              <main className="flex-1">
+                <PageContainer>{children}</PageContainer>
+              </main>
 
-          <Footer />
-          <Toaster />
-        </ThemeProvider>
+              <Footer />
+              <Toaster />
+            </ThemeProvider>
+          </HexclaveTheme>
+        </HexclaveProvider>
       </body>
     </html>
   );
