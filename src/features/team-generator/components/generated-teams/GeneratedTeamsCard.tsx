@@ -73,7 +73,10 @@ export function GeneratedTeamsCard() {
           ))}
         </CardContent>
 
-        <CardFooter data-share-exclude className="justify-center gap-4">
+        <CardFooter
+          data-share-exclude
+          className="justify-center sm:justify-end gap-4"
+        >
           <CopyButton text={generatedTeamsText} />
           <ShareButton targetRef={shareContentRef} generatedAt={generatedAt} />
           <DownloadButton

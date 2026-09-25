@@ -1,7 +1,16 @@
-import { CreateGameDialog } from "@/features/games/components/CreateGameDialog";
+import type { InferSelectModel } from "drizzle-orm";
+import type { games } from "@/db/schema";
+import { CreateGameButton } from "@/features/games/components/CreateGameButton";
 import { EmptyGamesState } from "@/features/games/components/EmptyGamesState";
+import { GameCard } from "@/features/games/components/GameCard";
 
-export default function GamesList() {
+type Game = InferSelectModel<typeof games>;
+
+type GamesListProps = {
+  games: Game[];
+};
+
+export default function GamesList({ games }: GamesListProps) {
   return (
     <section
       aria-labelledby="my-games-title"
@@ -12,10 +21,18 @@ export default function GamesList() {
           My Games
         </h1>
 
-        <CreateGameDialog />
+        <CreateGameButton />
       </div>
 
-      <EmptyGamesState />
+      {games.length === 0 ? (
+        <EmptyGamesState />
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {games.map((game) => (
+            <GameCard key={game.id} game={game} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

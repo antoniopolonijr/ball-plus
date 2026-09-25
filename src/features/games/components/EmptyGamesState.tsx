@@ -1,6 +1,6 @@
 import { soccerPitch } from "@lucide/lab";
 import { Icon } from "lucide-react";
-import { CreateGameDialog } from "@/features/games/components/CreateGameDialog";
+import { CreateGameButton } from "@/features/games/components/CreateGameButton";
 
 export function EmptyGamesState() {
   return (
@@ -21,7 +21,7 @@ export function EmptyGamesState() {
         </p>
       </div>
 
-      <CreateGameDialog />
+      <CreateGameButton />
     </div>
   );
 }

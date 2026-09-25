@@ -41,7 +41,7 @@ export function TeamsCard() {
             <TeamsTable teams={teams} />
           )}
         </CardContent>
-        <CardFooter className="justify-center">
+        <CardFooter className="justify-end">
           <Button onClick={addTeam} aria-label="Add a new team">
             <ShieldPlus className="size-4" aria-hidden="true" />
             Add Team

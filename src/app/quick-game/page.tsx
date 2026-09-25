@@ -12,7 +12,7 @@ export default function QuickGamePage() {
       aria-labelledby="quick-game-page-title"
       className="flex flex-col gap-6 py-6"
     >
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-4 md:gap-6">
         <h1
           id="quick-game-page-title"
           className="text-3xl font-bold tracking-tight text-center"
@@ -22,12 +22,12 @@ export default function QuickGamePage() {
         <ResetAllButton />
       </div>
 
-      <div className="flex flex-col gap-4 md:gap-6 md:flex-row">
+      <div className="flex flex-col gap-6 md:flex-row">
         <div className="md:w-2/3">
           <PlayersCard />
         </div>
 
-        <div className="md:w-1/3 flex flex-col gap-4 md:gap-6 md:justify-between">
+        <div className="md:w-1/3 flex flex-col gap-6 md:justify-between">
           <TeamsCard />
           <GeneratorSettingsCard />
           <MatchOverviewCard />
