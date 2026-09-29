@@ -7,7 +7,7 @@ export default function GamesListNoUser() {
   return (
     <section
       aria-labelledby="games-page-no-user-title"
-      className="flex min-h-[60vh] flex-col items-center justify-center gap-6 py-12 text-center"
+      className="flex flex-col items-center justify-center gap-6 text-center"
     >
       <div className="max-w-xl space-y-3">
         <h1

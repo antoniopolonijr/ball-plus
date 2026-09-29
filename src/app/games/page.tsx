@@ -1,16 +1,11 @@
-import GamesList from "@/features/games/components/GamesList";
-import GamesListNoUser from "@/features/games/components/GamesListNoUser";
+import Games from "@/features/games/components/Games";
 import { getGames } from "@/features/games/data/getGames";
 import { hexclaveServerApp } from "@/hexclave/server";
 
 export default async function GamesPage() {
   const user = await hexclaveServerApp.getUser();
 
-  if (!user) {
-    return <GamesListNoUser />;
-  }
+  const games = user ? await getGames() : null;
 
-  const games = await getGames();
-
-  return <GamesList games={games} />;
+  return <Games games={games} />;
 }

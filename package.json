@@ -16,6 +16,7 @@
     "@neondatabase/serverless": "^1.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cn": "^0.4.0",
     "dom-to-image-more": "^3.10.2",
     "dotenv": "^18.0.3",
     "drizzle-orm": "^0.45.3",

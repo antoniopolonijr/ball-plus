@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
-import { getGame } from "@/features/games/data/getGame";
+import Game from "@/features/game/components/Game";
+import { getGame } from "@/features/game/data/getGame";
 
 type GamePageProps = {
   params: Promise<{
@@ -17,16 +18,5 @@ export default async function GamePage({ params }: GamePageProps) {
     notFound();
   }
 
-  return (
-    <section
-      aria-labelledby="game-page-title"
-      className="flex flex-col gap-6 py-6"
-    >
-      <header>
-        <h1 id="game-page-title" className="text-3xl font-bold tracking-tight">
-          {game.name}
-        </h1>
-      </header>
-    </section>
-  );
+  return <Game game={game} />;
 }
