@@ -14,7 +14,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { useTeamGeneratorStore } from "../../store/team-generator-store";
+import { useTeamGeneratorStore } from "@/features/team-generator/store/use-team-generator-store";
 
 export function ResetAllButton() {
   const resetAll = useTeamGeneratorStore((state) => state.resetAll);

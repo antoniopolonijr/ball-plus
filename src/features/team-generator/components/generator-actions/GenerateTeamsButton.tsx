@@ -3,7 +3,7 @@
 import { Dices, Info } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useTeamGeneratorStore } from "../../store/team-generator-store";
+import { useTeamGeneratorStore } from "@/features/team-generator/store/use-team-generator-store";
 import type { TeamGenerationValidationCode } from "../../utils/can-generate-teams";
 import { canGenerateTeams } from "../../utils/can-generate-teams";
 

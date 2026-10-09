@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { Textarea } from "@/components/ui/textarea";
-import { useTeamGeneratorStore } from "../../store/team-generator-store";
+import { useTeamGeneratorStore } from "@/features/team-generator/store/use-team-generator-store";
 import { parsePlayerList } from "../../utils/parse-player-list";
 
 export function PastePlayersButton() {

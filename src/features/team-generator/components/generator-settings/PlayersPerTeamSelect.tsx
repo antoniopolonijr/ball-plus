@@ -9,8 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTeamGeneratorStore } from "@/features/team-generator/store/use-team-generator-store";
 import { TEAM_SIZES } from "../../constants/defaults";
-import { useTeamGeneratorStore } from "../../store/team-generator-store";
 
 export function PlayersPerTeamSelect() {
   const { playersPerTeam, setPlayersPerTeam } = useTeamGeneratorStore(

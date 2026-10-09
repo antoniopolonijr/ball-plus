@@ -8,8 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTeamGeneratorStore } from "@/features/team-generator/store/use-team-generator-store";
 import { MAX_TEAM_COUNT, MIN_TEAM_COUNT } from "../../constants/defaults";
-import { useTeamGeneratorStore } from "../../store/team-generator-store";
 
 export function TeamCountSelect() {
   const teams = useTeamGeneratorStore((state) => state.teams);

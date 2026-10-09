@@ -9,14 +9,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useTeamGeneratorStore } from "../../store/team-generator-store";
+import { useTeamGeneratorStore } from "@/features/team-generator/store/use-team-generator-store";
 import { getGeneratedTeamsText } from "../../utils/get-generated-teams-text";
 import { CopyButton } from "./CopyButton";
 import { DownloadButton } from "./DownloadButton";
 import { GeneratedTeamCard } from "./GeneratedTeamCard";
 import { ShareButton } from "./ShareButton";
 
-export function GeneratedTeamsCard() {
+type GeneratedTeamsCardProps = {
+  title?: string;
+};
+
+export function GeneratedTeamsCard({
+  title = "Generated Teams",
+}: GeneratedTeamsCardProps) {
   const players = useTeamGeneratorStore((state) => state.players);
   const generationResult = useTeamGeneratorStore(
     (state) => state.generationResult,
@@ -44,7 +50,7 @@ export function GeneratedTeamsCard() {
   );
 
   return (
-    <section aria-labelledby="generated-teams-heading" ref={shareContentRef}>
+    <section aria-label="Generated Teams" ref={shareContentRef}>
       <Card
         key={generationResult.id}
         className="animate-in fade-in duration-400 motion-reduce:animate-none"
@@ -52,9 +58,9 @@ export function GeneratedTeamsCard() {
         <CardHeader>
           <CardTitle
             id="generated-teams-heading"
-            className="text-center text-2xl tracking-tight font-semibold"
+            className="text-center text-2xl font-semibold tracking-tight"
           >
-            Generated Teams
+            {title}
           </CardTitle>
 
           <CardDescription className="text-center">

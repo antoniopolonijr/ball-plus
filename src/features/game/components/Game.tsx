@@ -1,7 +1,5 @@
-import type { InferSelectModel } from "drizzle-orm";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,17 +9,19 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import type { games } from "@/db/schema";
-
-type Game = InferSelectModel<typeof games>;
+import GameTeamGenerator from "./GameTeamGenerator";
 
 type GameProps = {
-  game: Game;
+  game: Awaited<ReturnType<typeof import("../data/getGame").getGame>>;
 };
 
 export default function Game({ game }: GameProps) {
+  if (!game) {
+    return null;
+  }
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-6">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -46,18 +46,8 @@ export default function Game({ game }: GameProps) {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <section
-        aria-labelledby="game-page-title"
-        className="flex flex-col gap-6 py-6"
-      >
-        <header>
-          <h1
-            id="game-page-title"
-            className="text-3xl font-bold tracking-tight"
-          >
-            {game.name}
-          </h1>
-        </header>
+      <section aria-label="Game" className="flex flex-col gap-6">
+        <GameTeamGenerator game={game} />
       </section>
 
       <nav aria-label="Game navigation">

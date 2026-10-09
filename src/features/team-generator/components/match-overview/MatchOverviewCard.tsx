@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useTeamGeneratorStore } from "../../store/team-generator-store";
+import { useTeamGeneratorStore } from "@/features/team-generator/store/use-team-generator-store";
 import { getMatchOverview } from "../../utils/get-match-overview";
 import { getMatchRecommendations } from "../../utils/get-match-recommendations";
 import { MatchOverview } from "./MatchOverview";

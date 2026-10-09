@@ -23,5 +23,17 @@ export async function getGame(gameId: string) {
     where: and(eq(games.id, gameId), eq(games.ownerId, user.id)),
   });
 
-  return game;
+  if (!game) {
+    return undefined;
+  }
+
+  return {
+    ...game,
+    generationResult: game.generationResult
+      ? {
+          ...game.generationResult,
+          generatedAt: new Date(game.generationResult.generatedAt),
+        }
+      : null,
+  };
 }

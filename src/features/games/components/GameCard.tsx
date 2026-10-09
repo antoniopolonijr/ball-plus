@@ -1,4 +1,5 @@
 import type { InferSelectModel } from "drizzle-orm";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,6 +37,7 @@ export function GameCard({ game }: GameCardProps) {
 
         <Button asChild>
           <Link href={`/games/${game.id}`} aria-label={`Open ${game.name}`}>
+            <ArrowUpRight aria-hidden="true" />
             Open
           </Link>
         </Button>

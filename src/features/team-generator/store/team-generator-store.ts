@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create, type StateCreator } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import {
   DEFAULT_PLAYER_COUNT,
@@ -22,6 +22,7 @@ export interface TeamGeneratorStore {
   // --------------------------------------------------
   // State
   // --------------------------------------------------
+
   players: Player[];
   playerSortField: "name" | "position" | "skill" | null;
   playerSortDirection: "asc" | "desc";
@@ -40,10 +41,10 @@ export interface TeamGeneratorStore {
   removePlayer(id: string): void;
   updatePlayer(id: string, player: Partial<Player>): void;
   setPlayerCount(count: number): void;
-  pastePlayers: (names: string[]) => void;
-  sortPlayersByName: () => void;
-  sortPlayersByPosition: () => void;
-  sortPlayersBySkill: () => void;
+  pastePlayers(names: string[]): void;
+  sortPlayersByName(): void;
+  sortPlayersByPosition(): void;
+  sortPlayersBySkill(): void;
 
   // Teams
   addTeam(): void;
@@ -52,263 +53,283 @@ export interface TeamGeneratorStore {
   setTeamCount(count: number): void;
 
   // Generator
-  setPlayersPerTeam: (playersPerTeam: number) => void;
+  setPlayersPerTeam(playersPerTeam: number): void;
   resetAll(): void;
-  generateTeams: () => void;
+  generateTeams(): void;
+
+  initialize: (state: {
+    players: Player[];
+    teams: Team[];
+    playersPerTeam: number;
+    generationResult: GenerationResult | null;
+  }) => void;
 }
 
-export const useTeamGeneratorStore = create<TeamGeneratorStore>()(
-  persist(
-    (set, get) => ({
-      // --------------------------------------------------
-      // State
-      // --------------------------------------------------
+// --------------------------------------------------
+// Store Creator
+// --------------------------------------------------
 
-      players: createInitialPlayers(DEFAULT_PLAYER_COUNT),
-      playerSortField: null,
-      playerSortDirection: "asc",
+const createTeamGeneratorStoreState: StateCreator<TeamGeneratorStore> = (
+  set,
+  get,
+) => ({
+  // --------------------------------------------------
+  // State
+  // --------------------------------------------------
 
-      teams: createInitialTeams(DEFAULT_TEAM_COUNT),
+  players: createInitialPlayers(DEFAULT_PLAYER_COUNT),
+  playerSortField: null,
+  playerSortDirection: "asc",
 
-      playersPerTeam: DEFAULT_PLAYERS_PER_TEAM,
-      generationResult: null,
+  teams: createInitialTeams(DEFAULT_TEAM_COUNT),
 
-      // --------------------------------------------------
-      // Players Actions
-      // --------------------------------------------------
+  playersPerTeam: DEFAULT_PLAYERS_PER_TEAM,
+  generationResult: null,
 
-      addPlayer: () =>
-        set((state) => ({
-          players: [...state.players, createDefaultPlayer()],
-        })),
+  // --------------------------------------------------
+  // Players Actions
+  // --------------------------------------------------
 
-      removePlayer: (id) =>
-        set((state) => ({
-          players: state.players.filter((player) => player.id !== id),
-        })),
+  addPlayer: () =>
+    set((state) => ({
+      players: [...state.players, createDefaultPlayer()],
+    })),
 
-      updatePlayer: (id, player) =>
-        set((state) => ({
-          players: state.players.map((currentPlayer) =>
-            currentPlayer.id === id
-              ? {
-                  ...currentPlayer,
-                  ...player,
-                }
-              : currentPlayer,
-          ),
-        })),
+  removePlayer: (id) =>
+    set((state) => ({
+      players: state.players.filter((player) => player.id !== id),
+    })),
 
-      setPlayerCount: (count) =>
-        set((state) => {
-          const currentCount = state.players.length;
-
-          if (count === currentCount) {
-            return state;
-          }
-
-          if (count > currentCount) {
-            const playersToAdd = count - currentCount;
-
-            return {
-              players: [
-                ...state.players,
-                ...Array.from({ length: playersToAdd }, () =>
-                  createDefaultPlayer(),
-                ),
-              ],
-            };
-          }
-
-          return {
-            players: state.players.slice(0, count),
-          };
-        }),
-
-      sortPlayersByName: () =>
-        set((state) => {
-          const direction =
-            state.playerSortField === "name" &&
-            state.playerSortDirection === "asc"
-              ? "desc"
-              : "asc";
-
-          const sortedPlayers = [...state.players].sort((a, b) => {
-            const comparison = a.name.localeCompare(b.name);
-
-            return direction === "asc" ? comparison : -comparison;
-          });
-
-          return {
-            players: sortedPlayers,
-            playerSortField: "name",
-            playerSortDirection: direction,
-          };
-        }),
-
-      sortPlayersByPosition: () =>
-        set((state) => {
-          const direction =
-            state.playerSortField === "position" &&
-            state.playerSortDirection === "asc"
-              ? "desc"
-              : "asc";
-
-          const sortedPlayers = [...state.players].sort((a, b) => {
-            const comparison =
-              PLAYER_POSITION_SORT_ORDER[a.position] -
-              PLAYER_POSITION_SORT_ORDER[b.position];
-
-            return direction === "asc" ? comparison : -comparison;
-          });
-
-          return {
-            players: sortedPlayers,
-            playerSortField: "position",
-            playerSortDirection: direction,
-          };
-        }),
-
-      sortPlayersBySkill: () =>
-        set((state) => {
-          const direction =
-            state.playerSortField === "skill" &&
-            state.playerSortDirection === "asc"
-              ? "desc"
-              : "asc";
-
-          const sortedPlayers = [...state.players].sort((a, b) => {
-            const comparison =
-              PLAYER_SKILL_SORT_ORDER[a.skill] -
-              PLAYER_SKILL_SORT_ORDER[b.skill];
-
-            return direction === "asc" ? comparison : -comparison;
-          });
-
-          return {
-            players: sortedPlayers,
-            playerSortField: "skill",
-            playerSortDirection: direction,
-          };
-        }),
-
-      pastePlayers: (names) =>
-        set(() => ({
-          players: names.map((name) => ({
-            ...createDefaultPlayer(),
-            name,
-          })),
-          generationResult: null,
-        })),
-
-      // --------------------------------------------------
-      // Teams Actions
-      // --------------------------------------------------
-
-      addTeam: () => {
-        const newTeam = createDefaultTeam(get().teams);
-
-        set((state) => ({
-          teams: [...state.teams, newTeam],
-        }));
-      },
-
-      removeTeam: (id) =>
-        set((state) => ({
-          teams: state.teams.filter((team) => team.id !== id),
-        })),
-
-      updateTeam: (id, team) =>
-        set((state) => ({
-          teams: state.teams.map((currentTeam) =>
-            currentTeam.id === id
-              ? {
-                  ...currentTeam,
-                  ...team,
-                }
-              : currentTeam,
-          ),
-        })),
-
-      setTeamCount: (count) =>
-        set((state) => {
-          const currentCount = state.teams.length;
-
-          if (count === currentCount) {
-            return state;
-          }
-
-          if (count > currentCount) {
-            const teams = [...state.teams];
-            const teamsToAdd = count - currentCount;
-
-            for (let i = 0; i < teamsToAdd; i++) {
-              teams.push(createDefaultTeam(teams));
+  updatePlayer: (id, player) =>
+    set((state) => ({
+      players: state.players.map((currentPlayer) =>
+        currentPlayer.id === id
+          ? {
+              ...currentPlayer,
+              ...player,
             }
+          : currentPlayer,
+      ),
+    })),
 
-            return {
-              teams,
-            };
-          }
+  setPlayerCount: (count) =>
+    set((state) => {
+      const currentCount = state.players.length;
 
-          return {
-            teams: state.teams.slice(0, count),
-          };
-        }),
+      if (count === currentCount) {
+        return state;
+      }
 
-      // --------------------------------------------------
-      // Generator Actions
-      // --------------------------------------------------
+      if (count > currentCount) {
+        const playersToAdd = count - currentCount;
 
-      setPlayersPerTeam: (playersPerTeam) => set({ playersPerTeam }),
+        return {
+          players: [
+            ...state.players,
+            ...Array.from({ length: playersToAdd }, () =>
+              createDefaultPlayer(),
+            ),
+          ],
+        };
+      }
 
-      resetAll: () =>
-        set({
-          players: createInitialPlayers(DEFAULT_PLAYER_COUNT),
-
-          teams: createInitialTeams(DEFAULT_TEAM_COUNT),
-
-          playersPerTeam: DEFAULT_PLAYERS_PER_TEAM,
-
-          generationResult: null,
-        }),
-
-      generateTeams: () => {
-        const { players, teams, playersPerTeam } = get();
-
-        const generatedTeams = generateBalancedTeams(
-          players,
-          teams,
-          playersPerTeam,
-        );
-
-        set({
-          generationResult: {
-            id: `generated-teams-${Math.random().toString(36).slice(2, 11)}`,
-            generatedAt: new Date(),
-            teams: generatedTeams,
-          },
-        });
-      },
+      return {
+        players: state.players.slice(0, count),
+      };
     }),
 
-    // --------------------------------------------------
-    // Persistence
-    // --------------------------------------------------
+  sortPlayersByName: () =>
+    set((state) => {
+      const direction =
+        state.playerSortField === "name" && state.playerSortDirection === "asc"
+          ? "desc"
+          : "asc";
 
-    {
-      name: "ball-plus-quick-game",
+      const sortedPlayers = [...state.players].sort((a, b) => {
+        const comparison = a.name.localeCompare(b.name);
 
-      version: 1,
+        return direction === "asc" ? comparison : -comparison;
+      });
 
-      storage: createJSONStorage(() => localStorage),
+      return {
+        players: sortedPlayers,
+        playerSortField: "name",
+        playerSortDirection: direction,
+      };
+    }),
 
-      partialize: (state) => ({
-        players: state.players,
-        teams: state.teams,
-        playersPerTeam: state.playersPerTeam,
-        generationResult: state.generationResult,
-      }),
-    },
-  ),
+  sortPlayersByPosition: () =>
+    set((state) => {
+      const direction =
+        state.playerSortField === "position" &&
+        state.playerSortDirection === "asc"
+          ? "desc"
+          : "asc";
+
+      const sortedPlayers = [...state.players].sort((a, b) => {
+        const comparison =
+          PLAYER_POSITION_SORT_ORDER[a.position] -
+          PLAYER_POSITION_SORT_ORDER[b.position];
+
+        return direction === "asc" ? comparison : -comparison;
+      });
+
+      return {
+        players: sortedPlayers,
+        playerSortField: "position",
+        playerSortDirection: direction,
+      };
+    }),
+
+  sortPlayersBySkill: () =>
+    set((state) => {
+      const direction =
+        state.playerSortField === "skill" && state.playerSortDirection === "asc"
+          ? "desc"
+          : "asc";
+
+      const sortedPlayers = [...state.players].sort((a, b) => {
+        const comparison =
+          PLAYER_SKILL_SORT_ORDER[a.skill] - PLAYER_SKILL_SORT_ORDER[b.skill];
+
+        return direction === "asc" ? comparison : -comparison;
+      });
+
+      return {
+        players: sortedPlayers,
+        playerSortField: "skill",
+        playerSortDirection: direction,
+      };
+    }),
+
+  pastePlayers: (names) =>
+    set(() => ({
+      players: names.map((name) => ({
+        ...createDefaultPlayer(),
+        name,
+      })),
+      generationResult: null,
+    })),
+
+  // --------------------------------------------------
+  // Teams Actions
+  // --------------------------------------------------
+
+  addTeam: () => {
+    const newTeam = createDefaultTeam(get().teams);
+
+    set((state) => ({
+      teams: [...state.teams, newTeam],
+    }));
+  },
+
+  removeTeam: (id) =>
+    set((state) => ({
+      teams: state.teams.filter((team) => team.id !== id),
+    })),
+
+  updateTeam: (id, team) =>
+    set((state) => ({
+      teams: state.teams.map((currentTeam) =>
+        currentTeam.id === id
+          ? {
+              ...currentTeam,
+              ...team,
+            }
+          : currentTeam,
+      ),
+    })),
+
+  setTeamCount: (count) =>
+    set((state) => {
+      const currentCount = state.teams.length;
+
+      if (count === currentCount) {
+        return state;
+      }
+
+      if (count > currentCount) {
+        const teams = [...state.teams];
+        const teamsToAdd = count - currentCount;
+
+        for (let i = 0; i < teamsToAdd; i++) {
+          teams.push(createDefaultTeam(teams));
+        }
+
+        return {
+          teams,
+        };
+      }
+
+      return {
+        teams: state.teams.slice(0, count),
+      };
+    }),
+
+  // --------------------------------------------------
+  // Generator Actions
+  // --------------------------------------------------
+
+  setPlayersPerTeam: (playersPerTeam) => set({ playersPerTeam }),
+
+  resetAll: () =>
+    set({
+      players: createInitialPlayers(DEFAULT_PLAYER_COUNT),
+      teams: createInitialTeams(DEFAULT_TEAM_COUNT),
+      playersPerTeam: DEFAULT_PLAYERS_PER_TEAM,
+      generationResult: null,
+    }),
+
+  generateTeams: () => {
+    const { players, teams, playersPerTeam } = get();
+
+    const generatedTeams = generateBalancedTeams(
+      players,
+      teams,
+      playersPerTeam,
+    );
+
+    set({
+      generationResult: {
+        id: `generated-teams-${Math.random().toString(36).slice(2, 11)}`,
+        generatedAt: new Date(),
+        teams: generatedTeams,
+      },
+    });
+  },
+
+  initialize: ({ players, teams, playersPerTeam, generationResult }) =>
+    set({
+      players,
+      teams,
+      playersPerTeam,
+      generationResult,
+    }),
+});
+
+// --------------------------------------------------
+// Store Factory
+// --------------------------------------------------
+
+export const createTeamGeneratorStore = () =>
+  create<TeamGeneratorStore>()(createTeamGeneratorStoreState);
+
+// --------------------------------------------------
+// Quick Game Store
+// --------------------------------------------------
+
+export const teamGeneratorStore = create<TeamGeneratorStore>()(
+  persist(createTeamGeneratorStoreState, {
+    name: "ball-plus-quick-game",
+    version: 1,
+    storage: createJSONStorage(() => localStorage),
+    partialize: (state) => ({
+      players: state.players,
+      teams: state.teams,
+      playersPerTeam: state.playersPerTeam,
+      generationResult: state.generationResult,
+    }),
+  }),
 );
+
+export const useTeamGeneratorStore = teamGeneratorStore;

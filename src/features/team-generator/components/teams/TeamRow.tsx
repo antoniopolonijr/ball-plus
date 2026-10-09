@@ -1,4 +1,4 @@
-import { useTeamGeneratorStore } from "@features/team-generator/store/team-generator-store";
+import { useTeamGeneratorStore } from "@features/team-generator/store/use-team-generator-store";
 import type { Team } from "@features/team-generator/types/team";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";

@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { TeamsTable } from "@/features/team-generator/components/teams/TeamsTable";
-import { useTeamGeneratorStore } from "@/features/team-generator/store/team-generator-store";
+import { useTeamGeneratorStore } from "@/features/team-generator/store/use-team-generator-store";
 import { TeamCountSelect } from "./TeamCountSelect";
 import { TeamsEmptyState } from "./TeamsEmptyState";
 
