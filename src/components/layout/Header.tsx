@@ -1,8 +1,7 @@
 import { Button } from "@components/ui/button";
 import { Separator } from "@components/ui/separator";
 import { UserButton } from "@hexclave/next";
-import { soccerPitch } from "@lucide/lab";
-import { Icon, Zap } from "lucide-react";
+import { FolderOpen, Zap } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
@@ -22,15 +21,11 @@ export function Header() {
         </Link>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <Button asChild variant="default">
-            <Link href="/games" aria-label="Games">
-              <Icon
-                iconNode={soccerPitch}
-                aria-hidden="true"
-                className="size-4"
-              />
+          <Button asChild variant="outline">
+            <Link href="/games" aria-label="My Games">
+              <FolderOpen aria-hidden="true" className="size-4" />
 
-              <span className="hidden md:inline">Games</span>
+              <span className="hidden sm:inline">My Games</span>
             </Link>
           </Button>
 
@@ -38,7 +33,7 @@ export function Header() {
             <Link href="/quick-game" aria-label="Quick Game">
               <Zap className="size-4" />
 
-              <span className="hidden md:inline">Quick Game</span>
+              <span className="hidden sm:inline">Quick Game</span>
             </Link>
           </Button>
 

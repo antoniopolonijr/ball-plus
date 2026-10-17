@@ -1,3 +1,4 @@
+import { SlidersHorizontal } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -12,7 +13,11 @@ export function GeneratorSettingsCard() {
     <section aria-labelledby="generator-settings-title">
       <Card>
         <CardHeader>
-          <CardTitle id="generator-settings-title">
+          <CardTitle
+            id="generator-settings-title"
+            className="flex gap-2 items-center"
+          >
+            <SlidersHorizontal aria-hidden="true" className="size-4" />
             Generator Settings
           </CardTitle>
           <CardDescription>Customize your matches.</CardDescription>

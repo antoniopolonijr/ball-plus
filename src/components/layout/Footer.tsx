@@ -30,8 +30,11 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="flex flex-col gap-3 text-sm text-foreground items-center sm:flex-row sm:justify-between py-3 px-4 sm:px-6 lg:px-8 border-t bg-card">
-      <p>Created by Antonio Poloni © {currentYear}</p>
+    <footer className="flex flex-col gap-3 text-sm text-foreground items-center sm:flex-row sm:justify-between py-4 px-4 sm:px-6 lg:px-8 border-t bg-card">
+      <p>
+        Created by <span className="font-bold">Antonio Poloni</span> ©{" "}
+        {currentYear}
+      </p>
 
       <nav aria-label="Social links">
         <ul className="flex flex-row gap-3">

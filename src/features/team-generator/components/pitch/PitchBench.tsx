@@ -1,8 +1,8 @@
-import type { GeneratedPlayer } from "../../types/generated-team";
+import type { PitchPlayerData } from "../../types/pitch-formation";
 import { PitchPlayer } from "./PitchPlayer";
 
 interface PitchBenchProps {
-  players: GeneratedPlayer[];
+  players: PitchPlayerData[];
   placeholderPlayerNumberMap: Map<string, number>;
   teamColor: string;
 }
@@ -17,14 +17,15 @@ export function PitchBench({
   }
 
   return (
-    <section aria-labelledby="pitch-bench-heading" className="p-1">
-      <div className="flex flex-wrap gap-1 items-center justify-start">
-        <h5
-          id="pitch-bench-heading"
-          className="rounded bg-black/90 px-2 py-1 text-sm font-semibold tracking-wide text-white max-w-15 text-center mr-1"
-        >
+    <section
+      aria-label="Players starting on the bench"
+      className="bg-chart-4 p-1"
+    >
+      <div className="flex flex-wrap items-center justify-start gap-1">
+        <span className="mr-1 max-w-15 rounded bg-black/90 px-2 py-1 text-center text-xs font-semibold tracking-wide text-white sm:text-sm">
           Starts on Bench
-        </h5>
+        </span>
+
         {players.map((player) => (
           <PitchPlayer
             key={player.id}

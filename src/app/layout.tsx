@@ -13,9 +13,9 @@ import { cn } from "@/lib/utils";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Ball+",
+  title: "Ball+ | Fair Teams. Better Games.",
   description:
-    "Generate fair and balanced teams for your football matches based on player skills and positions.",
+    "Create balanced football teams based on player skill and position. Organize your games, save your teams, and share the results.",
 };
 
 export default function RootLayout({

@@ -7,7 +7,7 @@ export default function GamesListNoUser() {
   return (
     <section
       aria-labelledby="games-page-no-user-title"
-      className="flex flex-col items-center justify-center gap-6 text-center"
+      className="flex flex-col items-center justify-center gap-6 text-center rounded-lg border p-6"
     >
       <div className="max-w-xl space-y-3">
         <h1
@@ -29,7 +29,7 @@ export default function GamesListNoUser() {
         Want to generate teams without creating an account?
       </p>
 
-      <Button asChild variant="outline">
+      <Button asChild variant="outline" className="w-full sm:w-auto">
         <Link href="/quick-game" aria-label="Quick Game">
           <Zap className="size-4" aria-hidden="true" />
 

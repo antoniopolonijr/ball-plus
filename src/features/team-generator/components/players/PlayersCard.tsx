@@ -1,6 +1,6 @@
 "use client";
 
-import { UserPlus } from "lucide-react";
+import { UserPlus, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -27,6 +27,7 @@ export function PlayersCard() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
+            <Users aria-hidden="true" className="size-4" />
             Players
             <PlayerCountSelect />
           </CardTitle>

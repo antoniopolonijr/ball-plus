@@ -10,7 +10,7 @@ type TeamGeneratorProps = {
 };
 
 export default function TeamGenerator({
-  generatedTeamsTitle = "Generated Teams",
+  generatedTeamsTitle = "Balanced Teams",
 }: TeamGeneratorProps) {
   return (
     <>

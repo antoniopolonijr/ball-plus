@@ -1,5 +1,6 @@
 "use client";
 
+import { ListCheck } from "lucide-react";
 import { useShallow } from "zustand/shallow";
 import {
   Card,
@@ -31,7 +32,12 @@ export function MatchOverviewCard() {
     <section aria-labelledby="match-overview-card-title">
       <Card>
         <CardHeader>
-          <CardTitle id="match-overview-card-title">Match Overview</CardTitle>
+          <CardTitle
+            id="match-overview-card-title"
+            className="flex gap-2 items-center"
+          >
+            <ListCheck aria-hidden="true" className="size-4" /> Match Overview
+          </CardTitle>
 
           <CardDescription>Review your match setup.</CardDescription>
         </CardHeader>

@@ -19,6 +19,7 @@ export function GetStartedButton({
       type="button"
       onClick={() => app.redirectToSignIn()}
       aria-label="Get Started"
+      className="w-full sm:w-auto"
     >
       <LogIn className="size-4" aria-hidden="true" />
 

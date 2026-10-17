@@ -1,3 +1,4 @@
+import { Users } from "lucide-react";
 import type { GeneratedTeam } from "../../types/generated-team";
 import { Pitch } from "./Pitch";
 import { RotationGuide } from "./RotationGuide";
@@ -33,8 +34,9 @@ export function GeneratedTeamCard({
           {generatedTeam.team.name || `Team ${teamIndex + 1}`}
         </h3>
 
-        <span className="shrink-0 text-sm text-muted-foreground">
-          ({generatedTeam.players.length} players)
+        <span className="flex gap-1 items-center shrink-0 text-sm text-muted-foreground">
+          <Users aria-hidden="true" className="size-4" />
+          {generatedTeam.players.length} players
         </span>
       </header>
 

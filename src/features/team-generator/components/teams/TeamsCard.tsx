@@ -1,6 +1,6 @@
 "use client";
 
-import { ShieldPlus } from "lucide-react";
+import { Shield, ShieldPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,6 +25,7 @@ export function TeamsCard() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
+            <Shield aria-hidden="true" className="size-4" />
             Teams
             <TeamCountSelect />
           </CardTitle>

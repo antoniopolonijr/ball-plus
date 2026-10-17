@@ -1,18 +1,20 @@
-import type { GeneratedPlayer } from "../../types/generated-team";
-import type { PitchPlayers } from "../../types/pitch-formation";
+import type {
+  PitchPlayerData,
+  PitchPlayers,
+} from "../../types/pitch-formation";
 import { PitchPlayer } from "./PitchPlayer";
 
-interface PitchPlayersProps {
-  readonly players: PitchPlayers;
-  readonly placeholderPlayerNumberMap: Map<string, number>;
-  readonly teamColor: string;
+interface PitchStartersProps {
+  players: PitchPlayers;
+  placeholderPlayerNumberMap: Map<string, number>;
+  teamColor: string;
 }
 
 export function PitchStarters({
   players,
   placeholderPlayerNumberMap,
   teamColor,
-}: PitchPlayersProps) {
+}: PitchStartersProps) {
   return (
     <div className="absolute inset-0 grid grid-rows-[22%_20%_20%_20%] px-[6%]">
       <div aria-hidden="true" className="pointer-events-none" />
@@ -47,7 +49,7 @@ export function PitchStarters({
 }
 
 interface PitchRowProps {
-  players: GeneratedPlayer[];
+  players: PitchPlayerData[];
   placeholderPlayerNumberMap: Map<string, number>;
   teamColor: string;
 }
