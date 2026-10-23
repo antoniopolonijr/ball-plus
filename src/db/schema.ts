@@ -18,6 +18,8 @@ export const games = pgTable("games", {
 
   ownerId: text("owner_id").notNull(),
 
+  coverImagePath: text("cover_image_path"),
+
   players: jsonb("players").$type<Player[]>().notNull(),
 
   teams: jsonb("teams").$type<Team[]>().notNull(),

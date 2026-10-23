@@ -33,7 +33,7 @@ export default function HowItWorks() {
       className="flex flex-col gap-8"
     >
       <div className="mx-auto flex max-w-2xl flex-col items-center gap-3 text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+        <p className="text-sm font-semibold uppercase tracking-widest text-chart-4 dark:text-chart-3">
           Simple by design
         </p>
 

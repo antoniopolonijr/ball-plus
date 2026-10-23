@@ -1,5 +1,6 @@
 "use server";
 
+import { del } from "@vercel/blob";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -17,7 +18,10 @@ export async function deleteGame(gameId: string) {
   const [deletedGame] = await db
     .delete(games)
     .where(and(eq(games.id, gameId), eq(games.ownerId, user.id)))
-    .returning({ id: games.id });
+    .returning({
+      id: games.id,
+      coverImagePath: games.coverImagePath,
+    });
 
   if (!deletedGame) {
     throw new Error(
@@ -26,6 +30,17 @@ export async function deleteGame(gameId: string) {
   }
 
   revalidatePath("/games");
+
+  if (deletedGame.coverImagePath) {
+    try {
+      await del(deletedGame.coverImagePath);
+    } catch (error) {
+      console.error(
+        `Failed to delete cover image for game ${deletedGame.id}:`,
+        error,
+      );
+    }
+  }
 
   return {
     success: true,

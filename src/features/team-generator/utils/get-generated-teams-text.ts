@@ -5,10 +5,13 @@ export function getGeneratedTeamsText(
   generatedAt: Date,
   placeholderPlayerNumberMap: Map<string, number>,
 ): string {
-  const formattedDate = generatedAt.toLocaleDateString("en-GB");
-  const formattedTime = generatedAt.toLocaleTimeString("en-GB", {
+  const dateFormatter = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    second: "2-digit",
   });
 
   const teamTexts = teams.map((generatedTeam, teamIndex) => {
@@ -23,7 +26,7 @@ export function getGeneratedTeamsText(
 
   return [
     "⚽ Ball+",
-    `Teams generated on ${formattedDate}, ${formattedTime}`,
+    `Generated on ${dateFormatter.format(generatedAt)}`,
     "",
     teamTexts.join("\n\n"),
   ].join("\n");

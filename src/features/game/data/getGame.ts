@@ -1,7 +1,4 @@
-import { and, eq } from "drizzle-orm";
-
 import { db } from "@/db";
-import { games } from "@/db/schema";
 import { hexclaveServerApp } from "@/hexclave/server";
 
 function isValidUUID(value: string) {
@@ -20,7 +17,10 @@ export async function getGame(gameId: string) {
   }
 
   const game = await db.query.games.findFirst({
-    where: and(eq(games.id, gameId), eq(games.ownerId, user.id)),
+    where: {
+      id: gameId,
+      ownerId: user.id,
+    },
   });
 
   if (!game) {

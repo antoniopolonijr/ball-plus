@@ -15,7 +15,7 @@ export default function HomeIntro() {
         className="max-w-xl text-4xl font-bold tracking-tight text-balance sm:text-5xl"
       >
         Fair teams
-        <span className="block text-primary">Better games</span>
+        <span className="block text-chart-4">Better games</span>
       </h1>
 
       <p className="max-w-lg text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
