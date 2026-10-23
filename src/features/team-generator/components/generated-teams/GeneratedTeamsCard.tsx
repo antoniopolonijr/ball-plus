@@ -73,7 +73,7 @@ export function GeneratedTeamsCard({
             {title}
           </CardTitle>
 
-          <CardDescription className="flex items-center gap-1 justify-center">
+          <CardDescription className="flex flex-wrap items-center gap-1 justify-center">
             <CalendarDays
               className="size-4 shrink-0 pb-0.5"
               aria-hidden="true"
