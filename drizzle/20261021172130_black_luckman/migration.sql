@@ -1,0 +1,1 @@
+ALTER TABLE "games" ADD COLUMN "cover_image_path" text;

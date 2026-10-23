@@ -26,7 +26,7 @@ export default function CallToAction() {
             className="text-2xl font-bold tracking-tight sm:text-3xl"
           >
             Spend less time organizing.
-            <span className="block text-primary">More time playing.</span>
+            <span className="block text-chart-4">More time playing.</span>
           </h2>
 
           <p className="text-muted-foreground">

@@ -1,17 +1,15 @@
-import assert from "node:assert";
-import dotenv from "dotenv";
-
+import "dotenv/config";
 import { defineConfig } from "drizzle-kit";
 
-dotenv.config({ path: ".env.local" });
-
-assert(process.env.DATABASE_URL, "DATABASE_URL must be defined");
+if (!process.env.DATABASE_URL_UNPOOLED) {
+  throw new Error("DATABASE_URL_UNPOOLED is not set in the .env file");
+}
 
 export default defineConfig({
-  out: "./drizzle",
-  schema: "./src/db/schema.ts",
+  schema: "./src/db/schema.ts", // Your schema file path
+  out: "./drizzle", // Your migrations folder
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL_UNPOOLED,
   },
 });
