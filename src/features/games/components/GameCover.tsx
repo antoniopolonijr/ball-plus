@@ -1,11 +1,23 @@
 "use client";
 
-import { ImagePlus, ImageUp, LoaderCircle, Trash2 } from "lucide-react";
+import {
+  Ellipsis,
+  ImagePlus,
+  ImageUp,
+  LoaderCircle,
+  Trash2,
+} from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { type ChangeEvent, useRef, useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   removeGameCover,
   updateGameCover,
@@ -100,30 +112,37 @@ export function GameCover({ gameId, gameName, hasCover }: GameCoverProps) {
               className="object-contain transition-transform duration-300 group-hover/cover:scale-[1.02]"
               unoptimized
             />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-center justify-between gap-2 p-3 opacity-100 transition-opacity sm:opacity-0 sm:group-hover/cover:opacity-100 sm:group-focus-within/cover:opacity-100">
-              <Button
-                type="button"
-                variant="destructive"
-                size="icon"
-                disabled={isPending}
-                onClick={handleRemove}
-                aria-label={`Remove cover image for ${gameName}`}
-                className="pointer-events-auto"
-              >
-                <Trash2 className="size-4" aria-hidden="true" />
-              </Button>
 
-              <Button
-                type="button"
-                variant="secondary"
-                size="icon-sm"
-                disabled={isPending}
-                onClick={openFilePicker}
-                aria-label={`Change cover image for ${gameName}`}
-                className="pointer-events-auto"
-              >
-                <ImageUp className="size-4" aria-hidden="true" />
-              </Button>
+            <div className="absolute right-3 top-3 z-20">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    disabled={isPending}
+                    aria-label={`Cover image options for ${gameName}`}
+                  >
+                    <Ellipsis className="size-4" aria-hidden="true" />
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent align="end" className="w-full">
+                  <DropdownMenuItem onSelect={openFilePicker}>
+                    <ImageUp className="size-4" aria-hidden="true" />
+                    Change Image
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onSelect={handleRemove}
+                    disabled={isPending}
+                  >
+                    <Trash2 className="size-4" aria-hidden="true" />
+                    Remove Image
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </>
         ) : (
