@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { hexclaveServerApp } from "@/hexclave/server";
 import "@/styles/globals.css";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -45,6 +47,9 @@ export default function RootLayout({
               </main>
 
               <Footer />
+
+              <Analytics />
+              <SpeedInsights />
               <Toaster />
             </ThemeProvider>
           </HexclaveTheme>
