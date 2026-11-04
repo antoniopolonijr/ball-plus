@@ -2,6 +2,7 @@ import { Button } from "@components/ui/button";
 import { Separator } from "@components/ui/separator";
 import { UserButton } from "@hexclave/next";
 import { FolderOpen, Zap } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
@@ -15,9 +16,18 @@ export function Header() {
         <Link
           href="/"
           aria-label="Go to homepage"
-          className="rounded-sm text-2xl font-bold tracking-tight outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="flex items-center rounded-sm text-2xl font-bold tracking-tight outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
-          Ball+
+          <Image
+            src="/ballplus.svg"
+            alt=""
+            width={36}
+            height={36}
+            priority
+            className="pr-1"
+          />
+          <span className="text-foreground">Ball</span>
+          <span className="text-primary pb-0.5 pl-0.5">+</span>
         </Link>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
