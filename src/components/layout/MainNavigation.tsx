@@ -1,0 +1,53 @@
+import { FolderOpen, House, Zap } from "lucide-react";
+import Link from "next/link";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
+
+export function MainNavigation() {
+  return (
+    <NavigationMenu className="pr-2">
+      <NavigationMenuList className="gap-2">
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild>
+            <Link
+              href="/"
+              aria-label="Home Page"
+              className="border-1 sm:border-none"
+            >
+              <House aria-hidden="true" className="size-4" />
+              <span className="hidden sm:inline">Home</span>
+            </Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild>
+            <Link
+              href="/games"
+              aria-label="My Games"
+              className="border-1 sm:border-none"
+            >
+              <FolderOpen aria-hidden="true" className="size-4" />
+              <span className="hidden sm:inline">My Games</span>
+            </Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild>
+            <Link
+              href="/quick-game"
+              aria-label="Quick Game"
+              className="border-1 sm:border-none"
+            >
+              <Zap className="size-4" />
+              <span className="hidden sm:inline">Quick Game</span>
+            </Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
+}

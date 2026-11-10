@@ -33,7 +33,7 @@ export default function GamesListNoUser() {
         <Link href="/quick-game" aria-label="Quick Game">
           <Zap className="size-4" aria-hidden="true" />
 
-          <span>Quick Game</span>
+          <span>Try Quick Game</span>
         </Link>
       </Button>
     </section>

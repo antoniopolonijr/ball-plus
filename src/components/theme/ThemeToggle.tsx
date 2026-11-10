@@ -14,9 +14,10 @@ export function ThemeToggle() {
 
   return (
     <Button
-      variant="outline"
+      variant="ghost"
       onClick={handleToggleTheme}
       aria-label="Toggle Theme"
+      className="border-1 gap-2"
     >
       <BsCircleHalf className="size-4" aria-hidden="true" />
 
