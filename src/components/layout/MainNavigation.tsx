@@ -1,3 +1,5 @@
+"use client";
+
 import { FolderOpen, House, Zap } from "lucide-react";
 import Link from "next/link";
 import {
@@ -5,6 +7,7 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
 export function MainNavigation() {
@@ -12,7 +15,7 @@ export function MainNavigation() {
     <NavigationMenu className="pr-2">
       <NavigationMenuList className="gap-2">
         <NavigationMenuItem>
-          <NavigationMenuLink asChild>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <Link
               href="/"
               aria-label="Home Page"
@@ -23,8 +26,9 @@ export function MainNavigation() {
             </Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
+
         <NavigationMenuItem>
-          <NavigationMenuLink asChild>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <Link
               href="/games"
               aria-label="My Games"
@@ -35,14 +39,15 @@ export function MainNavigation() {
             </Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
+
         <NavigationMenuItem>
-          <NavigationMenuLink asChild>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <Link
               href="/quick-game"
               aria-label="Quick Game"
               className="border-1 sm:border-none"
             >
-              <Zap className="size-4" />
+              <Zap aria-hidden="true" className="size-4" />
               <span className="hidden sm:inline">Quick Game</span>
             </Link>
           </NavigationMenuLink>
