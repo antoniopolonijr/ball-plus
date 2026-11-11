@@ -15,9 +15,38 @@ import { cn } from "@/lib/utils";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ball-plus-eight.vercel.app"),
+
   title: "Ball+ | Fair Teams. Better Games.",
+
   description:
     "Create balanced football teams based on player skill and position. Organize your games, save your teams, and share the results.",
+
+  openGraph: {
+    title: "Ball+ | Fair Teams. Better Games.",
+    description:
+      "Create balanced football teams based on player skill and position. Organize your games, save your teams, and share the results.",
+    url: "https://ball-plus-eight.vercel.app",
+    siteName: "Ball+",
+    images: [
+      {
+        url: "/ballplus.png",
+        width: 1200,
+        height: 630,
+        alt: "Ball+ - Fair Teams. Better Games.",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Ball+ | Fair Teams. Better Games.",
+    description:
+      "Create balanced football teams based on player skill and position.",
+    images: ["/ballplus.png"],
+  },
 };
 
 export default function RootLayout({
