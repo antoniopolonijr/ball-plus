@@ -14,7 +14,7 @@ export function MainNavigation() {
   return (
     <NavigationMenu className="pr-2">
       <NavigationMenuList className="gap-2">
-        <NavigationMenuItem>
+        <NavigationMenuItem className="hidden sm:inline">
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <Link
               href="/"
@@ -22,7 +22,7 @@ export function MainNavigation() {
               className="border-1 sm:border-none"
             >
               <House aria-hidden="true" className="size-4" />
-              <span className="hidden sm:inline">Home</span>
+              <span>Home</span>
             </Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
