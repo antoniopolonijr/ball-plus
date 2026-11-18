@@ -47,7 +47,8 @@ jobs:
 
       - name: Explain skipped build
         if: ${{ env.HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' }}
-        run: echo "Build skipped: configure HEXCLAVE_PROJECT_ID and HEXCLAVE_SECRET_SERVER_KEY repository secrets."
+        run: |
+          echo "Build skipped: configure HEXCLAVE_PROJECT_ID and HEXCLAVE_SECRET_SERVER_KEY repository secrets."
 
   e2e:
     name: Public end-to-end tests
@@ -79,4 +80,5 @@ jobs:
 
       - name: Explain skipped E2E tests
         if: ${{ env.HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' }}
-        run: echo "E2E tests skipped: configure HEXCLAVE_PROJECT_ID and HEXCLAVE_SECRET_SERVER_KEY repository secrets."
+        run: |
+          echo "E2E tests skipped: configure HEXCLAVE_PROJECT_ID and HEXCLAVE_SECRET_SERVER_KEY repository secrets."
