@@ -5,7 +5,10 @@ test.describe("public navigation", () => {
     page,
   }) => {
     await page.goto("/");
-    await page.getByRole("link", { name: "Quick Game" }).click();
+    await page
+      .getByRole("navigation", { name: "Primary navigation" })
+      .getByRole("link", { name: "Quick Game", exact: true })
+      .click();
 
     await expect(page).toHaveURL(/\/quick-game$/);
     await expect(
