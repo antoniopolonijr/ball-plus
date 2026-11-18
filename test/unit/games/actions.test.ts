@@ -106,7 +106,9 @@ describe("game server actions", () => {
 
   it("trims a game name before persisting it", async () => {
     getUser.mockResolvedValue({ id: "user-1" });
-    const returning = vi.fn().mockResolvedValue([{ id: "g1", name: "Tuesday" }]);
+    const returning = vi
+      .fn()
+      .mockResolvedValue([{ id: "g1", name: "Tuesday" }]);
     const where = vi.fn().mockReturnValue({ returning });
     const set = vi.fn().mockReturnValue({ where });
     update.mockReturnValue({ set });
@@ -155,9 +157,9 @@ describe("game server actions", () => {
   it("serializes generatedAt to ISO text when persisting a generation result", async () => {
     getUser.mockResolvedValue({ id: "user-1" });
     const generatedAt = new Date("2026-05-01T12:00:00.000Z");
-    const returning = vi.fn().mockResolvedValue([
-      { id: "g1", updatedAt: generatedAt },
-    ]);
+    const returning = vi
+      .fn()
+      .mockResolvedValue([{ id: "g1", updatedAt: generatedAt }]);
     const where = vi.fn().mockReturnValue({ returning });
     const set = vi.fn().mockReturnValue({ where });
     update.mockReturnValue({ set });
@@ -196,7 +198,9 @@ describe("game server actions", () => {
     getUser.mockResolvedValue({ id: "user-1" });
     const set = vi.fn().mockReturnValue({
       where: vi.fn().mockReturnValue({
-        returning: vi.fn().mockResolvedValue([{ id: "g1", updatedAt: new Date() }]),
+        returning: vi
+          .fn()
+          .mockResolvedValue([{ id: "g1", updatedAt: new Date() }]),
       }),
     });
     update.mockReturnValue({ set });
@@ -239,9 +243,9 @@ describe("game server actions", () => {
     getUser.mockResolvedValue({ id: "user-1" });
     deleteQuery.mockReturnValue({
       where: vi.fn().mockReturnValue({
-        returning: vi.fn().mockResolvedValue([
-          { id: "g1", coverImagePath: null },
-        ]),
+        returning: vi
+          .fn()
+          .mockResolvedValue([{ id: "g1", coverImagePath: null }]),
       }),
     });
 
