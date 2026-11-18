@@ -38,7 +38,7 @@ test.describe("public navigation", () => {
       page.getByRole("heading", { name: "Save your games" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("link", { name: "Quick Game" }),
+      page.getByRole("main").getByRole("link", { name: "Quick Game" }),
     ).toBeVisible();
   });
 
