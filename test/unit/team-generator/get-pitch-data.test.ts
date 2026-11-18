@@ -49,9 +49,7 @@ describe("getPitchData", () => {
       substitute,
     ]);
 
-    expect(result.formation.attackers.map(({ id }) => id)).toEqual([
-      "starter",
-    ]);
+    expect(result.formation.attackers.map(({ id }) => id)).toEqual(["starter"]);
     expect(result.bench).toEqual([substitute]);
   });
 
