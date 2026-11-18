@@ -10,7 +10,12 @@ const teams: Team[] = [
 ];
 
 function createPlayers(count: number): Player[] {
-  const positions = ["Goalkeeper", "Defender", "Midfielder", "Attacker"] as const;
+  const positions = [
+    "Goalkeeper",
+    "Defender",
+    "Midfielder",
+    "Attacker",
+  ] as const;
   const skills = ["Low", "Medium", "High"] as const;
 
   return Array.from({ length: count }, (_, index) => ({
@@ -102,9 +107,9 @@ describe("generateBalancedTeams", () => {
       expect(
         goalkeepers.map(({ rotationOrder }) => rotationOrder).sort(),
       ).toEqual(goalkeepers.map((_, index) => index + 1));
-      expect(
-        outfield.map(({ rotationOrder }) => rotationOrder).sort(),
-      ).toEqual(outfield.map((_, index) => index + 1));
+      expect(outfield.map(({ rotationOrder }) => rotationOrder).sort()).toEqual(
+        outfield.map((_, index) => index + 1),
+      );
     }
   });
 
