@@ -7,6 +7,7 @@ This directory contains Playwright tests for user-visible application journeys. 
 - Public navigation to Quick Game.
 - Anonymous access to the Games page and its sign-up call to action.
 - Direct navigation to the Quick Game route.
+- Team generation in Quick Game and result persistence across a page reload.
 
 The signed-in saved-game flow is intentionally not enabled yet. It needs a dedicated Hexclave test account and an isolated database, neither of which should be silently replaced with production credentials.
 
@@ -52,6 +53,9 @@ test/
         ├── can-generate-teams.test.ts
         ├── generate-balanced-teams.test.ts
         ├── generated-teams-utils.test.ts
+        ├── get-contrast-text-color.test.ts
+        ├── get-match-overview.test.ts
+        ├── get-pitch-data.test.ts
         ├── parse-player-list.test.ts
         └── team-generator-store.test.ts
 ```
