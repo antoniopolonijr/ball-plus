@@ -14,9 +14,11 @@ jobs:
     name: Quality checks
     runs-on: ubuntu-latest
     env:
-      # A placeholder URL allows the Next.js app to initialize during build.
-      # Unit tests mock database access; use real test credentials only in dedicated integration jobs.
+      # The DB module asserts that DATABASE_URL exists at import time.
+      # Unit tests mock database access; never use a production URL here.
       DATABASE_URL: postgresql://test:test@localhost/ballplus_test?sslmode=require
+      HEXCLAVE_PROJECT_ID: ${{ secrets.HEXCLAVE_PROJECT_ID }}
+      HEXCLAVE_SECRET_SERVER_KEY: ${{ secrets.HEXCLAVE_SECRET_SERVER_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,13 +42,20 @@ jobs:
         run: npm run test
 
       - name: Build
+        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' }}
         run: npm run build
+
+      - name: Explain skipped build
+        if: ${{ env.HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' }}
+        run: echo "Build skipped: configure HEXCLAVE_PROJECT_ID and HEXCLAVE_SECRET_SERVER_KEY repository secrets."
 
   e2e:
     name: Public end-to-end tests
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: postgresql://test:test@localhost/ballplus_test?sslmode=require
+      HEXCLAVE_PROJECT_ID: ${{ secrets.HEXCLAVE_PROJECT_ID }}
+      HEXCLAVE_SECRET_SERVER_KEY: ${{ secrets.HEXCLAVE_SECRET_SERVER_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -61,7 +70,13 @@ jobs:
         run: npm install
 
       - name: Install Playwright Chromium
+        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' }}
         run: npx playwright install --with-deps chromium
 
       - name: Run public E2E tests
+        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' }}
         run: npm run test:e2e:ci
+
+      - name: Explain skipped E2E tests
+        if: ${{ env.HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' }}
+        run: echo "E2E tests skipped: configure HEXCLAVE_PROJECT_ID and HEXCLAVE_SECRET_SERVER_KEY repository secrets."
