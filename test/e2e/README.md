@@ -20,7 +20,11 @@ Copy `.env.test.local.example` to `.env.test.local`.
 
 Use a dedicated test environment. Never point test mutations at production data. Do not commit `.env.test.local` or the storage-state JSON.
 
-## Commands
+## Install and run
+
+After the test dependencies have been added, run `npm install` once and commit the updated `package-lock.json`. The current CI workflow uses `npm install` until the lockfile is refreshed; after that, switch CI installs to `npm ci` for reproducible dependency resolution.
+
+Run unit tests with `npm test` and browser tests with:
 
 - `npm run test:e2e`
 - `npm run test:e2e:ui`
