@@ -1,5 +1,9 @@
 import { expect, test } from "@playwright/test";
 
+// Keep these public-route checks anonymous even when an auth state is configured
+// for other E2E specs in the same Playwright run.
+test.use({ storageState: { cookies: [], origins: [] } });
+
 test.describe("public navigation", () => {
   test("allows a visitor to open Quick Game from the main navigation", async ({
     page,
