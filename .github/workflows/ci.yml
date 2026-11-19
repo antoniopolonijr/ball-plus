@@ -17,6 +17,7 @@ jobs:
       # Unit tests mock database access. Keep a harmless fallback for imports.
       # Build only runs when the dedicated test credentials are all configured.
       DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'postgresql://test:test@localhost/ballplus_test?sslmode=require' }}
+      TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
       HEXCLAVE_PROJECT_ID: ${{ secrets.TEST_HEXCLAVE_PROJECT_ID }}
       HEXCLAVE_SECRET_SERVER_KEY: ${{ secrets.TEST_HEXCLAVE_SECRET_SERVER_KEY }}
     steps:
@@ -42,11 +43,11 @@ jobs:
         run: npm run test
 
       - name: Build
-        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && secrets.TEST_DATABASE_URL != '' }}
+        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.TEST_DATABASE_URL != '' }}
         run: npm run build
 
       - name: Explain skipped build
-        if: ${{ env.HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' || secrets.TEST_DATABASE_URL == '' }}
+        if: ${{ env.HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' || env.TEST_DATABASE_URL == '' }}
         run: |
           echo "Build skipped: configure TEST_HEXCLAVE_PROJECT_ID, TEST_HEXCLAVE_SECRET_SERVER_KEY and TEST_DATABASE_URL repository secrets."
 
