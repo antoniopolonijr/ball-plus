@@ -14,11 +14,11 @@ jobs:
     name: Quality checks
     runs-on: ubuntu-latest
     env:
-      # The DB module asserts that DATABASE_URL exists at import time.
-      # Unit tests mock database access; never use a production URL here.
-      DATABASE_URL: postgresql://test:test@localhost/ballplus_test?sslmode=require
-      HEXCLAVE_PROJECT_ID: ${{ secrets.HEXCLAVE_PROJECT_ID }}
-      HEXCLAVE_SECRET_SERVER_KEY: ${{ secrets.HEXCLAVE_SECRET_SERVER_KEY }}
+      # Unit tests mock database access. Keep a harmless fallback for imports.
+      # Build only runs when the dedicated test credentials are all configured.
+      DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'postgresql://test:test@localhost/ballplus_test?sslmode=require' }}
+      HEXCLAVE_PROJECT_ID: ${{ secrets.TEST_HEXCLAVE_PROJECT_ID }}
+      HEXCLAVE_SECRET_SERVER_KEY: ${{ secrets.TEST_HEXCLAVE_SECRET_SERVER_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,21 +42,22 @@ jobs:
         run: npm run test
 
       - name: Build
-        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' }}
+        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && secrets.TEST_DATABASE_URL != '' }}
         run: npm run build
 
       - name: Explain skipped build
-        if: ${{ env.HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' }}
+        if: ${{ env.HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' || secrets.TEST_DATABASE_URL == '' }}
         run: |
-          echo "Build skipped: configure HEXCLAVE_PROJECT_ID and HEXCLAVE_SECRET_SERVER_KEY repository secrets."
+          echo "Build skipped: configure TEST_HEXCLAVE_PROJECT_ID, TEST_HEXCLAVE_SECRET_SERVER_KEY and TEST_DATABASE_URL repository secrets."
 
   e2e:
-    name: Public end-to-end tests
+    name: End-to-end tests
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: postgresql://test:test@localhost/ballplus_test?sslmode=require
-      HEXCLAVE_PROJECT_ID: ${{ secrets.HEXCLAVE_PROJECT_ID }}
-      HEXCLAVE_SECRET_SERVER_KEY: ${{ secrets.HEXCLAVE_SECRET_SERVER_KEY }}
+      DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
+      DATABASE_URL_UNPOOLED: ${{ secrets.TEST_DATABASE_URL_UNPOOLED }}
+      HEXCLAVE_PROJECT_ID: ${{ secrets.TEST_HEXCLAVE_PROJECT_ID }}
+      HEXCLAVE_SECRET_SERVER_KEY: ${{ secrets.TEST_HEXCLAVE_SECRET_SERVER_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -71,14 +72,18 @@ jobs:
         run: npm install
 
       - name: Install Playwright Chromium
-        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' }}
+        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' && env.DATABASE_URL_UNPOOLED != '' }}
         run: npx playwright install --with-deps chromium
 
-      - name: Run public E2E tests
-        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' }}
+      - name: Apply database migrations
+        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' && env.DATABASE_URL_UNPOOLED != '' }}
+        run: npm run db:migrate
+
+      - name: Run E2E tests
+        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' && env.DATABASE_URL_UNPOOLED != '' }}
         run: npm run test:e2e:ci
 
       - name: Explain skipped E2E tests
-        if: ${{ env.HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' }}
+        if: ${{ env.HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' || env.DATABASE_URL == '' || env.DATABASE_URL_UNPOOLED == '' }}
         run: |
-          echo "E2E tests skipped: configure HEXCLAVE_PROJECT_ID and HEXCLAVE_SECRET_SERVER_KEY repository secrets."
+          echo "E2E tests skipped: configure TEST_HEXCLAVE_PROJECT_ID, TEST_HEXCLAVE_SECRET_SERVER_KEY, TEST_DATABASE_URL and TEST_DATABASE_URL_UNPOOLED repository secrets."
