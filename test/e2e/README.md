@@ -37,7 +37,7 @@ Install Chromium once with `npx playwright install chromium`.
 
 Ball+ uses Hexclave. Once a dedicated test identity and stable login flow are configured, create a Playwright storage state and set `PLAYWRIGHT_STORAGE_STATE`. Keep anonymous and authenticated projects separate as the authenticated suite grows.
 
-Unlike the course repository, this project does not automatically create and delete Neon branches. The course implementation uses a different authentication provider and a different application schema. A Neon branch lifecycle can be added when the Ball+ team has a safe Neon management credential and test-specific migration/seed process.
+This project does not automatically create and delete Neon branches. A Neon branch lifecycle can be added when the Ball+ team has a safe Neon management credential and test-specific migration/seed process.
 
 ## Directory structure
 
