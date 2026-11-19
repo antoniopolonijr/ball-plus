@@ -18,7 +18,7 @@ jobs:
       # Build only runs when the dedicated test credentials are all configured.
       DATABASE_URL: ${{ secrets.TEST_DATABASE_URL || 'postgresql://test:test@localhost/ballplus_test?sslmode=require' }}
       TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
-      HEXCLAVE_PROJECT_ID: ${{ secrets.TEST_HEXCLAVE_PROJECT_ID }}
+      NEXT_PUBLIC_HEXCLAVE_PROJECT_ID: ${{ secrets.TEST_HEXCLAVE_PROJECT_ID }}
       HEXCLAVE_SECRET_SERVER_KEY: ${{ secrets.TEST_HEXCLAVE_SECRET_SERVER_KEY }}
     steps:
       - name: Checkout
@@ -43,11 +43,11 @@ jobs:
         run: npm run test
 
       - name: Build
-        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.TEST_DATABASE_URL != '' }}
+        if: ${{ env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.TEST_DATABASE_URL != '' }}
         run: npm run build
 
       - name: Explain skipped build
-        if: ${{ env.HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' || env.TEST_DATABASE_URL == '' }}
+        if: ${{ env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' || env.TEST_DATABASE_URL == '' }}
         run: |
           echo "Build skipped: configure TEST_HEXCLAVE_PROJECT_ID, TEST_HEXCLAVE_SECRET_SERVER_KEY and TEST_DATABASE_URL repository secrets."
 
@@ -57,7 +57,7 @@ jobs:
     env:
       DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
       DATABASE_URL_UNPOOLED: ${{ secrets.TEST_DATABASE_URL_UNPOOLED }}
-      HEXCLAVE_PROJECT_ID: ${{ secrets.TEST_HEXCLAVE_PROJECT_ID }}
+      NEXT_PUBLIC_HEXCLAVE_PROJECT_ID: ${{ secrets.TEST_HEXCLAVE_PROJECT_ID }}
       HEXCLAVE_SECRET_SERVER_KEY: ${{ secrets.TEST_HEXCLAVE_SECRET_SERVER_KEY }}
     steps:
       - name: Checkout
@@ -73,18 +73,18 @@ jobs:
         run: npm install
 
       - name: Install Playwright Chromium
-        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' && env.DATABASE_URL_UNPOOLED != '' }}
+        if: ${{ env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' && env.DATABASE_URL_UNPOOLED != '' }}
         run: npx playwright install --with-deps chromium
 
       - name: Apply database migrations
-        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' && env.DATABASE_URL_UNPOOLED != '' }}
+        if: ${{ env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' && env.DATABASE_URL_UNPOOLED != '' }}
         run: npm run db:migrate
 
       - name: Run E2E tests
-        if: ${{ env.HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' && env.DATABASE_URL_UNPOOLED != '' }}
+        if: ${{ env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' && env.DATABASE_URL_UNPOOLED != '' }}
         run: npm run test:e2e:ci
 
       - name: Explain skipped E2E tests
-        if: ${{ env.HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' || env.DATABASE_URL == '' || env.DATABASE_URL_UNPOOLED == '' }}
+        if: ${{ env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' || env.DATABASE_URL == '' || env.DATABASE_URL_UNPOOLED == '' }}
         run: |
           echo "E2E tests skipped: configure TEST_HEXCLAVE_PROJECT_ID, TEST_HEXCLAVE_SECRET_SERVER_KEY, TEST_DATABASE_URL and TEST_DATABASE_URL_UNPOOLED repository secrets."
