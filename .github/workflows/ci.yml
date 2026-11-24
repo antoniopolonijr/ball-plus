@@ -50,7 +50,7 @@ jobs:
           echo "Build skipped: configure TEST_NEXT_PUBLIC_HEXCLAVE_PROJECT_ID, TEST_HEXCLAVE_SECRET_SERVER_KEY and TEST_DATABASE_URL repository secrets."
 
   e2e:
-    name: Authenticated and public end-to-end tests
+    name: Public and authenticated end-to-end tests
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
@@ -76,21 +76,31 @@ jobs:
         run: npm ci
 
       - name: Install Playwright Chromium
-        if: ${{ env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' && env.DATABASE_URL_UNPOOLED != '' && env.TEST_USER_EMAIL != '' && env.TEST_USER_PASSWORD != '' && env.TEST_SECONDARY_USER_EMAIL != '' && env.TEST_SECONDARY_USER_PASSWORD != '' }}
+        if: ${{ env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' }}
         run: npx playwright install --with-deps chromium
+
+      - name: Run public E2E smoke tests
+        if: ${{ env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' }}
+        run: npx playwright test test/e2e/public-navigation.spec.ts --project=chromium-unauthenticated --reporter=list
+
+      - name: Explain skipped public E2E tests
+        if: ${{ env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' || env.DATABASE_URL == '' }}
+        run: |
+          echo "Public E2E tests skipped: configure TEST_NEXT_PUBLIC_HEXCLAVE_PROJECT_ID, TEST_HEXCLAVE_SECRET_SERVER_KEY and TEST_DATABASE_URL."
 
       - name: Apply test database migrations
         if: ${{ env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' && env.DATABASE_URL_UNPOOLED != '' && env.TEST_USER_EMAIL != '' && env.TEST_USER_PASSWORD != '' && env.TEST_SECONDARY_USER_EMAIL != '' && env.TEST_SECONDARY_USER_PASSWORD != '' }}
         run: npm run db:migrate
 
-      - name: Run public and authenticated E2E tests
+      - name: Run authenticated saved-game E2E tests
         if: ${{ env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID != '' && env.HEXCLAVE_SECRET_SERVER_KEY != '' && env.DATABASE_URL != '' && env.DATABASE_URL_UNPOOLED != '' && env.TEST_USER_EMAIL != '' && env.TEST_USER_PASSWORD != '' && env.TEST_SECONDARY_USER_EMAIL != '' && env.TEST_SECONDARY_USER_PASSWORD != '' }}
-        run: npm run test:e2e:ci
+        run: npx playwright test --project=chromium-authenticated --reporter=list
 
-      - name: Explain skipped E2E tests
+      - name: Explain skipped authenticated E2E tests
         if: ${{ env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID == '' || env.HEXCLAVE_SECRET_SERVER_KEY == '' || env.DATABASE_URL == '' || env.DATABASE_URL_UNPOOLED == '' || env.TEST_USER_EMAIL == '' || env.TEST_USER_PASSWORD == '' || env.TEST_SECONDARY_USER_EMAIL == '' || env.TEST_SECONDARY_USER_PASSWORD == '' }}
         run: |
-          echo "E2E tests skipped: configure TEST_NEXT_PUBLIC_HEXCLAVE_PROJECT_ID, TEST_HEXCLAVE_SECRET_SERVER_KEY, TEST_DATABASE_URL, TEST_DATABASE_URL_UNPOOLED, TEST_USER_EMAIL, TEST_USER_PASSWORD, TEST_SECONDARY_USER_EMAIL and TEST_SECONDARY_USER_PASSWORD."
+          echo "Authenticated E2E tests skipped: configure TEST_NEXT_PUBLIC_HEXCLAVE_PROJECT_ID, TEST_HEXCLAVE_SECRET_SERVER_KEY, TEST_DATABASE_URL, TEST_DATABASE_URL_UNPOOLED, TEST_USER_EMAIL, TEST_USER_PASSWORD, TEST_SECONDARY_USER_EMAIL and TEST_SECONDARY_USER_PASSWORD."
+
       - name: Note about Blob cover scenario
         if: ${{ env.BLOB_READ_WRITE_TOKEN == '' && env.NEXT_PUBLIC_HEXCLAVE_PROJECT_ID != '' }}
         run: |
