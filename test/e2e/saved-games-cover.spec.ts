@@ -2,7 +2,12 @@ import { randomUUID } from "node:crypto";
 
 import { expect, test } from "@playwright/test";
 
-import { createGame, deleteGameById, renameGame, waitForServerAction } from "./helpers/saved-games";
+import {
+  createGame,
+  deleteGameById,
+  renameGame,
+  waitForServerAction,
+} from "./helpers/saved-games";
 
 const ONE_PIXEL_PNG = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=",
@@ -59,7 +64,9 @@ test.describe("saved game cover images", () => {
     await expect
       .poll(
         () =>
-          coverImage.evaluate((image) => (image as HTMLImageElement).naturalWidth),
+          coverImage.evaluate(
+            (image) => (image as HTMLImageElement).naturalWidth,
+          ),
         { timeout: 15_000 },
       )
       .toBeGreaterThan(0);
