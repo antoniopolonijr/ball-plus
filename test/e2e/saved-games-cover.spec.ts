@@ -10,6 +10,13 @@ const ONE_PIXEL_PNG = Buffer.from(
 );
 
 test.describe("saved game cover images", () => {
+  test.beforeEach(() => {
+    test.skip(
+      !process.env.BLOB_READ_WRITE_TOKEN,
+      "Configure a dedicated TEST Vercel Blob store to run cover upload E2E coverage.",
+    );
+  });
+
   let activeGameName: string | undefined;
 
   test.afterEach(async ({ page }) => {
