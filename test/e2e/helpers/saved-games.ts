@@ -26,16 +26,14 @@ export async function waitForServerAction(
   }
 }
 
-export async function createNamedGame(
-  page: Page,
-  gameName: string,
-): Promise<string> {
+export async function createGame(page: Page): Promise<string> {
   await page.goto("/games");
   await expect(
     page.getByRole("heading", { name: "My Games", exact: true }),
   ).toBeVisible();
 
-  // The header and empty-state panel can both contain a New Game button.
+  // The empty-state layout can render another New Game button. Clicking the
+  // first exact match consistently selects the page-level creation action.
   await page.getByRole("button", { name: "New Game", exact: true }).first().click();
   await page.waitForURL(/\/games\/[0-9a-f-]{36}$/i);
 
@@ -45,6 +43,13 @@ export async function createNamedGame(
     throw new Error("The new game's ID could not be read from its URL.");
   }
 
+  return gameId;
+}
+
+export async function renameGame(
+  page: Page,
+  gameName: string,
+): Promise<void> {
   await page.getByRole("button", { name: "Edit game name" }).click();
   const nameInput = page.getByRole("textbox", { name: "Game name" });
 
@@ -56,26 +61,29 @@ export async function createNamedGame(
   await expect(
     page.getByRole("heading", { name: gameName, exact: true }),
   ).toBeVisible();
-
-  return gameId;
 }
 
-export async function deleteNamedGame(
+export async function deleteGameById(
   page: Page,
-  gameName: string,
+  gameId: string,
 ): Promise<void> {
   await page.goto("/games");
 
-  const gameHeading = page.getByRole("heading", {
-    name: gameName,
-    exact: true,
-  });
+  const gameCard = page
+    .getByTestId("game-card")
+    .filter({ has: page.locator(`a[href="/games/${gameId}"]`) });
 
-  if ((await gameHeading.count()) === 0) {
+  if ((await gameCard.count()) === 0) {
     return;
   }
 
-  await page
+  const gameName = (await gameCard.getByRole("heading").textContent())?.trim();
+
+  if (!gameName) {
+    throw new Error(`Could not read the name of game ${gameId} for cleanup.`);
+  }
+
+  await gameCard
     .getByRole("button", {
       name: `Delete ${gameName} Game`,
       exact: true,
@@ -89,5 +97,5 @@ export async function deleteNamedGame(
     await dialog.getByRole("button", { name: "Delete game", exact: true }).click();
   });
 
-  await expect(gameHeading).toHaveCount(0);
+  await expect(gameCard).toHaveCount(0);
 }
