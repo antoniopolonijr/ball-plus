@@ -8,8 +8,7 @@ export async function waitForServerAction(
     (response) => {
       const request = response.request();
       return (
-        request.method() === "POST" &&
-        Boolean(request.headers()["next-action"])
+        request.method() === "POST" && Boolean(request.headers()["next-action"])
       );
     },
     { timeout: 20_000 },
@@ -34,7 +33,10 @@ export async function createGame(page: Page): Promise<string> {
 
   // The empty-state layout can render another New Game button. Clicking the
   // first exact match consistently selects the page-level creation action.
-  await page.getByRole("button", { name: "New Game", exact: true }).first().click();
+  await page
+    .getByRole("button", { name: "New Game", exact: true })
+    .first()
+    .click();
   await page.waitForURL(/\/games\/[0-9a-f-]{36}$/i);
 
   const gameId = new URL(page.url()).pathname.split("/").at(-1);
@@ -46,10 +48,7 @@ export async function createGame(page: Page): Promise<string> {
   return gameId;
 }
 
-export async function renameGame(
-  page: Page,
-  gameName: string,
-): Promise<void> {
+export async function renameGame(page: Page, gameName: string): Promise<void> {
   await page.getByRole("button", { name: "Edit game name" }).click();
   const nameInput = page.getByRole("textbox", { name: "Game name" });
 
@@ -94,7 +93,9 @@ export async function deleteGameById(
   await expect(dialog).toBeVisible();
 
   await waitForServerAction(page, async () => {
-    await dialog.getByRole("button", { name: "Delete game", exact: true }).click();
+    await dialog
+      .getByRole("button", { name: "Delete game", exact: true })
+      .click();
   });
 
   await expect(gameCard).toHaveCount(0);
