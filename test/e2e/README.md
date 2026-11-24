@@ -1,43 +1,161 @@
 # Ball+ — End-to-End tests
 
-This directory contains Playwright tests for user-visible application journeys. Business rules are covered by Vitest; E2E tests verify that routes and navigation work in a real browser.
+This directory contains Playwright browser tests for real user journeys. Vitest covers deterministic business rules; Playwright verifies the full Next.js + Hexclave + Neon experience.
 
 ## Covered journeys
 
-- Public navigation to Quick Game.
-- Anonymous access to the Games page and its sign-up call to action.
-- Direct navigation to the Quick Game route.
-- Team generation in Quick Game and result persistence across a page reload.
+### Public / unauthenticated
 
-The signed-in saved-game flow is intentionally not enabled yet. It needs a dedicated Hexclave test account and an isolated database, neither of which should be silently replaced with production credentials.
+- Open Quick Game from the primary navigation.
+- Generate teams in Quick Game and restore the result after reloading.
+- View the anonymous Games-page sign-in call to action.
+- Verify a saved-game route redirects an anonymous visitor to Hexclave sign-in.
 
-## Environment
+### Authenticated saved games
 
-Copy `.env.test.local.example` to `.env.test.local`.
+- Sign in through the real Hexclave handler and save a Playwright storage state.
+- Create a saved game and rename it.
+- Update a player and a team, generate balanced teams, and persist the result.
+- Reload the game and verify the database restored the player, team, and generated result.
+- Delete the created game.
+- Sign in as a second test account and verify the first user's game is absent from its list and returns 404 when opened directly.
+- Upload and remove a private game cover when a dedicated Vercel Blob test token is configured.
 
-- `PLAYWRIGHT_BASE_URL` (optional): test server URL. When omitted, Playwright starts `npm run dev`.
-- `PLAYWRIGHT_STORAGE_STATE` (optional): path to a Playwright storage-state JSON for a dedicated test user.
+## Environment setup
 
-Use a dedicated test environment. Never point test mutations at production data. Do not commit `.env.test.local` or the storage-state JSON.
+Copy `.env.test.local.example` to `.env.test.local` and provide test-only credentials.
 
-## Install and run
+### 1. Hexclave TEST project
 
-After the test dependencies have been added, run `npm install` once and commit the updated `package-lock.json`. The current CI workflow uses `npm install` until the lockfile is refreshed; after that, switch CI installs to `npm ci` for reproducible dependency resolution.
+Use a dedicated cloud project for automated tests where possible. Enable email/password sign-in and create two dedicated users in that project. Both accounts must be active and able to sign in with a password.
 
-Run unit tests with `npm test` and browser tests with:
+Required variables:
 
-- `npm run test:e2e`
-- `npm run test:e2e:ui`
-- `npm run test:e2e:debug`
-- `npx playwright test test/e2e/public-navigation.spec.ts`
+```env
+NEXT_PUBLIC_HEXCLAVE_PROJECT_ID=
+HEXCLAVE_SECRET_SERVER_KEY=
+TEST_USER_EMAIL=
+TEST_USER_PASSWORD=
+TEST_SECONDARY_USER_EMAIL=
+TEST_SECONDARY_USER_PASSWORD=
+```
 
-Install Chromium once with `npx playwright install chromium`.
+- `TEST_USER_*` is the primary owner used by the setup project and saved-game tests.
+- `TEST_SECONDARY_USER_*` is a different account used to prove ownership isolation.
+- The Project ID is public; the Secret Server Key is server-only. Never expose the server key with a `NEXT_PUBLIC_` prefix.
+
+### 2. Neon TEST database
+
+Create a dedicated Neon project/database for E2E tests. Do not point Playwright or GitHub Actions at development or production data.
+
+```env
+DATABASE_URL=           # pooled connection string
+DATABASE_URL_UNPOOLED=  # direct/unpooled connection string
+```
+
+Ball+ uses `DATABASE_URL` for runtime queries and `DATABASE_URL_UNPOOLED` for Drizzle migrations. Both URLs must refer to the same test database.
+
+Before a local E2E run, apply the current migrations:
+
+```bash
+npm run db:migrate
+```
+
+The CI workflow runs migrations against the dedicated TEST database before Playwright. This implementation deliberately uses a permanent, isolated test database rather than creating/deleting Neon branches for every run. It does not require a Neon management API key.
+
+### 3. Vercel Blob TEST store
+
+The cover upload feature uses private Vercel Blob storage. **Do not use the production Blob token for tests.**
+
+Create a separate private Blob store for E2E uploads and put its read/write token in:
+
+```env
+BLOB_READ_WRITE_TOKEN=
+```
+
+The cover test is skipped when this token is absent; all other authenticated saved-game tests can still run. In GitHub Actions, the test token is passed as `TEST_BLOB_READ_WRITE_TOKEN` and mapped to the SDK's `BLOB_READ_WRITE_TOKEN`.
+
+The test's generated game record is deleted by its ID after the test; deleting the game also deletes the associated private cover blob.
+
+### 4. Optional Playwright base URL
+
+By default, Playwright starts `npm run dev` itself. Leave this variable unset for normal local runs.
+
+```env
+# Set only when testing an already-running server:
+# PLAYWRIGHT_BASE_URL=http://127.0.0.1:3000
+```
+
+When `PLAYWRIGHT_BASE_URL` is set, Playwright assumes that server is already running and does not start another one.
+
+## Running tests
+
+Install browsers once:
+
+```bash
+npx playwright install chromium
+```
+
+Run all browser tests:
+
+```bash
+npm run test:e2e
+```
+
+Useful focused commands:
+
+```bash
+npx playwright test --project=setup
+npx playwright test test/e2e/saved-games.spec.ts --project=chromium-authenticated
+npx playwright test test/e2e/saved-games-authorization.spec.ts --project=chromium-authenticated
+npx playwright test test/e2e/saved-games-cover.spec.ts --project=chromium-authenticated
+npx playwright test test/e2e/public-navigation.spec.ts --project=chromium-unauthenticated
+npm run test:e2e:ui
+npm run test:e2e:debug
+```
 
 ## Authentication strategy
 
-Ball+ uses Hexclave. Once a dedicated test identity and stable login flow are configured, create a Playwright storage state and set `PLAYWRIGHT_STORAGE_STATE`. Keep anonymous and authenticated projects separate as the authenticated suite grows.
+The `setup` Playwright project logs in with the dedicated primary test account using the real `/handler/sign-in` page and saves browser storage state to `playwright/.auth/user.json`.
 
-This project does not automatically create and delete Neon branches. A Neon branch lifecycle can be added when the Ball+ team has a safe Neon management credential and test-specific migration/seed process.
+The `chromium-authenticated` project depends on that setup and loads the saved state. Public tests run in a separate project with an explicitly empty storage state.
+
+The authorization test creates a second, isolated browser context, signs in using the secondary test account, and checks that the first user's saved game is not listed and cannot be opened by ID.
+
+The storage-state JSON contains session credentials. It is ignored by Git and must never be committed, uploaded as a public artifact, or reused from a personal browser session.
+
+## GitHub Actions secrets
+
+Add these under **Repository → Settings → Secrets and variables → Actions**:
+
+| Secret | Purpose |
+|---|---|
+| `TEST_NEXT_PUBLIC_HEXCLAVE_PROJECT_ID` | Hexclave TEST project ID |
+| `TEST_HEXCLAVE_SECRET_SERVER_KEY` | Hexclave TEST server key |
+| `TEST_DATABASE_URL` | Neon TEST pooled URL |
+| `TEST_DATABASE_URL_UNPOOLED` | Neon TEST direct URL for migrations |
+| `TEST_USER_EMAIL` | Primary E2E account email |
+| `TEST_USER_PASSWORD` | Primary E2E account password |
+| `TEST_SECONDARY_USER_EMAIL` | Secondary E2E account email |
+| `TEST_SECONDARY_USER_PASSWORD` | Secondary E2E account password |
+| `TEST_BLOB_READ_WRITE_TOKEN` | Optional dedicated Blob TEST store token |
+
+The first eight secrets are required to enable authenticated E2E runs in CI. The Blob secret is optional; without it, only the cover upload test is skipped.
+
+The workflow maps the `TEST_*` secret names to the exact environment-variable names expected by Next.js, Hexclave, Drizzle, and Vercel Blob. No production secrets should be copied into this list.
+
+## Isolation and cleanup
+
+- Use a database and Hexclave project dedicated to tests.
+- Use two test users; never use personal or production user credentials.
+- Use a separate private Blob store.
+- Test game names are unique per run.
+- Tests execute with one Playwright worker because they share a dedicated primary test account.
+- Tests delete games they create, using the unique game ID to avoid deleting an unrelated game with the same name.
+- The workflow runs migrations against the isolated database before E2E.
+- No test creates/deletes Neon branches automatically.
+
+If a CI run is interrupted before cleanup, remove leftover E2E games from the dedicated test account/database only.
 
 ## Directory structure
 
@@ -45,25 +163,22 @@ This project does not automatically create and delete Neon branches. A Neon bran
 test/
 ├── e2e/
 │   ├── README.md
-│   └── public-navigation.spec.ts
+│   ├── auth.setup.ts
+│   ├── helpers/
+│   │   ├── auth.ts
+│   │   └── saved-games.ts
+│   ├── public-navigation.spec.ts
+│   ├── saved-games.spec.ts
+│   ├── saved-games-authorization.spec.ts
+│   └── saved-games-cover.spec.ts
 ├── mocks/
 │   └── README.md
 ├── setup.ts
 └── unit/
     ├── games/
-    │   ├── actions.test.ts
-    │   └── data.test.ts
     └── team-generator/
-        ├── can-generate-teams.test.ts
-        ├── generate-balanced-teams.test.ts
-        ├── generated-teams-utils.test.ts
-        ├── get-contrast-text-color.test.ts
-        ├── get-match-overview.test.ts
-        ├── get-pitch-data.test.ts
-        ├── parse-player-list.test.ts
-        └── team-generator-store.test.ts
+
+playwright/
+└── .auth/                  # Git-ignored Playwright session files
+    └── user.json           # Generated by auth.setup.ts
 ```
-
-## CI
-
-The workflow runs unit tests, typecheck, lint, build and unauthenticated browser smoke tests. It uses a syntactically valid placeholder Neon URL only so that the application can initialize; the anonymous smoke tests must not issue database queries. Add a dedicated test database and Hexclave identity before enabling tests that create, update or delete saved games.
