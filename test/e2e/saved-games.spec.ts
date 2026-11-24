@@ -2,7 +2,12 @@ import { randomUUID } from "node:crypto";
 
 import { expect, test } from "@playwright/test";
 
-import { createGame, deleteGameById, renameGame, waitForServerAction } from "./helpers/saved-games";
+import {
+  createGame,
+  deleteGameById,
+  renameGame,
+  waitForServerAction,
+} from "./helpers/saved-games";
 
 test.describe("saved games", () => {
   let activeGameId: string | undefined;
@@ -32,16 +37,20 @@ test.describe("saved games", () => {
     ).toBeVisible();
 
     const playerName = `E2E Player ${randomUUID().slice(0, 6)}`;
-    const playerNameInput = page.getByRole("textbox", {
-      name: "Player name",
-    }).first();
+    const playerNameInput = page
+      .getByRole("textbox", {
+        name: "Player name",
+      })
+      .first();
 
     await waitForServerAction(page, () => playerNameInput.fill(playerName));
 
     const teamName = `E2E Team ${randomUUID().slice(0, 6)}`;
-    const teamNameInput = page.getByRole("textbox", {
-      name: "Team name",
-    }).first();
+    const teamNameInput = page
+      .getByRole("textbox", {
+        name: "Team name",
+      })
+      .first();
 
     await waitForServerAction(page, () => teamNameInput.fill(teamName));
 
