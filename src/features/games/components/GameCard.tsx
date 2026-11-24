@@ -22,7 +22,7 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
 
 export function GameCard({ game }: GameCardProps) {
   return (
-    <Card className="py-0">
+    <Card className="py-0" data-testid="game-card">
       <GameCover
         gameId={game.id}
         gameName={game.name}
