@@ -6,19 +6,19 @@ import {
   getSecondaryTestUserCredentials,
   signInWithPassword,
 } from "./helpers/auth";
-import { createNamedGame, deleteNamedGame } from "./helpers/saved-games";
+import { createGame, deleteGameById, renameGame } from "./helpers/saved-games";
 
 test.describe("saved game authorization", () => {
-  let activeGameName: string | undefined;
+  let activeGameId: string | undefined;
 
   test.afterEach(async ({ page }) => {
-    if (!activeGameName) {
+    if (!activeGameId) {
       return;
     }
 
-    const gameName = activeGameName;
-    activeGameName = undefined;
-    await deleteNamedGame(page, gameName);
+    const gameId = activeGameId;
+    activeGameId = undefined;
+    await deleteGameById(page, gameId);
   });
 
   test("does not expose a game to a different authenticated user", async ({
@@ -26,10 +26,9 @@ test.describe("saved game authorization", () => {
     browser,
   }) => {
     const gameName = `E2E private game ${randomUUID().slice(0, 8)}`;
-    activeGameName = "New Game";
-
-    const gameId = await createNamedGame(page, gameName);
-    activeGameName = gameName;
+    const gameId = await createGame(page);
+    activeGameId = gameId;
+    await renameGame(page, gameName);
 
     const secondaryContext = await browser.newContext({
       storageState: { cookies: [], origins: [] },
