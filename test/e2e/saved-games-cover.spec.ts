@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 
 import { expect, test } from "@playwright/test";
 
-import { createNamedGame, deleteNamedGame, waitForServerAction } from "./helpers/saved-games";
+import { createGame, deleteGameById, renameGame, waitForServerAction } from "./helpers/saved-games";
 
 const ONE_PIXEL_PNG = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=",
@@ -17,26 +17,25 @@ test.describe("saved game cover images", () => {
     );
   });
 
-  let activeGameName: string | undefined;
+  let activeGameId: string | undefined;
 
   test.afterEach(async ({ page }) => {
-    if (!activeGameName) {
+    if (!activeGameId) {
       return;
     }
 
-    const gameName = activeGameName;
-    activeGameName = undefined;
-    await deleteNamedGame(page, gameName);
+    const gameId = activeGameId;
+    activeGameId = undefined;
+    await deleteGameById(page, gameId);
   });
 
   test("uploads and removes a private cover image using the test Blob store", async ({
     page,
   }) => {
     const gameName = `E2E cover game ${randomUUID().slice(0, 8)}`;
-    activeGameName = "New Game";
-
-    const gameId = await createNamedGame(page, gameName);
-    activeGameName = gameName;
+    const gameId = await createGame(page);
+    activeGameId = gameId;
+    await renameGame(page, gameName);
 
     await page.goto("/games");
 
