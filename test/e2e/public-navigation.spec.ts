@@ -49,6 +49,14 @@ test.describe("public navigation", () => {
     ).toBeVisible();
   });
 
+  test("redirects an anonymous visitor away from a protected saved-game route", async ({
+    page,
+  }) => {
+    await page.goto("/games/00000000-0000-4000-8000-000000000001");
+
+    await expect(page).toHaveURL(/\/handler\/sign-in(?:[/?#]|$)/);
+  });
+
   test("loads Quick Game directly", async ({ page }) => {
     await page.goto("/quick-game");
 
