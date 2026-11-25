@@ -66,7 +66,6 @@ test.describe("saved games", () => {
     await expect(generatedTeams).toBeVisible();
     await expect(generatedTeams).toContainText(playerName);
     await expect(generatedTeams).toContainText(teamName);
-    await expect(generatedTeams).toContainText(teamName);
     await expect(page.getByTestId("game-save-status")).toHaveAttribute(
       "data-state",
       "saved",
@@ -86,6 +85,7 @@ test.describe("saved games", () => {
     ).toHaveValue(teamName);
     await expect(generatedTeams).toBeVisible();
     await expect(generatedTeams).toContainText(playerName);
+    await expect(generatedTeams).toContainText(teamName);
 
     await deleteGameById(page, gameId);
     activeGameId = undefined;
