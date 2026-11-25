@@ -52,8 +52,15 @@ test.describe("saved game authorization", () => {
         }),
       ).toHaveCount(0);
 
-      const response = await secondaryPage.goto(`/games/${gameId}`);
-      expect(response?.status()).toBe(404);
+      await secondaryPage.goto(`/games/${gameId}`);
+
+      // 1. Check the text/heading on the not-found.tsx page.
+      await expect(
+        secondaryPage.getByRole("heading", {
+          name: "Page not found",
+          exact: true,
+        }),
+      ).toBeVisible();
 
       // The original owner must still be able to open the game.
       await page.goto(`/games/${gameId}`);
