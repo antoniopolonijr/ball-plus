@@ -6,7 +6,7 @@ import {
   createGame,
   deleteGameById,
   renameGame,
-  waitForServerAction,
+  waitForGameSave,
 } from "./helpers/saved-games";
 
 test.describe("saved games", () => {
@@ -43,7 +43,7 @@ test.describe("saved games", () => {
       })
       .first();
 
-    await waitForServerAction(page, () => playerNameInput.fill(playerName));
+    await waitForGameSave(page, () => playerNameInput.fill(playerName));
 
     const teamName = `E2E Team ${randomUUID().slice(0, 6)}`;
     const teamNameInput = page
@@ -52,9 +52,9 @@ test.describe("saved games", () => {
       })
       .first();
 
-    await waitForServerAction(page, () => teamNameInput.fill(teamName));
+    await waitForGameSave(page, () => teamNameInput.fill(teamName));
 
-    await waitForServerAction(page, async () => {
+    await waitForGameSave(page, async () => {
       await page
         .getByRole("button", { name: "Generate balanced teams" })
         .click();
@@ -66,6 +66,11 @@ test.describe("saved games", () => {
     await expect(generatedTeams).toBeVisible();
     await expect(generatedTeams).toContainText(playerName);
     await expect(generatedTeams).toContainText(teamName);
+    await expect(generatedTeams).toContainText(teamName);
+    await expect(page.getByTestId("game-save-status")).toHaveAttribute(
+      "data-state",
+      "saved",
+    );
 
     // A fresh document load verifies database persistence, not only Zustand state.
     await page.reload();
