@@ -25,6 +25,20 @@ export async function waitForServerAction(
   }
 }
 
+export async function waitForGameSave(
+  page: Page,
+  trigger: () => Promise<void>,
+): Promise<void> {
+  const saveStatus = page.getByTestId("game-save-status");
+
+  await expect(saveStatus).toHaveAttribute("data-state", "saved");
+  await trigger();
+  await expect(saveStatus).toHaveAttribute("data-state", "saving");
+  await expect(saveStatus).toHaveAttribute("data-state", "saved", {
+    timeout: 20_000,
+  });
+}
+
 export async function createGame(page: Page): Promise<string> {
   await page.goto("/games");
   await expect(
