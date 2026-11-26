@@ -6,7 +6,7 @@ import { GenerateTeamsButton } from "./GenerateTeamsButton";
 export function GeneratorActionsCard() {
   return (
     <section aria-labelledby="generator-actions-title">
-      <Card>
+      <Card className="pt-0">
         <CardHeader>
           <CardTitle id="generator-actions-title" className="sr-only">
             Generator Actions

@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { useTeamGeneratorStore } from "@/features/team-generator/store/use-team-generator-store";
 import { getGeneratedTeamsText } from "../../utils/get-generated-teams-text";
+import { GenerateTeamsButton } from "../generator-actions/GenerateTeamsButton";
 import { CopyButton } from "./CopyButton";
 import { DownloadButton } from "./DownloadButton";
 import { GeneratedTeamCard } from "./GeneratedTeamCard";
@@ -38,7 +39,11 @@ export function GeneratedTeamsCard({
   );
 
   if (!generationResult) {
-    return null;
+    return (
+      <div className="flex justify-center">
+        <GenerateTeamsButton />
+      </div>
+    );
   }
 
   // Dates persisted by Zustand are serialized as strings and must be converted to Date objects before formatting.
@@ -60,7 +65,11 @@ export function GeneratedTeamsCard({
   );
 
   return (
-    <section aria-label="Generated Teams" ref={shareContentRef}>
+    <section
+      className="flex flex-col justify-center gap-6"
+      aria-label="Generated Teams"
+      ref={shareContentRef}
+    >
       <Card
         key={generationResult.id}
         className="animate-in fade-in duration-400 motion-reduce:animate-none"
@@ -96,16 +105,17 @@ export function GeneratedTeamsCard({
 
         <CardFooter
           data-share-exclude
-          className="justify-center sm:justify-end gap-4"
+          className="flex gap-2 sm:gap-4 justify-center sm:justify-end"
         >
           <CopyButton text={generatedTeamsText} />
-          <ShareButton targetRef={shareContentRef} generatedAt={generatedAt} />
           <DownloadButton
             targetRef={shareContentRef}
             generatedAt={generatedAt}
           />
+          <ShareButton targetRef={shareContentRef} generatedAt={generatedAt} />
         </CardFooter>
       </Card>
+      <GenerateTeamsButton />
     </section>
   );
 }

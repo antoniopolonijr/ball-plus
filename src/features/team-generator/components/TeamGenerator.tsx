@@ -1,5 +1,4 @@
 import { GeneratedTeamsCard } from "./generated-teams/GeneratedTeamsCard";
-import { GeneratorActionsCard } from "./generator-actions/GeneratorCardActions";
 import { GeneratorSettingsCard } from "./generator-settings/GeneratorSettingsCard";
 import { MatchOverviewCard } from "./match-overview/MatchOverviewCard";
 import { PlayersCard } from "./players/PlayersCard";
@@ -19,11 +18,10 @@ export default function TeamGenerator({
           <PlayersCard />
         </div>
 
-        <div className="flex flex-col gap-6 md:w-1/3 md:justify-between">
+        <div className="flex flex-col gap-6 md:w-1/3 md:justify-start">
           <TeamsCard />
           <GeneratorSettingsCard />
           <MatchOverviewCard />
-          <GeneratorActionsCard />
         </div>
       </div>
 
