@@ -93,11 +93,13 @@ const createTeamGeneratorStoreState: StateCreator<TeamGeneratorStore> = (
   addPlayer: () =>
     set((state) => ({
       players: [...state.players, createDefaultPlayer()],
+      generationResult: null,
     })),
 
   removePlayer: (id) =>
     set((state) => ({
       players: state.players.filter((player) => player.id !== id),
+      generationResult: null,
     })),
 
   updatePlayer: (id, player) =>
@@ -110,6 +112,7 @@ const createTeamGeneratorStoreState: StateCreator<TeamGeneratorStore> = (
             }
           : currentPlayer,
       ),
+      generationResult: null,
     })),
 
   setPlayerCount: (count) =>
@@ -130,11 +133,13 @@ const createTeamGeneratorStoreState: StateCreator<TeamGeneratorStore> = (
               createDefaultPlayer(),
             ),
           ],
+          generationResult: null,
         };
       }
 
       return {
         players: state.players.slice(0, count),
+        generationResult: null,
       };
     }),
 
@@ -220,12 +225,14 @@ const createTeamGeneratorStoreState: StateCreator<TeamGeneratorStore> = (
 
     set((state) => ({
       teams: [...state.teams, newTeam],
+      generationResult: null,
     }));
   },
 
   removeTeam: (id) =>
     set((state) => ({
       teams: state.teams.filter((team) => team.id !== id),
+      generationResult: null,
     })),
 
   updateTeam: (id, team) =>
@@ -238,6 +245,7 @@ const createTeamGeneratorStoreState: StateCreator<TeamGeneratorStore> = (
             }
           : currentTeam,
       ),
+      generationResult: null,
     })),
 
   setTeamCount: (count) =>
@@ -258,11 +266,13 @@ const createTeamGeneratorStoreState: StateCreator<TeamGeneratorStore> = (
 
         return {
           teams,
+          generationResult: null,
         };
       }
 
       return {
         teams: state.teams.slice(0, count),
+        generationResult: null,
       };
     }),
 
@@ -270,7 +280,8 @@ const createTeamGeneratorStoreState: StateCreator<TeamGeneratorStore> = (
   // Generator Actions
   // --------------------------------------------------
 
-  setPlayersPerTeam: (playersPerTeam) => set({ playersPerTeam }),
+  setPlayersPerTeam: (playersPerTeam) =>
+    set({ playersPerTeam, generationResult: null }),
 
   resetAll: () =>
     set({

@@ -109,30 +109,27 @@ export default function GameTeamGenerator({ game }: GameTeamGeneratorProps) {
   return (
     <TeamGeneratorStoreProvider store={store}>
       <div className="flex flex-col gap-6">
-        <div className="flex flex-wrap items-center justify-between gap-4 md:gap-6">
+        <div className="flex items-center justify-between gap-4 md:gap-6">
           <GameNameEditor gameId={game.id} initialName={game.name} />
 
-          <div className="flex items-center gap-3">
-            <p
-              role="status"
-              aria-live="polite"
-              data-testid="game-save-status"
-              data-state={saveStatus}
-              data-revision={saveRevision}
-              className="text-xs text-muted-foreground"
-            >
-              {saveStatus === "saving"
-                ? "Saving changes…"
-                : saveStatus === "error"
-                  ? "Unable to save changes"
-                  : "All changes saved"}
-            </p>
-
-            <ResetAllButton />
-          </div>
+          <ResetAllButton />
         </div>
 
         <TeamGenerator generatedTeamsTitle={game.name} />
+        <p
+          role="status"
+          aria-live="polite"
+          data-testid="game-save-status"
+          data-state={saveStatus}
+          data-revision={saveRevision}
+          className="text-xs text-muted-foreground"
+        >
+          {saveStatus === "saving"
+            ? "Saving changes…"
+            : saveStatus === "error"
+              ? "Unable to save changes"
+              : "All changes saved"}
+        </p>
       </div>
     </TeamGeneratorStoreProvider>
   );

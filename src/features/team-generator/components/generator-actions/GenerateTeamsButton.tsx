@@ -12,6 +12,9 @@ export function GenerateTeamsButton() {
 
   const players = useTeamGeneratorStore((state) => state.players);
   const teams = useTeamGeneratorStore((state) => state.teams);
+  const generationResult = useTeamGeneratorStore(
+    (state) => state.generationResult,
+  );
 
   const validation = canGenerateTeams(players, teams);
   const validationMessages: Record<TeamGenerationValidationCode, string> = {
@@ -32,10 +35,10 @@ export function GenerateTeamsButton() {
   }
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1 w-full">
       <Button
         size="lg"
-        className="text-lg font-semibold p-8 max-w-50 w-full"
+        className="text-lg font-semibold p-8 w-full"
         onClick={handleGenerateTeams}
         disabled={!validation.canGenerate || isGenerating}
         aria-label="Generate balanced teams"
@@ -44,7 +47,11 @@ export function GenerateTeamsButton() {
           className={`size-6 ${isGenerating ? "animate-spin motion-reduce:animate-none" : ""}`}
           aria-hidden="true"
         />
-        {isGenerating ? "Balancing..." : "Generate Teams"}
+        {isGenerating
+          ? "Balancing..."
+          : generationResult
+            ? "Generate New Teams"
+            : "Generate Teams"}
       </Button>
       {validation.code && (
         <span className="flex gap-1 items-center justify-center text-sm text-muted-foreground">

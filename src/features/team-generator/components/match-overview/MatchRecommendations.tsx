@@ -1,4 +1,5 @@
 import {
+  Check,
   CircleX,
   Lightbulb,
   type LucideIcon,
@@ -14,10 +15,6 @@ interface MatchRecommendationsProps {
 export function MatchRecommendations({
   recommendations,
 }: MatchRecommendationsProps) {
-  if (recommendations.length === 0) {
-    return null;
-  }
-
   return (
     <CardFooter>
       <section
@@ -29,12 +26,22 @@ export function MatchRecommendations({
         </h3>
 
         <ul className="space-y-2">
-          {recommendations.map((recommendation) => (
-            <RecommendationItem
-              key={recommendation.id}
-              recommendation={recommendation}
-            />
-          ))}
+          {recommendations.length === 0 ? (
+            <li>
+              <div className="flex items-center gap-3 rounded-lg border p-1.5 border-green-500/40 bg-green-500/1 text-green-800 dark:text-green-400">
+                <Check className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
+
+                <p className="text-sm leading-relaxed"> Ready to generate!</p>
+              </div>
+            </li>
+          ) : (
+            recommendations.map((recommendation) => (
+              <RecommendationItem
+                key={recommendation.id}
+                recommendation={recommendation}
+              />
+            ))
+          )}
         </ul>
       </section>
     </CardFooter>
